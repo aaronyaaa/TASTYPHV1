@@ -1,0 +1,90 @@
+/* Modal overall */
+#addAddressModal .modal-dialog {
+  max-width: 700px; /* a bit wider for comfortable map view */
+}
+
+#addAddressModal .modal-content {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Header styling */
+#addAddressModal .modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 1.5rem;
+}
+
+/* Body layout: flex column on small, row on md+ */
+#addAddressModal .modal-body {
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+}
+
+/* Form section inputs */
+#addAddressModal .form-section input.form-control {
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s ease;
+}
+
+#addAddressModal .form-section input.form-control:focus {
+  border-color: #dc3545; /* bootstrap danger color for focus */
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+/* Locate button */
+#locateMeBtn {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 4px;
+}
+
+/* Selected location display */
+#selectedLocation {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #495057;
+  font-style: italic;
+  min-height: 2.5rem; /* keep some space */
+  transition: opacity 0.3s ease;
+}
+
+/* Map container */
+#addressMap {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition:
+    height 0.3s ease,
+    box-shadow 0.3s ease;
+  height: 300px; /* default height */
+}
+
+#addressMap:hover {
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Shrink map height when address is shown */
+#selectedLocation.show + #addressMap,
+#addressMap.shrink {
+  height: 150px;
+}
+
+/* Footer buttons */
+#addAddressModal .modal-footer {
+  padding: 0.75rem 1.5rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+
+#addAddressModal .modal-footer .btn {
+  min-width: 100px;
+  font-weight: 600;
+}

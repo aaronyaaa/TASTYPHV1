@@ -1,0 +1,389 @@
+:root {
+  --kakanin-violet: #7B4397;
+  --kakanin-violet-light: #8E44AD;
+  --kakanin-yellow: #FDEB71;
+  --kakanin-yellow-dark: #F9D342;
+  --kakanin-cream: #FFF8E7;
+  --kakanin-shadow: 0 4px 24px rgba(123, 67, 151, 0.13);
+  --kakanin-radius: 24px;
+  --kakanin-accent: #FF6B6B;
+  --kakanin-text-dark: #2C3E50;
+  --kakanin-text-light: #fff;
+}
+
+/* Reset margin/padding */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.kakanin-navbar {
+  background: var(--kakanin-violet) !important;
+  border-radius: 0 0 var(--kakanin-radius) var(--kakanin-radius);
+  box-shadow: var(--kakanin-shadow);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+  margin: 0;
+}
+
+.kakanin-navbar .navbar-brand {
+  color: var(--kakanin-yellow) !important;
+  font-weight: bold;
+  font-size: 1.7rem;
+  letter-spacing: 1px;
+  text-shadow: 1px 2px 8px rgba(123, 67, 151, 0.13);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.kakanin-navbar .logo {
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px #8E44AD55;
+  background: var(--kakanin-cream);
+  border: 2px solid var(--kakanin-yellow);
+  object-fit: cover;
+}
+
+.kakanin-navbar .navbar-nav .nav-link {
+  color: var(--kakanin-text-light) !important;
+  font-weight: 500;
+  font-size: 1.08rem;
+  border-radius: 16px;
+  padding: 0.6rem 1.1rem;
+  margin: 0 0.1rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.kakanin-navbar .navbar-nav .nav-link.active,
+.kakanin-navbar .navbar-nav .nav-link:hover,
+.kakanin-navbar .navbar-nav .show > .nav-link {
+  background: var(--kakanin-yellow);
+  color: var(--kakanin-violet) !important;
+  box-shadow: 0 2px 12px rgba(253, 235, 113, 0.13);
+}
+
+.kakanin-navbar .navbar-nav .nav-link i {
+  font-size: 1.2rem;
+  transition: color 0.2s;
+}
+
+.kakanin-navbar .navbar-nav .nav-link.active i,
+.kakanin-navbar .navbar-nav .nav-link:hover i {
+  color: var(--kakanin-violet);
+}
+
+/* Mobile Sidebar Styles */
+.offcanvas {
+  background: var(--kakanin-cream);
+  border-right: none;
+}
+
+.offcanvas-header {
+  background: var(--kakanin-violet);
+  padding: 1rem;
+}
+
+.offcanvas-title {
+  color: var(--kakanin-yellow);
+  font-weight: bold;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.offcanvas-body {
+  padding: 0;
+}
+
+.offcanvas-body .nav-link {
+  color: var(--kakanin-text-dark);
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 1rem 1.5rem;
+  border-radius: 0;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
+}
+
+.offcanvas-body .nav-link:hover,
+.offcanvas-body .nav-link.active {
+  background: var(--kakanin-yellow);
+  color: var(--kakanin-violet);
+  border-left: 4px solid var(--kakanin-violet);
+}
+
+.offcanvas-body .nav-link i {
+  width: 24px;
+  text-align: center;
+  margin-right: 0.5rem;
+}
+
+/* Mobile Top Bar Styles */
+.mobile-top-bar {
+  background: var(--kakanin-violet);
+  padding: 0.5rem 1rem;
+}
+
+.mobile-top-bar .btn-link {
+  color: var(--kakanin-text-light);
+  padding: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.mobile-top-bar .navbar-brand {
+  font-size: 1.3rem;
+}
+
+.mobile-top-bar .logo {
+  height: 36px;
+  width: 36px;
+}
+
+/* Dropdown Styles */
+.dropdown-menu {
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(123, 67, 151, 0.13);
+  background: var(--kakanin-violet);
+  border: none;
+  min-width: 210px;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+}
+
+.dropdown-item {
+  color: var(--kakanin-text-light);
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 0.7rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  transition: background 0.2s, color 0.2s;
+  margin: 0 0.5rem;
+  width: calc(100% - 1rem);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: var(--kakanin-yellow);
+  color: var(--kakanin-violet);
+}
+
+.dropdown-item i {
+  font-size: 1.1rem;
+  width: 24px;
+  text-align: center;
+}
+
+.dropdown-divider {
+  border-top: 2px solid var(--kakanin-yellow);
+  opacity: 0.2;
+  margin: 0.5rem 0;
+}
+
+/* Badge Styles */
+.badge {
+  font-size: 0.8rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(249, 211, 66, 0.13);
+  font-weight: 600;
+}
+
+.badge.bg-warning {
+  color: var(--kakanin-violet);
+  background: var(--kakanin-yellow) !important;
+}
+
+.badge.bg-danger {
+  background: var(--kakanin-accent) !important;
+}
+
+/* User Profile Styles */
+.rounded-circle {
+  border: 2px solid var(--kakanin-yellow);
+  background: var(--kakanin-cream);
+  box-shadow: 0 2px 8px #8E44AD33;
+}
+
+.fa-user,
+.fa-user-circle {
+  color: var(--kakanin-violet-light);
+}
+
+/* Mobile User Dropdown */
+#mobileUserDropdown {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+#mobileUserDropdown .dropdown-menu {
+  background: var(--kakanin-violet);
+  border-radius: 12px;
+  margin-top: 0.5rem;
+}
+
+#mobileUserDropdown .dropdown-item {
+  color: var(--kakanin-text-light);
+}
+
+#mobileUserDropdown .dropdown-item:hover {
+  background: var(--kakanin-yellow);
+  color: var(--kakanin-violet);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+  .kakanin-navbar {
+    border-radius: 0 0 18px 18px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .kakanin-navbar .navbar-nav {
+    gap: 0.2rem;
+  }
+  
+  .kakanin-navbar .navbar-brand {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .kakanin-navbar {
+    border-radius: 0 0 12px 12px;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+  }
+  
+  .kakanin-navbar .navbar-brand {
+    font-size: 1rem;
+  }
+  
+  .kakanin-navbar .logo {
+    height: 32px;
+    width: 32px;
+  }
+  
+  .kakanin-navbar .navbar-nav .nav-link {
+    font-size: 0.98rem;
+    padding: 0.5rem 0.7rem;
+  }
+  
+  .offcanvas-title {
+    font-size: 1.3rem;
+  }
+  
+  .offcanvas-body .nav-link {
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+  }
+  
+  .kakanin-navbar .dropdown-item:hover,
+  .kakanin-navbar .dropdown-item:focus,
+  .dropdown-menu .dropdown-item:hover,
+  .dropdown-menu .dropdown-item:focus {
+    background: var(--kakanin-violet-light) !important;
+    color: var(--kakanin-yellow) !important;
+  }
+}
+
+.kakanin-navbar .dropdown-menu,
+.dropdown-menu.show {
+  background: var(--kakanin-violet) !important;
+  color: var(--kakanin-text-light) !important;
+  border: none !important;
+  box-shadow: 0 8px 32px rgba(123, 67, 151, 0.13) !important;
+}
+
+.kakanin-navbar .dropdown-item,
+.dropdown-menu .dropdown-item {
+  color: var(--kakanin-text-light) !important;
+}
+
+.kakanin-navbar .dropdown-item:hover,
+.kakanin-navbar .dropdown-item:focus,
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  background: var(--kakanin-yellow) !important;
+  color: var(--kakanin-violet) !important;
+}
+.offcanvas {
+  z-index: 1100 !important;
+}
+
+.mobile-bottom-nav {
+  background-color: var(--kakanin-violet);
+  border-top: none;
+  box-shadow: 0 -2px 6px rgba(123, 67, 151, 0.15);
+  z-index: 1080;
+  border-top-left-radius: var(--kakanin-radius);
+  border-top-right-radius: var(--kakanin-radius);
+}
+
+.mobile-bottom-nav .nav-link {
+  color: var(--kakanin-text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+.mobile-bottom-nav .nav-link i {
+  font-size: 1.4rem;
+  color: var(--kakanin-text-light);
+  transition: color 0.3s ease;
+}
+
+/* On hover and active (clicked) */
+.mobile-bottom-nav .nav-link:hover,
+.mobile-bottom-nav .nav-link:focus,
+.mobile-bottom-nav .nav-link.active {
+  background-color: var(--kakanin-yellow);
+  color: var(--kakanin-violet);
+  box-shadow: 0 2px 8px rgba(253, 235, 113, 0.4);
+}
+
+.mobile-bottom-nav .nav-link:hover i,
+.mobile-bottom-nav .nav-link:focus i,
+.mobile-bottom-nav .nav-link.active i {
+  color: var(--kakanin-violet);
+}
+
+/* Badge style */
+.mobile-bottom-nav .nav-link .badge {
+  position: absolute;
+  top: 6px;
+  font-size: 0.65rem;
+  border-radius: 50%;
+  padding: 0.2em 0.4em;
+  font-weight: 700;
+  user-select: none;
+  background-color: var(--kakanin-yellow);
+  color: var(--kakanin-violet);
+  box-shadow: 0 0 4px var(--kakanin-yellow);
+}
+
+/* Ensure enough bottom padding for content not to be hidden */
+@media (max-width: 991.98px) {
+  body {
+    padding-bottom: 70px; /* adjust based on navbar height */
+  }
+}
