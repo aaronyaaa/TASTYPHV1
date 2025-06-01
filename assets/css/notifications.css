@@ -1,0 +1,80 @@
+/* === Notification Dropdown (Dark Violet Theme + Yellow Hover) === */
+
+/* Base Dropdown Styling */
+.navbar .dropdown-menu,
+.dropdown-menu[aria-labelledby="notifDropdown"] {
+  background-color: #7B4397; /* Violet base */
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 0.5rem;
+  z-index: 1055;
+}
+
+/* Notification Header and Empty Message */
+.dropdown-menu .dropdown-header,
+.dropdown-menu .no-hover,
+.dropdown-menu li[style*="pointer-events: none"] {
+  background-color: transparent;
+  color: #ffffff;
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Notification Items (Clickable) */
+.notification-item {
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  padding: 8px;
+  cursor: pointer;
+}
+
+/* Hover effect - Yellow background */
+.notification-item:hover {
+  background-color: #FDEB71 !important;
+  color: #000 !important;
+}
+
+/* Icons and text inside hovered item */
+.notification-item:hover i,
+.notification-item:hover .fw-semibold,
+.notification-item:hover .text-white-50 {
+  color: #000 !important;
+}
+
+/* Notification icon sizing */
+.navbar .dropdown-menu i.fa-solid {
+  font-size: 1.2rem;
+}
+
+/* Secondary/Muted Text */
+.navbar .dropdown-menu .small,
+.navbar .dropdown-menu .text-white-50,
+.navbar .dropdown-menu .text-muted {
+  color: #b0b3b8 !important;
+}
+
+/* Highlighted text/icon (e.g., links) */
+.navbar .dropdown-menu .text-primary {
+  color: #2d88ff !important;
+}
+
+/* Notification Badge */
+.navbar .badge {
+  font-size: 0.7rem;
+  padding: 0.3em 0.5em;
+  background-color: #f02849; /* Red notification dot */
+}
+
+/* Navbar Link Colors */
+.navbar .nav-link,
+.navbar .nav-link span {
+  color: #ffffff;
+}
+
+/* Profile image border */
+.navbar img.rounded-circle,
+.navbar .bg-secondary {
+  border: 2px solid #FDEB71;
+}

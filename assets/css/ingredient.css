@@ -1,0 +1,70 @@
+/* Grid layout spacing */
+.row.g-4 {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Card styling */
+.card {
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.075);
+}
+
+/* Card Image */
+.card-img-top {
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  object-fit: contain;
+  height: 200px;
+}
+
+/* Card Body */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+/* Title + Slug */
+.card-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.card .fa-tag {
+  color: #adb5bd;
+}
+
+/* Stock Badge */
+.badge.bg-success {
+  font-size: 0.75rem;
+  padding: 0.4em 0.6em;
+  border-radius: 0.35rem;
+}
+
+/* Buttons */
+.card .btn {
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card .btn i {
+  width: 1rem;
+  text-align: center;
+}
+
+/* Spacing for variant row */
+.card .d-grid .btn + .btn {
+  margin-left: 0.5rem;
+}

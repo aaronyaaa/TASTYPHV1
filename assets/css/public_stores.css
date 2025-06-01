@@ -1,0 +1,107 @@
+:root {
+  --primary-violet: #7B4397;
+  --pastel-yellow: #FDEB71;
+}
+
+/* Section */
+.public-stores {
+  padding-bottom: 2rem;
+}
+
+/* Card entrance animation */
+.public-stores .card {
+  border-radius: 0.75rem;
+  background-color: #fff;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  animation: fadeInUp 0.6s ease both;
+}
+.public-stores .card:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Fade-in-up keyframes */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cover image */
+.public-stores .card-img-top {
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+/* Profile picture (larger) */
+.public-stores .card-body img.rounded-circle {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  position: absolute;
+  top: -40px;
+  left: 15px;
+  border: 3px solid white;
+  animation: popIn 0.5s ease;
+}
+
+/* Pop-in animation for profile pic */
+@keyframes popIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Business name */
+.public-stores .card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-violet);
+}
+
+/* Status badge */
+.public-stores .badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.6em;
+  text-transform: capitalize;
+  transition: background-color 0.3s;
+}
+
+/* Description */
+.public-stores .card-text {
+  font-size: 1rem;
+  color: #555;
+  transition: color 0.3s;
+}
+
+/* View Store button */
+.public-stores .btn {
+  display: block;
+  width: 100%;
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  border-radius: 30px;
+  background-color: var(--primary-violet);
+  border: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.public-stores .btn:hover {
+  background-color: var(--pastel-yellow);
+  color: black;
+  font-weight: 500;
+  transform: scale(1.03);
+}
+

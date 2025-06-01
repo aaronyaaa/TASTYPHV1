@@ -1,12 +1,10 @@
 <?php
 include_once("../database/db_connect.php"); // loads $user array from DB and session
 include_once("../database/session.php"); // Loads user into $_SESSION['user']
-$user = $_SESSION['user'] ?? [];
 
 ?>
 <?php
-// Assuming $user['profile_pics'] contains the path or is empty/null if not set
-$profile_pics = !empty($user['profile_pics']) ? htmlspecialchars($user['profile_pics']) : null;
+$profilePic = $_SESSION['user']['profile_pics'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,14 +17,36 @@ $profile_pics = !empty($user['profile_pics']) ? htmlspecialchars($user['profile_
   <link rel="stylesheet" href="../assets/css/map_modal.css" />
   <link rel="stylesheet" href="../assets/css/settings.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+
   <style>
- 
+    /* Set z-index for all modals */
+    .modal {
+      z-index: 100 !important;
+    }
+    .modal-backdrop {
+      z-index: 99 !important;
+    }
   </style>
 </head>
 <body>
 
-  <?php include '../includes/user_navbar.php'; ?>
+<!-- Mobile Header with Back Arrow (visible only on mobile) -->
+<div class="mobile-back-header d-lg-none">
+  <a href="javascript:history.back()" class="back-link d-flex align-items-center text-decoration-none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" 
+         class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" 
+            d="M15 8a.5.5 0 0 1-.5.5H3.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 1 1 .708.708L3.707 7.5H14.5A.5.5 0 0 1 15 8z"/>
+    </svg>
+    <span class="fs-5 fw-semibold">Settings</span>
+  </a>
+</div>
+
+<?php include '../includes/nav/navbar_router.php'; ?>
   <?php include '../modals/settings_modal.php'; ?>
+  <?php include '../modals/edit_address_modal.php'; ?>
+  <?php include '../includes/nav/chat.php'; ?>
 
   <div class="container py-5">
     <div class="row">
@@ -76,6 +96,16 @@ $profile_pics = !empty($user['profile_pics']) ? htmlspecialchars($user['profile_
   <script src="../assets/js/map_handler.js"></script>
   <script src="../assets/js/addressModal.js"></script>
     <script src="../assets/js/settingsTabs.js"></script>
+<script>
+  // Preview uploaded image before form submit
+  document.getElementById('profile-image-input').addEventListener('change', function(event) {
+      const [file] = this.files;
+      if (file) {
+          const preview = document.getElementById('profileImagePreview');
+          preview.src = URL.createObjectURL(file);
+      }
+  });
+</script>
 
   <script>
     window.initialLatitude = <?php echo $user['latitude'] ?? 'null'; ?>;

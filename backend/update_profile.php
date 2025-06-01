@@ -12,20 +12,42 @@ if (!isset($_SESSION['userId'])) {
 
 $userId = $_SESSION['userId'];
 
-$firstName = trim($_POST['first_name'] ?? '');
-$middleName = trim($_POST['middle_name'] ?? '');
-$lastName = trim($_POST['last_name'] ?? '');
-$contactNumber = trim($_POST['contact_number'] ?? '');
-$dateOfBirth = $_POST['date_of_birth'] ?? '';
-$gender = $_POST['gender'] ?? '';
+// Collect all possible fields from POST (trim to clean)
+$fieldsToUpdate = [];
+$params = [];
 
-if (!$firstName || !$lastName || !$contactNumber || !$dateOfBirth || !$gender) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Missing required fields']);
-    exit();
+// Check each field, add to update if present and not empty
+if (isset($_POST['first_name']) && $_POST['first_name'] !== '') {
+    $fieldsToUpdate[] = "first_name = ?";
+    $params[] = trim($_POST['first_name']);
 }
 
-$profilePicPath = null;
+if (isset($_POST['middle_name'])) {
+    $fieldsToUpdate[] = "middle_name = ?";
+    $params[] = trim($_POST['middle_name']);
+}
+
+if (isset($_POST['last_name']) && $_POST['last_name'] !== '') {
+    $fieldsToUpdate[] = "last_name = ?";
+    $params[] = trim($_POST['last_name']);
+}
+
+if (isset($_POST['contact_number']) && $_POST['contact_number'] !== '') {
+    $fieldsToUpdate[] = "contact_number = ?";
+    $params[] = trim($_POST['contact_number']);
+}
+
+if (isset($_POST['date_of_birth']) && $_POST['date_of_birth'] !== '') {
+    $fieldsToUpdate[] = "date_of_birth = ?";
+    $params[] = $_POST['date_of_birth'];
+}
+
+if (isset($_POST['gender']) && $_POST['gender'] !== '') {
+    $fieldsToUpdate[] = "gender = ?";
+    $params[] = $_POST['gender'];
+}
+
+// Handle profile image upload if any
 if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
     $allowedTypes = ['image/jpeg', 'image/png'];
     $fileTmp = $_FILES['profile_image']['tmp_name'];
@@ -51,24 +73,24 @@ if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPL
     }
 
     $profilePicPath = 'uploads/profile_pics/' . $fileName;
+    $fieldsToUpdate[] = "profile_pics = ?";
+    $params[] = $profilePicPath;
 }
 
+// If no fields to update, return error
+if (empty($fieldsToUpdate)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'No data to update']);
+    exit();
+}
+
+// Build the SQL dynamically
+$sql = "UPDATE users SET " . implode(", ", $fieldsToUpdate) . " WHERE id = ?";
+$params[] = $userId;
+
 try {
-    // Build SQL and params
-    $sql = "UPDATE users SET first_name = ?, middle_name = ?, last_name = ?, contact_number = ?, date_of_birth = ?, gender = ?";
-    $params = [$firstName, $middleName, $lastName, $contactNumber, $dateOfBirth, $gender];
-
-    if ($profilePicPath !== null) {
-        $sql .= ", profile_pics = ?";
-        $params[] = $profilePicPath;
-    }
-
-    $sql .= " WHERE id = ?";
-    $params[] = $userId;
-
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
-
     echo json_encode(['success' => 'Profile updated successfully']);
 } catch (PDOException $e) {
     http_response_code(500);

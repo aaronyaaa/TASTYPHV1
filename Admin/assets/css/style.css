@@ -1,0 +1,226 @@
+:root {
+  --primary-color: #7B4397;
+  --primary-light: #8E44AD;
+  --secondary-color: #FDEB71;
+  --secondary-dark: #F9D342;
+  --accent-color: #FF6B6B;
+  --text-color: #2C3E50;
+  --light-text: #FFFFFF;
+  --background-color: #FFF8E7;
+  --form-bg: #FFFFFF;
+  --border-color: #E8D5C4;
+  --shadow-color: rgba(123, 67, 151, 0.1);
+  --success-color: #2ECC71;
+  --error-color: #E74C3C;
+  --navbar-height: 70px;
+  --navbar-text: #FFFFFF;
+  --navbar-hover: #FF8F00;
+  --navbar-shadow: rgba(0, 0, 0, 0.1);
+  --hero-auth-width: 400px;
+  --hero-auth-bg: rgba(255, 255, 255, 0.95);
+  --hero-auth-shadow: rgba(123, 67, 151, 0.15);
+  --card-radius: 20px;
+  --button-radius: 50px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.welcome-bg {
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text-color);
+}
+
+.form-card {
+  width: var(--hero-auth-width);
+  background: var(--hero-auth-bg);
+  box-shadow: 0 12px 24px var(--hero-auth-shadow);
+  border-radius: var(--card-radius);
+  padding: 2rem;
+  transition: var(--transition);
+}
+
+.form-card h2 {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+input.form-control {
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 0.75rem;
+  transition: var(--transition);
+}
+
+input.form-control:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 4px var(--shadow-color);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--button-radius);
+  transition: var(--transition);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-light);
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  border: none;
+  border-radius: var(--button-radius);
+}
+
+.btn-success:hover {
+  background-color: #28b765;
+}
+
+.form-switch {
+  cursor: pointer;
+  color: var(--accent-color);
+  text-decoration: underline;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.form-switch:hover {
+  color: var(--navbar-hover);
+}
+
+.alert {
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+}
+/* Login Card Specific Styling */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--form-bg);
+  padding: 2rem;
+  margin: auto;
+  border-radius: var(--card-radius);
+  box-shadow: 0 8px 24px var(--shadow-color);
+  transition: var(--transition);
+  position: relative;
+}
+
+.login-card h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.login-card .form-label {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.login-card input.form-control {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.6rem 0.75rem;
+  transition: var(--transition);
+}
+
+.login-card input.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem var(--shadow-color);
+}
+
+.login-card .btn {
+  border-radius: var(--button-radius);
+  padding: 0.6rem 1rem;
+  font-weight: 500;
+}
+
+.login-card .btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+}
+
+.login-card .btn-primary:hover {
+  background-color: var(--primary-light);
+}
+
+.login-card .btn-success {
+  background-color: var(--success-color);
+  border: none;
+}
+
+.login-card .btn-success:hover {
+  background-color: #27ae60;
+}
+
+.login-card .form-switch {
+  color: var(--accent-color);
+  text-decoration: underline;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.login-card .form-switch:hover {
+  color: var(--navbar-hover);
+}
+
+/* === Shared Form Section Styling === */
+form {
+  text-align: left;
+}
+
+.login-card form {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.login-card input.form-control {
+  background-color: #fff;
+  color: var(--text-color);
+}
+
+.login-card input.form-control:focus {
+  border-color: var(--primary-light);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--shadow-color);
+}
+
+/* === Register Form Spacing Enhancements === */
+#registerForm .mb-3 {
+  margin-bottom: 1.2rem;
+}
+
+#registerForm button {
+  margin-top: 1.2rem;
+}
+
+/* === Success & Error Optional Classes (for feedback styling) === */
+.input-success {
+  border-color: var(--success-color) !important;
+}
+
+.input-error {
+  border-color: var(--error-color) !important;
+}
+
+/* === Simple FadeIn Animation === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

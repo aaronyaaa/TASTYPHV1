@@ -29,3 +29,25 @@
     .sidebar-header:hover {
       background-color: #f8f9fa;
     }
+
+@media (max-width: 991.98px) {
+  .mobile-back-header {
+    position: sticky;
+    top: 0;
+    z-index: 1050;
+    background: transparent;       /* Transparent background */
+    padding: 0.5rem 1rem;
+  }
+
+  .mobile-back-header .back-link {
+    color: black !important;       /* Force black text color */
+    font-size: 1.25rem;            /* Bigger text size */
+    font-weight: 600;              /* Slightly bolder */
+  }
+
+  .mobile-back-header .back-link:hover,
+  .mobile-back-header .back-link:focus {
+    color: #0d6efd;               /* Bootstrap primary blue on hover/focus */
+    text-decoration: none;
+  }
+}

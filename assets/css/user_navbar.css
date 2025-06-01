@@ -19,15 +19,16 @@ html, body {
 
 .kakanin-navbar {
   background: var(--kakanin-violet) !important;
-  border-radius: 0 0 var(--kakanin-radius) var(--kakanin-radius);
+  border-radius: 0; /* No rounded corners */
   box-shadow: var(--kakanin-shadow);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   position: sticky;
   top: 0;
-  z-index: 1050;
+  z-index: 90;
   margin: 0;
 }
+
 
 .kakanin-navbar .navbar-brand {
   color: var(--kakanin-yellow) !important;
@@ -39,7 +40,9 @@ html, body {
   align-items: center;
   gap: 0.7rem;
 }
-
+  body {
+    padding-top: 70px; /* Match or slightly exceed your navbar height */
+  }
 .kakanin-navbar .logo {
   height: 44px;
   width: 44px;
@@ -86,6 +89,7 @@ html, body {
 .offcanvas {
   background: var(--kakanin-cream);
   border-right: none;
+  z-index: 95;
 }
 
 .offcanvas-header {
@@ -159,6 +163,7 @@ html, body {
   min-width: 210px;
   padding: 0.5rem 0;
   margin-top: 0.5rem;
+  z-index: 95;
 }
 
 .dropdown-item {
@@ -327,7 +332,7 @@ html, body {
   background-color: var(--kakanin-violet);
   border-top: none;
   box-shadow: 0 -2px 6px rgba(123, 67, 151, 0.15);
-  z-index: 1080;
+  z-index: 80;
   border-top-left-radius: var(--kakanin-radius);
   border-top-right-radius: var(--kakanin-radius);
 }
@@ -386,4 +391,23 @@ html, body {
   body {
     padding-bottom: 70px; /* adjust based on navbar height */
   }
+}
+
+.notif-box {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 320px;
+  background-color: white;
+  z-index: 1050;
+  border-radius: 8px;
+}
+
+.notif-box::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  border: 10px solid transparent;
+  border-bottom-color: white;
 }

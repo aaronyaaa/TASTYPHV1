@@ -1,0 +1,144 @@
+:root {
+  --navbar-height: 70px;
+  --navbar-bg: rgba(123, 67, 151, 0.95);
+  --navbar-text: #FFFFFF;
+  --navbar-hover: rgba(142, 68, 173, 0.9);
+  --navbar-shadow: rgba(123, 67, 151, 0.15);
+  --navbar-border: rgba(255, 255, 255, 0.1);
+  --secondary-color: #FDEB71;
+}
+
+body {
+  overflow-x: hidden;
+  padding-top: var(--navbar-height);
+}
+
+/* Sidebar styles */
+#sidebar {
+  position: fixed;
+  top: var(--navbar-height);
+  right: -500px;
+  width: 500px;
+  max-width: 100%;
+  height: calc(100% - var(--navbar-height));
+  background-color: #fff;
+  color: #000;
+  padding: 1.5rem;
+  transition: right 0.3s ease;
+  z-index: 1050;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#sidebar.open {
+  right: 0;
+}
+
+/* Main content shifts when sidebar is open */
+.main-wrapper {
+  transition: margin-right 0.3s ease;
+}
+
+.main-wrapper.shifted {
+  margin-right: 500px;
+}
+
+/* Order Row Interactions */
+.clickable-row {
+  cursor: pointer;
+}
+
+.order-card:hover {
+  background-color: #f8f9fa;
+}
+
+/* Map container inside sidebar */
+#map {
+  height: 200px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  #sidebar {
+    width: 100%;
+  }
+
+  .main-wrapper.shifted {
+    margin-right: 0;
+  }
+}
+
+/* Buttons or badges using theme colors */
+.badge-violet {
+  background-color: var(--navbar-bg);
+  color: white;
+}
+
+.btn-theme {
+  background-color: var(--navbar-bg);
+  color: white;
+  border: none;
+}
+
+.btn-theme:hover {
+  background-color: var(--navbar-hover);
+  color: white;
+}
+/* Buttons in the sidebar */
+#sidebar .btn {
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Approve */
+#sidebar .btn-success {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+}
+
+#sidebar .btn-success:hover {
+  background-color: #157347;
+  border-color: #157347;
+}
+
+/* Decline */
+#sidebar .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+#sidebar .btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #bb2d3b;
+}
+
+/* Mark as Delivered (Warning style) */
+#sidebar .btn-warning {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+#sidebar .btn-warning:hover {
+  background-color: #e0a800;
+  border-color: #d39e00;
+}
+
+/* Chat Button */
+#sidebar .btn-outline-primary {
+  border-color: var(--navbar-bg);
+  color: var(--navbar-bg);
+}
+
+#sidebar .btn-outline-primary:hover {
+  background-color: var(--navbar-bg);
+  color: white;
+}

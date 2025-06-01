@@ -6,12 +6,14 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 require_once '../database/db_connect.php';
+require_once '../database/session.php'; // Ensure session.php sets $_SESSION['userId']
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['userId'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in']);
     exit;
 }
-$user_id = $_SESSION['user_id'];
+
+$userId = $_SESSION['userId'];
 
 // Sanitize inputs
 $latitude = isset($_POST['latitude']) ? floatval($_POST['latitude']) : null;
@@ -26,14 +28,14 @@ if ($latitude === null || $longitude === null || !$full_address) {
 }
 
 try {
-    // You may need to add full_address column in users table as TEXT if not yet added.
+    // Make sure full_address column exists in your users table (TEXT)
     $sql = "UPDATE users SET
             latitude = :latitude,
             longitude = :longitude,
             postal_code = :postal_code,
             streetname = :address_line,
             full_address = :full_address
-            WHERE id = :user_id";
+            WHERE id = :userId";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
@@ -42,7 +44,7 @@ try {
         ':postal_code' => $postal_code,
         ':address_line' => $address_line,
         ':full_address' => $full_address,
-        ':user_id' => $user_id
+        ':userId' => $userId
     ]);
 
     echo json_encode(['success' => true, 'message' => 'Address saved successfully']);

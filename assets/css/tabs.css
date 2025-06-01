@@ -1,0 +1,67 @@
+/* Sidebar Panel */
+.sidebar {
+  background-color: #ffffff;
+  border-right: 1px solid #dee2e6;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.03);
+  padding: 2rem 1.5rem;
+  min-height: 100vh;
+}
+
+/* Tab Pills - Vertical Sidebar */
+#quickTabs .nav-link {
+  border-radius: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s ease;
+}
+
+#quickTabs .nav-link:hover {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+#quickTabs .nav-link.active {
+  background-color: #198754;
+  color: #fff !important;
+  font-weight: 600;
+  box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.15);
+}
+
+#quickTabs .nav-link i {
+  width: 20px;
+  text-align: center;
+}
+
+/* Main Content Area */
+.main-content {
+  background-color: #f8f9fa;
+  padding: 2rem;
+}
+
+.tab-content {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.03);
+  min-height: 80vh;
+}
+
+/* Text and Titles */
+.tab-content p.lead {
+  font-weight: 500;
+  color: #6c757d;
+}
+
+/* Utility Fixes */
+@media (max-width: 768px) {
+  .sidebar {
+    min-height: auto;
+    padding: 1.5rem 1rem;
+  }
+
+  #quickTabs .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+  }
+}

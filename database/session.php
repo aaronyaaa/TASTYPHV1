@@ -8,7 +8,7 @@ if (!isset($_SESSION['userId'])) {
     exit();
 }
 
-include_once('../database/db_connect.php'); // This defines $pdo as PDO object
+include_once __DIR__ . '/db_connect.php';
 
 $userId = $_SESSION['userId'];
 
@@ -43,8 +43,11 @@ if (!$user) {
     exit();
 }
 
+// Sanitize user data
 foreach ($user as $key => $value) {
     $user[$key] = htmlspecialchars($value);
 }
 
+// Save sanitized user data in session for reuse elsewhere
+$_SESSION['user'] = $user;
 ?>

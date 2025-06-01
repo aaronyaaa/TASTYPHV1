@@ -1,0 +1,69 @@
+/* Sidebar Panel Styling */
+.user-details-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 0;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  z-index: 1050;
+}
+
+.user-details-panel.open {
+  width: 400px;
+}
+
+.main-content.shifted {
+  margin-right: 400px;
+}
+
+.user-details-panel .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+
+/* Profile Image */
+.profile-img-lg {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+/* Section Headings */
+.user-details-panel h6 {
+  font-weight: 600;
+  margin-top: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+/* Text Wrapping and Spacing */
+.user-details-panel p {
+  margin-bottom: 0.5rem;
+  word-break: break-word;
+}
+
+/* Map Styling */
+#userMap,
+#businessMap {
+  height: 200px;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+/* Scrollbar Styling (optional) */
+.user-details-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.user-details-panel::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}

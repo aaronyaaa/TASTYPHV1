@@ -1,0 +1,67 @@
+/* modal-style.css */
+
+.modal-content {
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+.form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}
+
+.form-section {
+  border-left: 4px solid #0d6efd;
+  padding-left: 1rem;
+}
+
+#map {
+  transition: box-shadow 0.3s ease;
+}
+
+#map:hover {
+  box-shadow: 0 0 0 2px #0d6efd33;
+}
+
+.modal-footer {
+  background-color: #f8f9fa;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f1f1f1;
+}
+
+#editStoreModal .modal-content {
+  font-size: 0.875rem;
+}
+
+#editStoreModal .form-control,
+#editStoreModal .form-control-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+#editStoreModal .form-label {
+  font-size: 0.75rem;
+}
+
+#editStoreModal .modal-header,
+#editStoreModal .modal-footer {
+  padding: 0.5rem 0.75rem;
+}
+
+#editStoreModal #map {
+  height: 200px !important;
+}
+

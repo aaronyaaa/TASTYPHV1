@@ -1,0 +1,57 @@
+:root {
+  --primary-color: #7B4397;
+  --primary-light: #8E44AD;
+  --secondary-color: #FDEB71;
+  --secondary-dark: #F9D342;
+  --accent-color: #FF6B6B;
+  --success-color: #2ECC71;
+  --text-color: #2C3E50;
+  --light-text: #FFFFFF;
+  --card-radius: 12px;
+  --transition: 0.3s ease;
+}
+
+/* === Statistic Cards === */
+.stat-card {
+  border-radius: var(--card-radius);
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card .card-body i {
+  opacity: 0.8;
+}
+
+.stat-card .card-footer {
+  border-top: none;
+  padding: 0.5rem 1rem;
+}
+
+/* === Donut Chart === */
+#userDoughnutChart {
+  max-height: 260px;
+  margin-top: 1rem;
+}
+
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .stat-card .card-title {
+    font-size: 1.4rem;
+  }
+
+  .stat-card .card-footer {
+    font-size: 0.8rem;
+  }
+}

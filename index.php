@@ -1,5 +1,5 @@
 <?php
-include_once('includes/navbar.php');
+include_once('includes/nav/navbar.php');
 include_once('database/db_connect.php');
 
 ?>
