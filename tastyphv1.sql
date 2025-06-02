@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2025 at 11:15 PM
+-- Generation Time: Jun 02, 2025 at 10:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -99,6 +99,7 @@ CREATE TABLE `ingredients` (
   `quantity_value` decimal(10,2) NOT NULL,
   `unit_type` enum('g','kg','ml','l','pcs','pack','bottle','can') NOT NULL,
   `is_active` tinyint(1) DEFAULT 1,
+  `rating` decimal(3,2) DEFAULT 0.00,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -107,9 +108,13 @@ CREATE TABLE `ingredients` (
 -- Dumping data for table `ingredients`
 --
 
-INSERT INTO `ingredients` (`ingredient_id`, `supplier_id`, `category_id`, `ingredient_name`, `slug`, `description`, `image_url`, `price`, `discount_price`, `stock`, `quantity_value`, `unit_type`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 1, 17, 'Coconut Milk', 'coconut-milk', 'Coconut Milk', 'uploads/ingredients/ingredient_1_1748803467.jpg', 50.00, NULL, 29, 165.00, 'ml', 1, '2025-06-02 02:44:27', '2025-06-02 03:54:51'),
-(3, 1, 16, 'Cheese', 'cheese', 'Cheese', 'uploads/ingredients/ingredient_1_1748812131.jpg', 222.00, NULL, 121, 430.00, 'g', 1, '2025-06-02 05:08:51', '2025-06-02 05:08:51');
+INSERT INTO `ingredients` (`ingredient_id`, `supplier_id`, `category_id`, `ingredient_name`, `slug`, `description`, `image_url`, `price`, `discount_price`, `stock`, `quantity_value`, `unit_type`, `is_active`, `rating`, `created_at`, `updated_at`) VALUES
+(1, 1, 17, 'Coconut Milk', 'coconut-milk', 'Coconut Milk', 'uploads/ingredients/ingredient_1_1748803467.jpg', 50.00, NULL, 31, 165.00, 'ml', 1, 0.00, '2025-06-02 02:44:27', '2025-06-03 00:32:32'),
+(3, 1, 16, 'Cheese', 'cheese', 'Cheese', 'uploads/ingredients/ingredient_1_1748812131.jpg', 222.00, NULL, 125, 430.00, 'g', 1, 0.00, '2025-06-02 05:08:51', '2025-06-03 00:28:01'),
+(4, 1, 16, 'Cheeser', 'cheeser', 'asd', 'uploads/ingredients/ingredient_1_1748887868.jpg', 240.00, NULL, 222, 250.00, 'g', 1, 0.00, '2025-06-03 02:11:08', '2025-06-03 02:11:08'),
+(5, 1, 16, 'Cow Cheese', 'cow-cheese', 'asd', 'uploads/ingredients/ingredient_1_1748887969.jpg', 250.00, NULL, 222, 1000.00, 'l', 1, 0.00, '2025-06-03 02:12:49', '2025-06-03 02:12:49'),
+(6, 1, 16, 'American Cheese', 'american-cheese', 'asd', 'uploads/ingredients/ingredient_1_1748888022.jpg', 200.00, NULL, 222, 500.00, 'ml', 1, 0.00, '2025-06-03 02:13:42', '2025-06-03 02:13:42'),
+(7, 1, 16, 'Aussie Cheese', 'aussie-cheese', 'asd', 'uploads/ingredients/ingredient_1_1748888095.jpg', 266.00, NULL, 123, 250.00, 'pcs', 1, 0.00, '2025-06-03 02:14:55', '2025-06-03 02:14:55');
 
 -- --------------------------------------------------------
 
@@ -129,6 +134,7 @@ CREATE TABLE `ingredient_variants` (
   `unit_type` enum('g','kg','ml','l','pcs','pack','bottle','can') NOT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT 1,
+  `rating` decimal(3,2) DEFAULT 0.00,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -137,9 +143,9 @@ CREATE TABLE `ingredient_variants` (
 -- Dumping data for table `ingredient_variants`
 --
 
-INSERT INTO `ingredient_variants` (`variant_id`, `ingredient_id`, `supplier_id`, `variant_name`, `price`, `discount_price`, `stock`, `quantity_value`, `unit_type`, `image_url`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '213', 123.00, 123.00, 123, 123.00, 'kg', 'uploads/variants/variant_1_1748809709.jpg', 1, '2025-06-02 04:28:29', '2025-06-02 04:28:29'),
-(2, 1, 1, '123', 213.00, 123.00, 123, 123.00, 'g', 'uploads/variants/variant_1_1748812068.jpg', 1, '2025-06-02 05:07:48', '2025-06-02 05:07:48');
+INSERT INTO `ingredient_variants` (`variant_id`, `ingredient_id`, `supplier_id`, `variant_name`, `price`, `discount_price`, `stock`, `quantity_value`, `unit_type`, `image_url`, `is_active`, `rating`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '213', 123.00, 123.00, 123, 123.00, 'kg', 'uploads/variants/variant_1_1748809709.jpg', 1, 0.00, '2025-06-02 04:28:29', '2025-06-02 04:28:29'),
+(2, 1, 1, '123', 213.00, 123.00, 123, 123.00, 'g', 'uploads/variants/variant_1_1748812068.jpg', 1, 0.00, '2025-06-02 05:07:48', '2025-06-02 05:07:48');
 
 -- --------------------------------------------------------
 
@@ -242,7 +248,18 @@ INSERT INTO `messages` (`message_id`, `sender_id`, `receiver_id`, `message_text`
 (116, 3, 2, 'hi', NULL, NULL, 0, 1, '2025-06-02 01:05:18', NULL),
 (117, 2, 3, 'yeah i', NULL, NULL, 0, 1, '2025-06-02 01:05:26', NULL),
 (118, 3, 2, 'asdas', NULL, NULL, 0, 1, '2025-06-02 01:05:32', NULL),
-(119, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 01:05:49', NULL);
+(119, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 01:05:49', NULL),
+(120, 2, 3, 'asdasd', NULL, NULL, 0, 1, '2025-06-02 05:21:34', NULL),
+(121, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:08', NULL),
+(122, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:14', NULL),
+(123, 2, 3, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:17', NULL),
+(124, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:25', NULL),
+(125, 2, 3, 'asd', NULL, NULL, 0, 0, '2025-06-02 05:22:28', NULL),
+(126, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:30', NULL),
+(127, 2, 3, 'asd', NULL, NULL, 0, 0, '2025-06-02 05:22:34', NULL),
+(128, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:36', NULL),
+(129, 2, 3, 'sad', NULL, NULL, 0, 0, '2025-06-02 05:22:41', NULL),
+(130, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:45', NULL);
 
 -- --------------------------------------------------------
 
@@ -267,6 +284,44 @@ INSERT INTO `notifications` (`notification_id`, `sender_id`, `receiver_id`, `mes
 (2, NULL, 1, 'Your seller application was submitted successfully.', 1, '2025-05-31 19:25:51'),
 (3, NULL, 2, 'Your supplier application was submitted successfully.', 1, '2025-05-31 21:42:54'),
 (4, NULL, 3, 'Your seller application was submitted successfully.', 1, '2025-06-01 23:12:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `order_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `supplier_id` int(11) DEFAULT NULL,
+  `seller_id` int(11) DEFAULT NULL,
+  `payment_method` varchar(50) DEFAULT NULL,
+  `payment_proof` varchar(255) DEFAULT NULL,
+  `total_price` decimal(10,2) NOT NULL,
+  `order_date` datetime DEFAULT current_timestamp(),
+  `status` enum('pending','processing','shipped','delivered','cancelled') DEFAULT 'pending',
+  `confirmed` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `order_item_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `ingredient_id` int(11) DEFAULT NULL,
+  `variant_id` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `unit_price` decimal(10,2) NOT NULL,
+  `total_price` decimal(10,2) GENERATED ALWAYS AS (`unit_price` * `quantity`) STORED,
+  `supplier_id` int(11) DEFAULT NULL,
+  `seller_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -370,6 +425,7 @@ CREATE TABLE `supplier_applications` (
   `last_active` datetime DEFAULT NULL,
   `store_status` enum('active','inactive') DEFAULT 'inactive',
   `is_public` tinyint(1) DEFAULT 0,
+  `rating` decimal(3,2) DEFAULT 0.00,
   `cover_photo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -377,8 +433,8 @@ CREATE TABLE `supplier_applications` (
 -- Dumping data for table `supplier_applications`
 --
 
-INSERT INTO `supplier_applications` (`supplier_id`, `user_id`, `business_name`, `description`, `store_address`, `latitude`, `longitude`, `full_address`, `business_license`, `application_date`, `status`, `profile_pics`, `reviewed_by`, `reviewed_at`, `last_active`, `store_status`, `is_public`, `cover_photo`) VALUES
-(1, 2, 'Kurumi\'s Palengke', 'asd', 'Riverside-Bacaca Road, Purok 27, Ma-a, Talomo District, Davao City, Davao Region, 8000, Philippines', 7.0809619, 125.5842018, 'Riverside-Bacaca Road, Purok 27, Ma-a, Talomo District, Davao City, Davao Region, 8000, Philippines', 'license_1748698974_683b075e41b7a.png', '2025-05-31 21:42:54', 'approved', 'uploads/supplier/profile_2_1748797143.jpg', 3, '2025-06-01 11:50:35', NULL, 'active', 1, 'uploads/supplier/cover_2_1748797059.png');
+INSERT INTO `supplier_applications` (`supplier_id`, `user_id`, `business_name`, `description`, `store_address`, `latitude`, `longitude`, `full_address`, `business_license`, `application_date`, `status`, `profile_pics`, `reviewed_by`, `reviewed_at`, `last_active`, `store_status`, `is_public`, `rating`, `cover_photo`) VALUES
+(1, 2, 'Kurumi\'s Palengke', 'asd', 'Riverside-Bacaca Road, Purok 27, Ma-a, Talomo District, Davao City, Davao Region, 8000, Philippines', 7.0809619, 125.5842018, 'Riverside-Bacaca Road, Purok 27, Ma-a, Talomo District, Davao City, Davao Region, 8000, Philippines', 'license_1748698974_683b075e41b7a.png', '2025-05-31 21:42:54', 'approved', 'uploads/supplier/profile_2_1748797143.jpg', 3, '2025-06-01 11:50:35', NULL, 'active', 1, 0.00, 'uploads/supplier/cover_2_1748797059.png');
 
 -- --------------------------------------------------------
 
@@ -415,7 +471,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `contact_number`, `country_id`, `postal_code`, `streetname`, `email`, `password`, `usertype`, `profile_pics`, `latitude`, `longitude`, `gender`, `created_at`, `updated_at`, `full_address`) VALUES
 (1, 'aaron', '', 'jhon', '2025-05-06', '09294999087', NULL, '8025', 'De Guzman Street', 'aaron@gmail.com', '$2y$10$WwPlm2wTHoSR5xHKV0DVU.80lg9f.ghvuQ2O3tdpbDBGERf8/xVsC', 'seller', 'uploads/profile_pics/profile_1_1748532349.jpg', 7.0152546, 125.4987365, 'male', '2025-05-23 06:04:51', '2025-06-01 09:01:47', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines'),
 (2, 'kurumi', '', 'L', '2025-05-02', '09294999233', NULL, '8000', 'R. Castillo Street', 'aa@gmail.com', '$2y$10$yeg8BacZduR3o14Q90B67er68kPftTlZjIGaCtskjW1aO1cz461NC', 'supplier', 'uploads/profile_pics/profile_2_1748698172.jpg', 7.0990636, 125.6400561, 'female', '2025-05-23 07:19:14', '2025-06-01 16:42:50', 'R. Castillo Street, Lapu-Lapu, Agdao District, Buhangin District, Davao City, Davao Region, 8000, Philippines'),
-(3, 'Miki', '', 'Frenchfriieess', '2025-01-16', '09294999087', NULL, '6008', 'Cebu North Road', 'miki@gmail.com', '$2y$10$8X0tfv7wMTSD6bNqFhSOBuEZLF/V6VLvy5HQIX7wfnxqEy67srdFe', 'seller', 'uploads/profile_pics/profile_3_1748790899.jpg', 10.8116251, 123.9901556, 'female', '2025-06-01 15:10:13', '2025-06-01 15:15:20', 'Cebu North Road, Lugo, Cebu, Central Visayas, 6008, Philippines');
+(3, 'Miki', '', 'Frenchfriieess', '2025-01-16', '09294999087', NULL, '6008', 'Cebu North Road', 'miki@gmail.com', '$2y$10$8X0tfv7wMTSD6bNqFhSOBuEZLF/V6VLvy5HQIX7wfnxqEy67srdFe', 'seller', 'uploads/profile_pics/profile_3_1748790899.jpg', 10.8116251, 123.9901556, 'female', '2025-06-01 15:10:13', '2025-06-01 15:15:20', 'Cebu North Road, Lugo, Cebu, Central Visayas, 6008, Philippines'),
+(4, 'Darlyn', NULL, 'Dollrain', NULL, '', NULL, NULL, NULL, 'doll@gmail.com', '$2y$10$MhKI5eRxo9R2Xq3xs8gGiOWJB/MgV0996O3YyJWB3Jwx5HgyCqxQ.', 'user', 'path/to/default/profile/pic.jpg', NULL, NULL, NULL, '2025-06-02 18:54:48', '2025-06-02 18:54:48', NULL);
 
 --
 -- Indexes for dumped tables
@@ -471,6 +528,24 @@ ALTER TABLE `notifications`
   ADD KEY `notifications_ibfk_2` (`receiver_id`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `supplier_id` (`supplier_id`),
+  ADD KEY `seller_id` (`seller_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`order_item_id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `ingredient_id` (`ingredient_id`),
+  ADD KEY `variant_id` (`variant_id`);
+
+--
 -- Indexes for table `pre_order_list`
 --
 ALTER TABLE `pre_order_list`
@@ -520,7 +595,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `ingredients`
 --
 ALTER TABLE `ingredients`
-  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `ingredient_variants`
@@ -532,13 +607,25 @@ ALTER TABLE `ingredient_variants`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
   MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pre_order_list`
@@ -562,7 +649,7 @@ ALTER TABLE `supplier_applications`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -602,6 +689,22 @@ ALTER TABLE `messages`
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`supplier_id`) REFERENCES `supplier_applications` (`supplier_id`),
+  ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`seller_id`) REFERENCES `seller_applications` (`seller_id`);
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`variant_id`) REFERENCES `ingredient_variants` (`variant_id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `pre_order_list`
