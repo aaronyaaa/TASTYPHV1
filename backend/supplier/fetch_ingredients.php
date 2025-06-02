@@ -103,13 +103,10 @@ $ingredients = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </button>
 
                             </div>
-<button class="btn btn-info"
-  onclick="viewVariants(<?= $item['ingredient_id'] ?>, '<?= htmlspecialchars($item['ingredient_name'], ENT_QUOTES) ?>')">
-  <i class="fa fa-eye me-1"></i> View Variants
-</button>
-
-
-
+                            <button class="btn btn-info"
+                                onclick="viewVariants(<?= $item['ingredient_id'] ?>, '<?= htmlspecialchars($item['ingredient_name'], ENT_QUOTES) ?>')">
+                                <i class="fa fa-eye me-1"></i> View Variants
+                            </button>
                         </div>
                     </div>
                 </div>

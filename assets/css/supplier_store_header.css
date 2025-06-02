@@ -1,0 +1,140 @@
+:root {
+  --primary-violet: #7B4397;
+  --hover-yellow: #FDEB71;
+  --btn-text-color: #fff;
+  --btn-hover-text: #000;
+}
+
+/* General Button Styling */
+.store-header .btn {
+  font-size: 0.875rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Primary action (Place Order) */
+.store-header .btn-success {
+  background-color: var(--primary-violet);
+  border-color: var(--primary-violet);
+  color: var(--btn-text-color);
+}
+
+.store-header .btn-success:hover,
+.store-header .btn-success:focus {
+  background-color: var(--hover-yellow);
+  border-color: var(--hover-yellow);
+  color: var(--btn-hover-text);
+}
+
+/* Outline button (Shop Info, Message) */
+.store-header .btn-outline-primary {
+  border-color: var(--primary-violet);
+  color: var(--primary-violet);
+  background-color: transparent;
+}
+
+.store-header .btn-outline-primary:hover,
+.store-header .btn-outline-primary:focus {
+  background-color: var(--hover-yellow);
+  border-color: var(--hover-yellow);
+  color: var(--btn-hover-text);
+}
+
+/* Outline-secondary (Message) */
+.store-header .btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+  background-color: transparent;
+}
+
+.store-header .btn-outline-secondary:hover,
+.store-header .btn-outline-secondary:focus {
+  background-color: var(--hover-yellow);
+  border-color: var(--hover-yellow);
+  color: var(--btn-hover-text);
+}
+
+/* Responsive spacing for button group */
+.store-header .action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+/* Optional: hover transition for badge too */
+.store-header .badge {
+  transition: all 0.3s ease;
+}
+#categoryBarWrapper {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+#categoryBar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  cursor: grab;
+}
+
+#categoryBar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.category-tab {
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  font-weight: 500;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.category-tab.active {
+  color: #28a745;
+  font-weight: 600;
+  border-bottom: 2px solid #28a745;
+}
+
+.category-tab:hover {
+  color: #000;
+}
+
+#scrollLeftBtn,
+#scrollRightBtn {
+  width: 32px;
+  height: 32px;
+  z-index: 2;
+}
+
+
+.category-tab {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s, border-bottom 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.category-tab:hover {
+  color: #28a745;
+}
+
+.category-tab.active {
+  color: #28a745;
+  border-bottom: 2px solid #28a745;
+  font-weight: 600;
+}

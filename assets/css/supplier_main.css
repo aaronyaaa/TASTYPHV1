@@ -1,0 +1,4 @@
+    .ingredient-card img { height: 180px; object-fit: cover; }
+    .ingredient-card { transition: transform 0.2s ease; }
+    .ingredient-card:hover { transform: scale(1.02); }
+    .variant-section { display: none; }

@@ -37,7 +37,6 @@ if (!isset($_SESSION['admin_id'])) {
 
 <div class="main-content">
   <?php include 'includes/dashboard_cards.php'; ?>
-    <?php include 'includes/applications.php'; ?>
 
 </div>
 

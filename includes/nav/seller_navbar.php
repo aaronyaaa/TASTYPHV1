@@ -27,7 +27,7 @@ if (isset($_SESSION['userId'])) {
 <link rel="stylesheet" href="../assets/css/notifications.css">
 
 
-<nav class="navbar navbar-expand-lg kakanin-navbar shadow-lg py-2 fixed-top" style="background: linear-gradient(90deg, #7B4397 70%, #FDEB71 100%); z-index: 1050;">
+<nav class="navbar navbar-expand-lg kakanin-navbar shadow-lg py-2 " style="background: linear-gradient(90deg, #7B4397 70%, #FDEB71 100%);">
   <div class="container-fluid px-3">
     <a class="navbar-brand d-flex align-items-center gap-2 text-warning fw-bold fs-4" href="../users/home.php">
       <img src="../assets/images/logo.png" alt="TASTYPH Logo" style="height: 44px; border-radius: 50%; border: 2px solid #FDEB71;">

@@ -99,7 +99,7 @@ try {
   // echo json_encode(['success' => true]);
 
   // Just silently exit
-header('Location: ../../supplier/Store.php');
+echo json_encode(['success' => true]);
 exit;
 } catch (Exception $e) {
   http_response_code(500);

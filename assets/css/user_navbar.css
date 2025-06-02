@@ -23,10 +23,9 @@ html, body {
   box-shadow: var(--kakanin-shadow);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 90;
+
   margin: 0;
+
 }
 
 
@@ -411,3 +410,4 @@ html, body {
   border: 10px solid transparent;
   border-bottom-color: white;
 }
+

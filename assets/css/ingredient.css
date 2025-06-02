@@ -1,70 +1,142 @@
-/* Grid layout spacing */
-.row.g-4 {
-  margin-top: 1rem;
+:root {
+  --navbar-height: 70px;
+  --navbar-bg: rgba(138, 100, 185, 0.95);
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(155, 120, 200, 0.9);
+  --navbar-shadow: rgba(138, 100, 185, 0.15);
+  --navbar-border: rgba(255, 255, 255, 0.1);
+  --secondary-color: rgba(200, 180, 255, 0.5);
+}
+
+/* Grid container */
+.ingredient-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
 }
 
+/* Responsive breakpoints */
+@media (max-width: 1199.98px) {
+  .ingredient-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .ingredient-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .ingredient-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Card styling */
-.card {
-  border-radius: 0.75rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.ingredient-card-1 {
+  background: white;
+  border-radius: 15px;
   overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.075);
-}
-
-/* Card Image */
-.card-img-top {
-  background-color: #f8f9fa;
-  padding: 0.5rem;
-  border-bottom: 1px solid #eee;
-  object-fit: contain;
-  height: 200px;
-}
-
-/* Card Body */
-.card-body {
   display: flex;
   flex-direction: column;
+  height: 100%;
   padding: 1rem;
+  box-shadow: 0 4px 10px rgba(138, 100, 185, 0.15);
 }
 
-/* Title + Slug */
-.card-title {
+.ingredient-card-1:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(138, 100, 185, 0.25);
+}
+
+/* Image */
+.ingredient-image-1 {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+/* Card body content */
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.ingredient-title {
+  font-size: 1rem;
   font-weight: 600;
-  color: #333;
-}
-
-.card .fa-tag {
-  color: #adb5bd;
-}
-
-/* Stock Badge */
-.badge.bg-success {
-  font-size: 0.75rem;
-  padding: 0.4em 0.6em;
-  border-radius: 0.35rem;
-}
-
-/* Buttons */
-.card .btn {
-  font-size: 0.85rem;
-  padding: 0.5rem 0.75rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card .btn i {
-  width: 1rem;
+  color: #2d3436;
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
   text-align: center;
 }
 
-/* Spacing for variant row */
-.card .d-grid .btn + .btn {
-  margin-left: 0.5rem;
+.ingredient-description {
+  font-size: 0.9rem;
+  color: #636e72;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* Rating stars */
+.text-warning .fa-star,
+.text-warning .fa-star-half-alt,
+.text-warning .fa-star {
+  font-size: 0.9rem;
+}
+
+/* Price and cart button container */
+.price-cart-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  margin-top: auto;
+}
+
+.price-tag {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #2d3436;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn-1 {
+  background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.add-to-cart-btn-1:hover {
+  transform: scale(1.1);
+  background: linear-gradient(45deg, #5f4dd0, #8f7ee6);
+}
+
+.add-to-cart-btn-1 i {
+  font-size: 1.2rem;
+}
+
+/* Page background */
+body {
+  background-color: #f8f9fa;
+  padding: 2rem 0;
 }
