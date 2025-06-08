@@ -1,0 +1,206 @@
+/* General Body and Container Styles */
+body {
+    background-color: #f0f2f5; /* Lighter background for modern feel */
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+.container.py-5 {
+    background-color: #fff;
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 4px 20px rgba(0,0,0,.08); /* More pronounced shadow */
+    padding: 35px;
+}
+
+/* Cart Header */
+h4 {
+    font-weight: 700;
+    color: #212529; /* Darker text for headings */
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+.form-check-label {
+    font-weight: 500;
+    color: #555;
+}
+
+.btn-danger {
+    background-color: #ee4d2d; /* Shopee red */
+    border-color: #ee4d2d;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 8px; /* Slightly more rounded buttons */
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #e53e20;
+    border-color: #e53e20;
+    transform: translateY(-1px); /* Slight lift on hover */
+}
+
+/* Cart Item Styling */
+.cart-item {
+    border: 1px solid #e9ecef; /* Lighter border */
+    border-radius: 10px; /* More rounded */
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,.1);
+    transform: translateY(-2px); /* More pronounced lift on hover */
+}
+
+.cart-item img {
+    width: 100px; /* Slightly larger image */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px; /* More rounded image corners */
+    border: 1px solid #f0f2f5;
+}
+
+.cart-item h6 {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 1.15rem;
+}
+
+.cart-item p {
+    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.cart-item .fw-bold {
+    color: #ee4d2d;
+    font-size: 1.2em;
+}
+
+/* Quantity Selector within Cart Item */
+.cart-item .input-group-sm .form-control {
+    height: calc(2.5em + 0.75rem + 2px); /* Slightly taller */
+    padding: 0.5rem 0.75rem;
+    font-size: 1.05rem;
+    border-color: #ced4da;
+    border-radius: 6px; /* More rounded inputs */
+    text-align: center;
+}
+
+.cart-item .input-group-sm .btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px; /* More rounded buttons */
+    border-color: #ced4da;
+    background-color: #e9ecef;
+    color: #495057;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.cart-item .input-group-sm .btn:hover {
+    background-color: #dee2e6;
+    color: #212529;
+}
+
+/* Checkout Summary Card */
+.card-checkout {
+    background-color: #fff;
+    border-radius: 12px; /* More rounded */
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,.08);
+}
+
+.card-checkout h5 {
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 25px;
+    font-size: 1.6rem;
+}
+
+.card-checkout p {
+    font-size: 1.05em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.card-checkout .form-control {
+    border-radius: 8px;
+    border-color: #ced4da;
+    padding: 10px 15px;
+}
+
+.card-checkout .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.card-checkout .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.card-checkout hr {
+    border-top: 1px solid #f0f2f5;
+    margin: 25px 0;
+}
+
+.card-checkout h6 {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.card-checkout .btn-outline-danger {
+    border-color: #ee4d2d;
+    color: #ee4d2d;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.card-checkout .btn-outline-danger:hover {
+    background-color: #ee4d2d;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background-color: #28a745; /* Standard green for checkout */
+    border-color: #28a745;
+    font-weight: 700;
+    padding: 15px 30px;
+    border-radius: 10px; /* Larger, more rounded checkout button */
+    transition: all 0.3s ease;
+    font-size: 1.15rem;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-1px);
+}
+
+/* Footer Styles */
+footer {
+    background-color: #212529; /* Darker footer */
+    color: #e9ecef;
+    padding: 25px 0;
+    margin-top: 50px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+footer p {
+    margin-bottom: 0;
+} 

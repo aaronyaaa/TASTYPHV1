@@ -109,7 +109,7 @@ if (isset($_SESSION['userId'])) {
             <span><?= htmlspecialchars($first_name) ?></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item d-flex gap-2" href="../users/settings.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
+            <li><a class="dropdown-item d-flex gap-2" href="../users/user_profile.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../includes/start_selling.php"><i class="fa-solid fa-briefcase"></i> Start Selling</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item d-flex gap-2" href="../api/auth/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>

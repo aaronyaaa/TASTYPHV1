@@ -1,0 +1,197 @@
+/* General Body and Container Styles */
+body {
+    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif; /* A more modern, clean font */
+}
+
+.container.py-4 {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    padding: 30px;
+}
+
+/* Main Image and Variant Thumbnails */
+.main-preview {
+    border-radius: 8px;
+    max-height: 450px;
+    object-fit: contain; /* Use contain to ensure full image is visible */
+    width: 100%;
+    border: 1px solid #e0e0e0;
+}
+
+.variant-image {
+    border: 2px solid transparent; /* Subtle initial border */
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+.variant-image:hover {
+    border-color: #0d6efd; /* Highlight on hover */
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.variant-image.active {
+    border-color: #ee4d2d; /* Shopee red for active variant */
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+
+/* Product Details Section */
+h1,
+h5 {
+    font-weight: 700; /* Bolder for titles */
+    color: #333;
+}
+
+#ingredient-price {
+    font-weight: 700;
+    color: #ee4d2d !important; /* Shopee's typical price color */
+    font-size: 2.5rem; /* Larger font size */
+}
+
+.text-muted.text-decoration-line-through {
+    color: #929292;
+    font-size: 1.2rem;
+    margin-left: 10px; /* Spacing for old price */
+}
+
+/* Ratings */
+.text-warning i {
+    color: #ffbe00; /* Star rating color */
+}
+
+/* Shop Vouchers */
+.badge.bg-warning {
+    background-color: #ffe8e8 !important;
+    color: #ee4d2d !important;
+    border: 1px solid #ee4d2d;
+    font-weight: 500;
+    padding: 0.4em 0.7em; /* More padding */
+    border-radius: 4px;
+}
+
+/* Shipping Section */
+.mb-3.d-flex.align-items-center h6,
+.mb-3.d-flex.align-items-start h6 {
+    min-width: 100px; /* Align labels */
+}
+
+#map {
+    height: 300px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+    box-shadow: 0 1px 5px rgba(0,0,0,.1);
+}
+
+/* Quantity Selector */
+.input-group-sm .form-control {
+    height: calc(2.25em + 0.5rem + 2px); /* Standard Bootstrap height */
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-color: #dee2e6;
+    border-radius: 4px;
+}
+
+.input-group-sm .btn {
+    padding: 0.375rem 0.75rem;
+    border-radius: 4px;
+    border-color: #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.input-group-sm .btn:hover {
+    background-color: #e9ecef;
+}
+
+/* Action Buttons */
+.btn-danger {
+    background-color: #ee4d2d; /* Shopee Add to Cart button color */
+    border-color: #ee4d2d;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-danger:hover {
+    background-color: #e53e20;
+    border-color: #e53e20;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Standard Bootstrap primary, can adjust to Shopee blue if different */
+    border-color: #007bff;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* General Spacing and Borders */
+.bg-light {
+    background-color: #f8f9fa !important;
+    border-radius: 8px;
+}
+
+.border.rounded.p-3.bg-light {
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+hr.my-4 {
+    border-top: 1px solid #eee;
+}
+
+/* Social Share Icons */
+.text-center.mt-3 .fab {
+    font-size: 1.8rem; /* Slightly larger for better visibility */
+    color: #666; /* Neutral color */
+    transition: color 0.2s ease;
+}
+
+.text-center.mt-3 .fab:hover {
+    color: #333; /* Darker on hover */
+}
+
+.text-primary:hover {
+    color: #0056b3 !important; /* Facebook blue hover */
+}
+
+.text-info:hover {
+    color: #0b96b4 !important; /* Twitter blue hover */
+}
+
+.text-danger:hover {
+    color: #c10000 !important; /* Pinterest red hover */
+}
+
+/* Favorite Link */
+.text-decoration-none.text-danger {
+    color: #666; /* Neutral color for favorite */
+    transition: color 0.2s ease;
+}
+
+.text-decoration-none.text-danger:hover {
+    color: #ee4d2d; /* Shopee red on hover */
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    margin-top: 40px; /* More space from content */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+footer p {
+    margin-bottom: 0;
+}

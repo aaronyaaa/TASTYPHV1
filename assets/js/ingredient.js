@@ -232,3 +232,4 @@ function backToIngredients() {
   document.getElementById('ingredientSection').classList.remove('d-none');
   document.getElementById('variantList').innerHTML = ''; // Optional: clear the variant view
 }
+

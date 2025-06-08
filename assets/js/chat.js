@@ -2,18 +2,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatBox = document.getElementById("chatBox");
   const chatToggle = document.getElementById("chatToggle");
   const closeChat = document.getElementById("closeChat");
-  const senderId = document.getElementById("currentUserId")?.value;
-  const receiverInputId = document.getElementById("receiverId")?.value;
-  const receiverInputName = document.getElementById("receiverName")?.value;
   const chatThread = document.getElementById("chatThread");
   const chatInput = document.getElementById("chatMessageInput");
   const sendBtn = document.getElementById("chatSendBtn");
   const userList = document.getElementById("userList");
 
+  const senderId = document.getElementById("currentUserId")?.value;
+  const defaultReceiverId = document.getElementById("receiverId")?.value;
+  const defaultReceiverName = document.getElementById("receiverName")?.value;
+
   window.currentReceiverId = "";
 
-window.openChatWithUser = function (id, name) {
-    if (!id) return;
+  window.openChatWithUser = function (id, name) {
+    if (!id || id === senderId) {
+      console.warn("⚠️ You cannot chat with yourself.");
+      return;
+    }
 
     window.currentReceiverId = id;
     chatBox.style.display = "flex";
@@ -22,14 +26,35 @@ window.openChatWithUser = function (id, name) {
     chatInput.disabled = false;
     sendBtn.disabled = false;
 
-    document.querySelectorAll("#userList li").forEach((li) => {
+    const found = Array.from(document.querySelectorAll("#userList li")).some((li) => {
       li.classList.remove("active");
-      if (li.dataset.userId === id) li.classList.add("active");
+      if (li.dataset.userId === id) {
+        li.classList.add("active");
+        return true;
+      }
+      return false;
     });
+
+    if (!found) {
+      const tempLi = document.createElement("li");
+      tempLi.className = "user-item px-2 py-1 rounded mb-1 open-chat-btn active";
+      tempLi.dataset.userId = id;
+      tempLi.dataset.userName = name;
+      tempLi.innerHTML = `
+        <div class="d-flex align-items-center gap-2">
+          <img src="../uploads/supplier/default-profile.png" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />
+          <div>
+            <div class="fw-semibold">${name}</div>
+            <small class="text-muted">Chat</small>
+          </div>
+        </div>
+      `;
+      userList.prepend(tempLi);
+    }
 
     loadMessages();
     markMessagesAsRead(id);
-  }
+  };
 
   function closeChatBox() {
     chatBox.classList.remove("show");
@@ -47,13 +72,13 @@ window.openChatWithUser = function (id, name) {
     if (!window.currentReceiverId) return;
 
     fetch(`../backend/chat/fetch_messages.php?receiver_id=${window.currentReceiverId}`)
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         chatThread.innerHTML = "";
         if (!data.length) {
           chatThread.innerHTML = '<div class="text-muted small text-center mt-3">No messages yet</div>';
         } else {
-          data.forEach((msg) => {
+          data.forEach(msg => {
             const div = document.createElement("div");
             div.className = msg.sender_id == senderId ? "message-outgoing" : "message-incoming";
             div.innerHTML = `
@@ -69,11 +94,16 @@ window.openChatWithUser = function (id, name) {
 
   function sendMessage() {
     const text = chatInput.value.trim();
-    if (!text || !senderId || !window.currentReceiverId) return;
+    const receiverId = window.currentReceiverId;
+
+    if (!text || !senderId || !receiverId || senderId === receiverId) {
+      console.warn("❌ Cannot send message: missing sender/receiver or chatting yourself.");
+      return;
+    }
 
     const payload = {
       sender_id: senderId,
-      receiver_id: window.currentReceiverId,
+      receiver_id: receiverId,
       message_text: text,
     };
 
@@ -82,32 +112,33 @@ window.openChatWithUser = function (id, name) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     })
-      .then((res) => res.json())
-      .then((response) => {
+      .then(res => res.json())
+      .then(response => {
         if (response.success) {
           chatInput.value = "";
           loadMessages();
         } else {
-          console.error("Message failed:", response.error, response.details ?? "");
+          console.error("❌ Message failed:", response.error, response.details ?? "");
         }
       })
-      .catch((err) => console.error("Request failed:", err));
+      .catch(err => console.error("🚫 Network error:", err));
   }
 
   chatToggle?.addEventListener("click", () => {
-    if (chatBox.classList.contains("show")) closeChatBox();
-    else {
+    if (chatBox.classList.contains("show")) {
+      closeChatBox();
+    } else {
       chatBox.style.display = "flex";
       chatBox.classList.remove("hide");
       chatBox.classList.add("show");
-      if (receiverInputId && receiverInputName)
-        openChatWithUser(receiverInputId, receiverInputName);
+      if (defaultReceiverId && defaultReceiverName)
+        openChatWithUser(defaultReceiverId, defaultReceiverName);
     }
   });
 
   closeChat?.addEventListener("click", closeChatBox);
   sendBtn?.addEventListener("click", sendMessage);
-  chatInput?.addEventListener("keypress", (e) => {
+  chatInput?.addEventListener("keypress", e => {
     if (e.key === "Enter") sendMessage();
   });
 
@@ -119,25 +150,35 @@ window.openChatWithUser = function (id, name) {
     }
   });
 
-  if (receiverInputId && receiverInputName) openChatWithUser(receiverInputId, receiverInputName);
+  // Auto-initiate chat from hidden input if present
 
-  setInterval(() => {
-    if (window.currentReceiverId) loadMessages();
-  }, 3000);
 
   function loadChatUserList() {
     fetch("../backend/chat/fetch_chat_users.php")
-      .then((res) => res.json())
-      .then((users) => {
-        userList.innerHTML = "";
-        let totalUnread = 0;
+      .then(res => res.json())
+      .then(users => {
+        const currentReceiverId = window.currentReceiverId;
+        const currentReceiverName = defaultReceiverName || "Unknown User";
+        const shouldKeepCurrent = currentReceiverId && !users.some(u => u.id == currentReceiverId);
 
+        userList.innerHTML = "";
+
+        if (shouldKeepCurrent) {
+          const li = document.createElement("li");
+          li.classList.add("user-item", "px-2", "py-1", "rounded", "mb-1", "open-chat-btn", "active");
+          li.dataset.userId = currentReceiverId;
+          li.dataset.userName = currentReceiverName;
+          li.textContent = currentReceiverName;
+          userList.prepend(li);
+        }
+
+        let totalUnread = 0;
         if (!Array.isArray(users) || users.length === 0) {
           userList.innerHTML = '<li class="text-muted small px-2">No chats yet</li>';
           return;
         }
 
-        users.forEach((user) => {
+        users.forEach(user => {
           const li = document.createElement("li");
           li.classList.add("chat-user-entry");
           li.dataset.userId = user.id;
@@ -145,8 +186,8 @@ window.openChatWithUser = function (id, name) {
           const avatar = user.profile_pics ? `../${user.profile_pics}` : "../assets/images/default-profile.png";
           li.innerHTML = `
             <a href="#" class="text-decoration-none d-flex align-items-center gap-2 open-chat-btn" 
-               data-user-id="${user.id}" 
-               data-user-name="${user.first_name} ${user.last_name}">
+              data-user-id="${user.id}" 
+              data-user-name="${user.first_name} ${user.last_name}">
               <img src="${avatar}" alt="profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
               <div>
                 <div class="fw-semibold">${user.first_name} ${user.last_name}</div>
@@ -167,7 +208,7 @@ window.openChatWithUser = function (id, name) {
           userList.appendChild(li);
         });
 
-        // Update global badge
+        // Global badge
         const globalBadge = document.querySelector("#chatToggle .badge");
         if (totalUnread > 0) {
           if (!globalBadge) {
@@ -182,14 +223,14 @@ window.openChatWithUser = function (id, name) {
           globalBadge.remove();
         }
       })
-      .catch((err) => console.error("Failed to load chat users:", err));
+      .catch(err => console.error("Failed to load chat users:", err));
   }
 
   function markMessagesAsRead(senderId) {
     fetch("../backend/chat/mark_as_read.php", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `senderId=${encodeURIComponent(senderId)}`
+      body: `senderId=${encodeURIComponent(senderId)}`,
     })
       .then(response => response.json())
       .then(data => {
@@ -213,7 +254,7 @@ window.openChatWithUser = function (id, name) {
     }
   }
 
-  // Initial load
+  // Initial badge setup
   const initialUnreadCount = parseInt(document.getElementById("globalUnreadCount")?.value || "0");
   if (initialUnreadCount > 0) {
     const span = document.createElement("span");
@@ -222,7 +263,6 @@ window.openChatWithUser = function (id, name) {
     document.querySelector("#chatToggle button").appendChild(span);
   }
 
-  // Real-time refresh
   loadChatUserList();
-  setInterval(loadChatUserList, 1000); // every second
+  setInterval(loadChatUserList, 1000);
 });

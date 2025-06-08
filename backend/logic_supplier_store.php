@@ -2,7 +2,7 @@
 require_once '../database/db_connect.php';
 require_once '../database/session.php';
 
-$currentUserId = $_SESSION['userId'] ?? null;
+$currentUserId = $_SESSION['user']['id'] ?? null;
 
 $supplierId = $_GET['supplier_id'] ?? null;
 if (!$supplierId) {
@@ -22,8 +22,8 @@ $storeName        = $store['business_name'] ?? 'My Supplier Store';
 $storeStatus      = $store['store_status'] ?? 'inactive';
 $storeRating      = $store['rating'] ?? 4.5;
 $storeDescription = $store['description'] ?? '';
-$coverPhoto       = !empty($store['cover_photo']) ? "../" . $store['cover_photo'] : "../assets/images/default-cover.jpg";
-$profileImage     = !empty($store['profile_pics']) ? "../" . $store['profile_pics'] : "../assets/images/default-profile.png";
+$coverPhoto       = !empty($store['cover_photo']) ? "../" . $store['cover_photo'] : "../uploads/supplier/default-cover.png.jpg";
+$profileImage     = !empty($store['profile_pics']) ? "../" . $store['profile_pics'] : "../uploads/supplier/default-profile.png";
 $lat              = $store['latitude'] ?? 0;
 $lng              = $store['longitude'] ?? 0;
 

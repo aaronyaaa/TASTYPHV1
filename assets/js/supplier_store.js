@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
           requestAnimationFrame(() => {
             // Find the category heading that matches the selected category
             const categoryHeadings = document.querySelectorAll('#ingredientSection h4');
-            const targetHeading = Array.from(categoryHeadings).find(heading => 
+            const targetHeading = Array.from(categoryHeadings).find(heading =>
               heading.textContent.trim() === document.querySelector(`.category-tab[data-id="${categoryId}"]`)?.textContent.trim()
             );
 
@@ -206,17 +206,54 @@ function toggleIngredientStatus(ingredientId) {
       ingredient_id: ingredientId
     })
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      console.log('Ingredient updated');
-      // Optionally refresh ingredient list
-    } else {
-      alert(data.error);
-    }
-  })
-  .catch(err => {
-    console.error('Error:', err);
-  });
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        console.log('Ingredient updated');
+        // Optionally refresh ingredient list
+      } else {
+        alert(data.error);
+      }
+    })
+    .catch(err => {
+      console.error('Error:', err);
+    });
 }
+
+function addToCart(button) {
+  const ingredientId = button.dataset.ingredientId;
+  const unitPrice = parseFloat(button.dataset.price);
+  const quantity = 1; // default quantity
+
+  button.disabled = true;
+  button.innerHTML = '<span class="spinner-border spinner-border-sm text-light"></span>';
+
+  fetch('../backend/add_to_cart.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      ingredient_id: ingredientId,
+      variant_id: '',
+      unit_price: unitPrice,
+      quantity: quantity,
+    }),
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success) {
+        alert(data.message || "❌ Failed to add.");
+        return; // 🚫 Stop here, don't reload
+      }
+
+      // ✅ Only reload if add to cart succeeded
+      setTimeout(() => {
+        location.reload();
+      }, 300);
+    })
+    .finally(() => {
+      button.disabled = false;
+      button.innerHTML = '<i class="fas fa-shopping-cart"></i>';
+    });
+}
+
 

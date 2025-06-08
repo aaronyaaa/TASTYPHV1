@@ -1,0 +1,63 @@
+/* Leaflet popup styling */
+.map-popup {
+  max-width: 280px;
+  background: #fff;
+  color: #1c1c1c;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.map-popup .cover {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  background-color: #f0f0f0;
+  display: block;
+}
+
+.map-popup .content {
+  padding: 10px 14px;
+}
+
+.map-popup .profile {
+  align-items: center;
+  gap: 10px;
+  margin-top: -35px;
+  margin-bottom: 10px;
+}
+
+.map-popup .profile img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.map-popup .store-name {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.map-popup .description {
+  font-size: 13px;
+  color: #555;
+  margin: 6px 0 10px;
+}
+
+.map-popup .btn {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Ensure the search bar shows properly */
+.leaflet-control-search {
+  z-index: 1000 !important;
+}

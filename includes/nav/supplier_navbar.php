@@ -100,7 +100,7 @@ if (isset($_SESSION['userId'])) {
             <span><?= htmlspecialchars($first_name) ?></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item d-flex gap-2" href="../users/settings.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
+            <li><a class="dropdown-item d-flex gap-2" href="../users/user_profile.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../supplier/Store.php"><i class="fa-solid fa-warehouse"></i> My Supply Store</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../supplier/orders.php"><i class="fa-solid fa-boxes-packing"></i> Supply Orders</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../supplier/analytics.php"><i class="fa-solid fa-chart-column"></i> Analytics</a></li>
@@ -113,5 +113,3 @@ if (isset($_SESSION['userId'])) {
   </div>
 </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -3,7 +3,16 @@ include("../database/session.php");
 
 $first_name = $_SESSION['user']['first_name'] ?? 'Seller';
 $profile_pics = $_SESSION['user']['profile_pics'] ?? '';
-$cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+
+$cartCount = 0;
+
+if (isset($_SESSION['userId'])) {
+  $userId = $_SESSION['userId'];
+  $stmt = $pdo->prepare("SELECT COUNT(*) FROM cart WHERE user_id = ? AND status = 'active'");
+  $stmt->execute([$userId]);
+  $cartCount = (int) $stmt->fetchColumn();
+}
+
 
 require_once '../database/db_connect.php';
 
@@ -27,7 +36,7 @@ if (isset($_SESSION['userId'])) {
 <link rel="stylesheet" href="../assets/css/notifications.css">
 
 
-<nav class="navbar navbar-expand-lg kakanin-navbar shadow-lg py-2 " style="background: linear-gradient(90deg, #7B4397 70%, #FDEB71 100%);">
+<nav class="navbar navbar-expand-lg kakanin-navbar shadow-lg py-2 fixed-top" style="background: linear-gradient(90deg, #7B4397 70%, #FDEB71 100%); position: fixed;">
   <div class="container-fluid px-3">
     <a class="navbar-brand d-flex align-items-center gap-2 text-warning fw-bold fs-4" href="../users/home.php">
       <img src="../assets/images/logo.png" alt="TASTYPH Logo" style="height: 44px; border-radius: 50%; border: 2px solid #FDEB71;">
@@ -47,16 +56,16 @@ if (isset($_SESSION['userId'])) {
       <ul class="navbar-nav align-items-center gap-3">
 
 
+        <!-- Cart Icon -->
         <li class="nav-item position-relative">
-          <a class="nav-link text-white" href="../cart/cart.php">
+          <a class="nav-link text-white position-relative" href="/tastyphv1/cart/cart.php">
             <i class="fa-solid fa-cart-shopping"></i>
-            <?php if ($cartCount > 0): ?>
-              <span class="badge bg-warning text-dark position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.75rem;">
-                <?= $cartCount ?>
-              </span>
-            <?php endif; ?>
+            <span id="cart-badge" class="badge bg-warning text-dark position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.75rem;"><?= $cartCount ?></span>
+            <span id="cart-loader" class="spinner-border spinner-border-sm text-warning position-absolute top-0 start-100 translate-middle" role="status" style="display: none;"></span>
           </a>
         </li>
+
+
 
         <!-- Notifications -->
         <li class="nav-item dropdown">
@@ -74,12 +83,12 @@ if (isset($_SESSION['userId'])) {
             <?php if (!empty($notifications)): ?>
               <?php foreach ($notifications as $notif): ?>
                 <?php
-                  $type = $notif['type'] ?? 'default';
-                  $templatePath = "../includes/components/notifications/{$type}.php";
-                  if (!file_exists($templatePath)) {
-                    $templatePath = "../includes/components/notifications/default.php";
-                  }
-                  include $templatePath;
+                $type = $notif['type'] ?? 'default';
+                $templatePath = "../includes/components/notifications/{$type}.php";
+                if (!file_exists($templatePath)) {
+                  $templatePath = "../includes/components/notifications/default.php";
+                }
+                include $templatePath;
                 ?>
               <?php endforeach; ?>
             <?php else: ?>
@@ -101,11 +110,13 @@ if (isset($_SESSION['userId'])) {
             <span><?= htmlspecialchars($first_name) ?></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item d-flex gap-2" href="../users/settings.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
+            <li><a class="dropdown-item d-flex gap-2" href="../users/user_profile.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../seller/Store.php"><i class="fa-solid fa-boxes-stacked"></i> My Store</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../seller/orders.php"><i class="fa-solid fa-clipboard-list"></i> Seller Orders</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../seller/analytics.php"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
-            <li><hr class="dropdown-divider"></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
             <li><a class="dropdown-item d-flex gap-2" href="../api/auth/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
           </ul>
         </li>
@@ -115,4 +126,5 @@ if (isset($_SESSION['userId'])) {
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/add_to_cart.js"></script>

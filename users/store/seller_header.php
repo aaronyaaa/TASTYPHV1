@@ -1,13 +1,12 @@
-
 <!-- Store Header -->
 <div class="store-header bg-white text-dark overflow-hidden d-flex justify-content-center" style="min-height: 300px;">
   <div class="w-100" style="max-width: 1140px;">
 
     <!-- Cover -->
     <div id="coverContainer" class="position-relative overflow-hidden rounded mx-auto"
-         style="height: 440px; width: 100%; background-color: #222;">
+      style="height: 440px; width: 100%; background-color: #222;">
       <img id="coverPreview" src="<?= htmlspecialchars($coverPhoto) ?>" alt="Store Cover"
-           class="position-absolute w-100" style="object-fit: cover; top: 0; left: 0;">
+        class="position-absolute w-100" style="object-fit: cover; top: 0; left: 0;">
     </div>
 
     <!-- Profile + Info -->
@@ -18,8 +17,8 @@
           <!-- Profile -->
           <div class="position-relative" style="margin-top: -70px;">
             <img id="profilePreview" src="<?= htmlspecialchars($profileImage) ?>" alt="Store Logo"
-                 class="rounded-circle border border-3 border-white shadow"
-                 style="width: 130px; height: 130px; object-fit: cover;">
+              class="rounded-circle border border-3 border-white shadow"
+              style="width: 130px; height: 130px; object-fit: cover;">
           </div>
 
           <!-- Store Info -->
@@ -32,33 +31,29 @@
                 </button>
               </div>
 
-            <?php if (!empty($storeDescription)): ?>
-              <p class="mb-2 text-muted" style="max-width: 600px;"><?= nl2br(htmlspecialchars($storeDescription)) ?></p>
-            <?php endif; ?>
+              <?php if (!empty($storeDescription)): ?>
+                <p class="mb-2 text-muted" style="max-width: 600px;"><?= nl2br(htmlspecialchars($storeDescription)) ?></p>
+              <?php endif; ?>
 
-            <div class="d-flex gap-3 align-items-center">
-              <span class="badge <?= $storeStatus === 'active' ? 'bg-success' : 'bg-secondary' ?>">
-                <?= ucfirst($storeStatus) ?>
-              </span>
-              <span class="text-warning">
-                <i class="fa-solid fa-star"></i> <?= number_format($storeRating, 1) ?>
-              </span>
-            </div>
-            <div class="action-buttons">
+              <div class="d-flex gap-3 align-items-center">
+                <span class="badge <?= $storeStatus === 'active' ? 'bg-success' : 'bg-secondary' ?>">
+                  <?= ucfirst($storeStatus) ?>
+                </span>
+                <span class="text-warning">
+                  <i class="fa-solid fa-star"></i> <?= number_format($storeRating, 1) ?>
+                </span>
+              </div>
+              <div class="action-buttons">
                 <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#placeOrderModal">
                   <i class="fa-solid fa-cart-plus me-1"></i> Place an Pre-order
                 </button>
-<?php if (!$isOwnStore && $userId): ?>
-  <a href="#" class="btn btn-sm btn-outline-secondary open-chat-btn"
-     data-user-id="<?= $userId ?>" 
-     data-user-name="<?= htmlspecialchars($userFullName) ?>">
-    <i class="fa-solid fa-message me-1"></i> Message
-  </a>
-<?php endif; ?>
-
-
-
-
+                <?php if (!$isOwnStore && $userId): ?>
+                  <a href="#" class="btn btn-sm btn-outline-secondary open-chat-btn"
+                    data-user-id="<?= $userId ?>"
+                    data-user-name="<?= htmlspecialchars($userFullName) ?>">
+                    <i class="fa-solid fa-message me-1"></i> Message
+                  </a>
+                <?php endif; ?>
               </div>
             </div>
           </div>
@@ -76,4 +71,5 @@
 
 <!-- Shop Info Modal -->
 <?php include 'modal.php'; ?>
-
+<?php include('../users/cart/cart_offcanvas.php'); ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
