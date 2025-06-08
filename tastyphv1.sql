@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2025 at 10:12 PM
+-- Generation Time: Jun 08, 2025 at 08:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -43,6 +43,25 @@ CREATE TABLE `admins` (
 INSERT INTO `admins` (`id`, `username`, `password`, `email`, `usertype`, `created_at`) VALUES
 (1, 'admin', '$2y$10$biY6vnGyZwGpOwG9f95MIuqZNTCEe7slAYttFuquxMGK6zWzbeIga', 'admin@gmail.com', 'admin', '2025-05-31 06:08:59'),
 (3, 'admin123', '$2y$10$Uihyp8OvLwPrT/8mSPpu5.136qQcW7DmJxLPiav4bk/RuFKFS2yI6', 'admin1@gmail.com', 'admin', '2025-05-31 06:19:08');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `cart_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `ingredient_id` int(11) DEFAULT NULL,
+  `variant_id` int(11) DEFAULT NULL,
+  `unit_price` decimal(10,2) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `total_price` decimal(10,2) NOT NULL,
+  `added_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` enum('active','saved','ordered') DEFAULT 'active'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -171,95 +190,10 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`message_id`, `sender_id`, `receiver_id`, `message_text`, `image_url`, `reply_to`, `pinned`, `is_read`, `sent_at`, `deleted_at`) VALUES
-(42, 2, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 22:47:37', NULL),
-(43, 2, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 22:47:43', NULL),
-(44, 2, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 22:50:14', NULL),
-(45, 2, 1, 'asdsadasdasd', NULL, NULL, 0, 1, '2025-06-01 22:50:54', NULL),
-(46, 2, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 22:54:40', NULL),
-(47, 2, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 23:07:30', NULL),
-(48, 2, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 23:08:17', NULL),
-(49, 3, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 23:10:40', NULL),
-(50, 1, 3, 'sad', NULL, NULL, 0, 1, '2025-06-01 23:17:32', NULL),
-(51, 3, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 23:17:43', NULL),
-(52, 3, 1, 'hoi', NULL, NULL, 0, 1, '2025-06-01 23:17:49', NULL),
-(53, 1, 3, 'yeah', NULL, NULL, 0, 1, '2025-06-01 23:18:02', NULL),
-(54, 3, 1, 'wala langi love yo u basuhdfaiuw fb', NULL, NULL, 0, 1, '2025-06-01 23:18:12', NULL),
-(55, 1, 3, 'gagi ajjaaj', NULL, NULL, 0, 1, '2025-06-01 23:18:16', NULL),
-(56, 1, 3, 'asd', NULL, NULL, 0, 1, '2025-06-01 23:21:07', NULL),
-(57, 3, 1, 'asd', NULL, NULL, 0, 1, '2025-06-01 23:21:25', NULL),
-(58, 3, 1, 'haah', NULL, NULL, 0, 1, '2025-06-01 23:21:37', NULL),
-(59, 3, 1, 'hi', NULL, NULL, 0, 1, '2025-06-01 23:48:57', NULL),
-(60, 1, 3, 'hello', NULL, NULL, 0, 1, '2025-06-01 23:49:07', NULL),
-(61, 3, 1, 'hahha', NULL, NULL, 0, 1, '2025-06-01 23:49:10', NULL),
-(62, 1, 3, 'ngi', NULL, NULL, 0, 1, '2025-06-01 23:49:12', NULL),
-(63, 3, 1, 'real time??', NULL, NULL, 0, 1, '2025-06-01 23:49:18', NULL),
-(64, 1, 3, 'yeah', NULL, NULL, 0, 1, '2025-06-01 23:49:21', NULL),
-(65, 3, 1, 'naol', NULL, NULL, 0, 1, '2025-06-01 23:49:24', NULL),
-(66, 1, 3, 'hahaha', NULL, NULL, 0, 1, '2025-06-01 23:49:26', NULL),
-(67, 3, 1, 'yawa ka', NULL, NULL, 0, 1, '2025-06-01 23:49:30', NULL),
-(68, 1, 3, 'shut up nigger', NULL, NULL, 0, 1, '2025-06-01 23:49:33', NULL),
-(69, 3, 1, '👍👌👌👌', NULL, NULL, 0, 1, '2025-06-01 23:49:46', NULL),
-(70, 1, 3, 'lol bye', NULL, NULL, 0, 1, '2025-06-01 23:49:54', NULL),
-(71, 3, 1, 'k', NULL, NULL, 0, 1, '2025-06-01 23:49:58', NULL),
-(72, 1, 2, 'sad', NULL, NULL, 0, 1, '2025-06-02 00:04:09', NULL),
-(73, 1, 3, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:04:12', NULL),
-(74, 1, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:06:06', NULL),
-(75, 1, 3, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:06:08', NULL),
-(76, 1, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:09:54', NULL),
-(77, 3, 1, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:14:11', NULL),
-(78, 3, 1, 'asdasdas', NULL, NULL, 0, 1, '2025-06-02 00:16:21', NULL),
-(79, 1, 3, 'asdsad', NULL, NULL, 0, 1, '2025-06-02 00:16:34', NULL),
-(80, 3, 1, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:17:12', NULL),
-(81, 1, 3, 'asdasd', NULL, NULL, 0, 1, '2025-06-02 00:17:21', NULL),
-(82, 3, 1, 'asdas', NULL, NULL, 0, 1, '2025-06-02 00:17:26', NULL),
-(83, 1, 3, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:18:23', NULL),
-(84, 1, 3, 'sadas', NULL, NULL, 0, 1, '2025-06-02 00:18:39', NULL),
-(85, 3, 1, 'asdasd', NULL, NULL, 0, 1, '2025-06-02 00:19:07', NULL),
-(86, 1, 3, 'asdsad', NULL, NULL, 0, 1, '2025-06-02 00:21:03', NULL),
-(87, 3, 1, 'asds', NULL, NULL, 0, 1, '2025-06-02 00:21:11', NULL),
-(88, 1, 3, 'asdas', NULL, NULL, 0, 1, '2025-06-02 00:22:38', NULL),
-(89, 3, 1, 'asdas', NULL, NULL, 0, 1, '2025-06-02 00:22:44', NULL),
-(90, 3, 1, 'asdas', NULL, NULL, 0, 1, '2025-06-02 00:22:49', NULL),
-(91, 3, 1, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:22:54', NULL),
-(92, 3, 1, 'asdsa', NULL, NULL, 0, 1, '2025-06-02 00:23:16', NULL),
-(93, 1, 3, 'asdasd', NULL, NULL, 0, 1, '2025-06-02 00:23:22', NULL),
-(94, 1, 3, 'asdsa', NULL, NULL, 0, 1, '2025-06-02 00:23:34', NULL),
-(95, 3, 1, 'asdsa', NULL, NULL, 0, 1, '2025-06-02 00:23:41', NULL),
-(96, 1, 3, 'asdsa', NULL, NULL, 0, 1, '2025-06-02 00:23:51', NULL),
-(97, 3, 1, 'asdasd', NULL, NULL, 0, 1, '2025-06-02 00:23:57', NULL),
-(98, 1, 3, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:24:05', NULL),
-(99, 3, 1, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:24:39', NULL),
-(100, 1, 3, 'asdsad', NULL, NULL, 0, 1, '2025-06-02 00:24:46', NULL),
-(101, 3, 1, 'sadasd', NULL, NULL, 0, 1, '2025-06-02 00:24:51', NULL),
-(102, 1, 3, 'asdas', NULL, NULL, 0, 1, '2025-06-02 00:25:06', NULL),
-(103, 1, 3, 'asdas', NULL, NULL, 0, 1, '2025-06-02 00:25:15', NULL),
-(104, 1, 3, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:25:59', NULL),
-(105, 3, 1, 'asd', NULL, NULL, 0, 1, '2025-06-02 00:26:06', NULL),
-(106, 1, 3, 'asdasd', NULL, NULL, 0, 1, '2025-06-02 00:26:14', NULL),
-(107, 3, 1, 'asdas', NULL, NULL, 0, 1, '2025-06-02 00:28:56', NULL),
-(108, 1, 3, 'asdas', NULL, NULL, 0, 1, '2025-06-02 00:29:42', NULL),
-(109, 3, 1, 'asdsad', NULL, NULL, 0, 1, '2025-06-02 00:29:48', NULL),
-(110, 1, 3, 'ehh', NULL, NULL, 0, 1, '2025-06-02 00:29:54', NULL),
-(111, 3, 1, 'yey', NULL, NULL, 0, 1, '2025-06-02 00:30:00', NULL),
-(112, 1, 3, 'haha', NULL, NULL, 0, 1, '2025-06-02 00:30:07', NULL),
-(113, 1, 3, 'maem wala baya mi ana na baligya ha ayaw sig yaga yaga saakoa', NULL, NULL, 0, 1, '2025-06-02 00:33:07', NULL),
-(114, 3, 1, 'ayy hahahahah sori', NULL, NULL, 0, 1, '2025-06-02 00:33:22', NULL),
-(115, 2, 3, 'asd', NULL, NULL, 0, 1, '2025-06-02 01:05:07', NULL),
-(116, 3, 2, 'hi', NULL, NULL, 0, 1, '2025-06-02 01:05:18', NULL),
-(117, 2, 3, 'yeah i', NULL, NULL, 0, 1, '2025-06-02 01:05:26', NULL),
-(118, 3, 2, 'asdas', NULL, NULL, 0, 1, '2025-06-02 01:05:32', NULL),
-(119, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 01:05:49', NULL),
-(120, 2, 3, 'asdasd', NULL, NULL, 0, 1, '2025-06-02 05:21:34', NULL),
-(121, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:08', NULL),
-(122, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:14', NULL),
-(123, 2, 3, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:17', NULL),
-(124, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:25', NULL),
-(125, 2, 3, 'asd', NULL, NULL, 0, 0, '2025-06-02 05:22:28', NULL),
-(126, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:30', NULL),
-(127, 2, 3, 'asd', NULL, NULL, 0, 0, '2025-06-02 05:22:34', NULL),
-(128, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:36', NULL),
-(129, 2, 3, 'sad', NULL, NULL, 0, 0, '2025-06-02 05:22:41', NULL),
-(130, 3, 2, 'asd', NULL, NULL, 0, 1, '2025-06-02 05:22:45', NULL);
+(165, 1, 2, 'asd', NULL, NULL, 0, 1, '2025-06-09 01:02:18', NULL),
+(166, 1, 3, 'otin', NULL, NULL, 0, 1, '2025-06-09 01:24:06', NULL),
+(167, 3, 2, 'hi', NULL, NULL, 0, 1, '2025-06-09 02:08:57', NULL),
+(168, 2, 3, 'hello', NULL, NULL, 0, 1, '2025-06-09 02:09:08', NULL);
 
 -- --------------------------------------------------------
 
@@ -304,6 +238,15 @@ CREATE TABLE `orders` (
   `confirmed` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `supplier_id`, `seller_id`, `payment_method`, `payment_proof`, `total_price`, `order_date`, `status`, `confirmed`) VALUES
+(1, 1, 1, NULL, 'cash', NULL, 200.00, '2025-06-09 02:04:36', 'pending', 0),
+(2, 1, 1, NULL, 'cash', NULL, 1790.00, '2025-06-09 02:05:09', 'pending', 0),
+(3, 3, 1, NULL, 'cash', NULL, 40000.00, '2025-06-09 02:07:21', 'pending', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -321,6 +264,148 @@ CREATE TABLE `order_items` (
   `total_price` decimal(10,2) GENERATED ALWAYS AS (`unit_price` * `quantity`) STORED,
   `supplier_id` int(11) DEFAULT NULL,
   `seller_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`order_item_id`, `order_id`, `product_id`, `ingredient_id`, `variant_id`, `quantity`, `unit_price`, `supplier_id`, `seller_id`) VALUES
+(1, 1, NULL, 6, NULL, 1, 200.00, 1, NULL),
+(2, 2, NULL, 7, NULL, 1, 266.00, 1, NULL),
+(3, 2, NULL, 3, NULL, 2, 222.00, 1, NULL),
+(4, 2, NULL, 4, NULL, 2, 240.00, 1, NULL),
+(5, 2, NULL, 5, NULL, 2, 250.00, 1, NULL),
+(6, 2, NULL, 1, NULL, 2, 50.00, 1, NULL),
+(7, 3, NULL, 6, NULL, 200, 200.00, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `content` text NOT NULL,
+  `audience` enum('public','friends','only_me') NOT NULL DEFAULT 'only_me',
+  `location` varchar(255) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  `reactions_count` int(11) DEFAULT 0,
+  `comments_count` int(11) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `user_id`, `content`, `audience`, `location`, `is_active`, `reactions_count`, `comments_count`, `created_at`, `updated_at`) VALUES
+(26, 1, 's', 'public', NULL, 1, 0, 0, '2025-06-04 22:51:20', '2025-06-04 22:51:20'),
+(27, 1, 's', 'public', NULL, 1, 0, 0, '2025-06-04 22:51:20', '2025-06-04 22:51:20'),
+(28, 1, 's', 'public', NULL, 1, 0, 0, '2025-06-04 22:53:09', '2025-06-04 22:53:09'),
+(29, 1, 's', 'public', NULL, 1, 0, 0, '2025-06-04 22:53:09', '2025-06-04 22:53:09'),
+(30, 1, 'a', 'public', NULL, 1, 0, 0, '2025-06-04 22:56:23', '2025-06-04 22:56:23'),
+(31, 1, 'a', 'public', NULL, 1, 0, 0, '2025-06-04 22:56:23', '2025-06-04 22:56:23'),
+(32, 1, 's', 'public', NULL, 1, 0, 0, '2025-06-04 22:59:29', '2025-06-04 22:59:29'),
+(33, 1, 'd', 'public', NULL, 1, 0, 0, '2025-06-04 22:59:42', '2025-06-04 22:59:42'),
+(34, 1, 's', 'public', NULL, 1, 0, 0, '2025-06-04 23:00:23', '2025-06-04 23:00:23'),
+(35, 1, 'yawa', 'public', NULL, 1, 0, 0, '2025-06-04 23:01:21', '2025-06-04 23:01:21'),
+(36, 1, 'hoi', 'public', NULL, 1, 0, 0, '2025-06-04 23:02:27', '2025-06-04 23:02:27'),
+(37, 1, 'hoi', 'public', NULL, 1, 0, 0, '2025-06-04 23:02:27', '2025-06-04 23:02:27'),
+(38, 1, 'shit\r\n', 'public', NULL, 1, 0, 0, '2025-06-04 23:05:30', '2025-06-04 23:05:30'),
+(39, 1, 'ad', 'public', NULL, 1, 0, 0, '2025-06-04 23:08:20', '2025-06-04 23:08:20'),
+(40, 2, 'hoi', 'public', NULL, 1, 0, 0, '2025-06-04 23:12:41', '2025-06-04 23:12:41'),
+(41, 2, 'nigga', 'public', NULL, 1, 0, 0, '2025-06-05 02:15:53', '2025-06-05 02:15:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `post_comments`
+--
+
+CREATE TABLE `post_comments` (
+  `id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `parent_comment_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `post_media`
+--
+
+CREATE TABLE `post_media` (
+  `id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `file_path` varchar(255) NOT NULL,
+  `media_type` enum('image','video','gif') DEFAULT 'image',
+  `sort_order` int(11) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `post_media`
+--
+
+INSERT INTO `post_media` (`id`, `post_id`, `file_path`, `media_type`, `sort_order`, `created_at`) VALUES
+(6, 40, 'uploads/posts/picture/68412749be12b_IMG20250329172225.jpg', 'image', 0, '2025-06-05 05:12:41'),
+(7, 41, 'uploads/posts/picture/68415239aab22_theres-a-brainrot-in-the-vietnamese-wuwa-fandom-where-v0-0dxzfww7qz0f1.jpg', 'image', 0, '2025-06-05 08:15:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `post_reactions`
+--
+
+CREATE TABLE `post_reactions` (
+  `id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `reaction_type` enum('like','love','haha','wow','sad','angry') NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `post_reactions`
+--
+
+INSERT INTO `post_reactions` (`id`, `post_id`, `user_id`, `reaction_type`, `created_at`) VALUES
+(28, 40, 2, 'like', '2025-06-05 08:15:28'),
+(29, 41, 2, 'angry', '2025-06-05 08:16:01'),
+(30, 38, 1, 'like', '2025-06-08 03:56:07');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `post_shares`
+--
+
+CREATE TABLE `post_shares` (
+  `id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `shared_by_user_id` int(11) NOT NULL,
+  `shared_to_user_id` int(11) DEFAULT NULL,
+  `share_comment` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `post_tags`
+--
+
+CREATE TABLE `post_tags` (
+  `id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `tagged_user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -363,7 +448,27 @@ INSERT INTO `pre_order_list` (`pre_order_id`, `user_id`, `seller_id`, `product_n
 (10, 1, 4, 'arra', 1, 'pcs', '2025-06-06', '3:00pm', 'asd', 'declined', '2025-06-01 20:21:32', '2025-06-01 20:21:46', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', 'di diay ko hahaha'),
 (11, 2, 4, 'asd', 123, 'asd', '0000-00-00', '', 'sad', 'pending', '2025-06-01 22:25:18', '2025-06-01 22:25:18', 'Bato-Kilate-Tagurano Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines', NULL),
 (12, 3, 4, 's', 1, 's', '2025-06-13', '3:00pm', 's', 'pending', '2025-06-01 23:17:12', '2025-06-01 23:17:12', 'Cebu North Road, Lugo, Cebu, Central Visayas, 6008, Philippines', NULL),
-(13, 3, 4, 'otn', 21, 'pcs', '2025-06-04', '3:00pm', 'asd', 'pending', '2025-06-02 00:28:12', '2025-06-02 00:28:12', 'Cebu North Road, Lugo, Cebu, Central Visayas, 6008, Philippines', NULL);
+(13, 3, 4, 'otn', 21, 'pcs', '2025-06-04', '3:00pm', 'asd', 'approved', '2025-06-02 00:28:12', '2025-06-09 01:23:57', 'Cebu North Road, Lugo, Cebu, Central Visayas, 6008, Philippines', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `product_id` int(11) NOT NULL,
+  `ingredient_id` int(11) NOT NULL,
+  `seller_id` int(11) NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `discount_price` decimal(10,2) DEFAULT NULL,
+  `stock` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) DEFAULT 1,
+  `rating` decimal(3,2) DEFAULT 0.00,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -398,8 +503,8 @@ CREATE TABLE `seller_applications` (
 --
 
 INSERT INTO `seller_applications` (`seller_id`, `user_id`, `business_name`, `description`, `store_address`, `latitude`, `longitude`, `full_address`, `business_permit`, `health_permit`, `application_date`, `status`, `profile_pics`, `reviewed_by`, `reviewed_at`, `last_active`, `store_status`, `is_public`, `cover_photo`) VALUES
-(4, 1, 'Aaron\'s kakanin', 'asd', 'Bato-Kilate-Tagurano Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines', 7.0315146, 125.4782009, 'Bato-Kilate-Tagurano Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines', 'permit_1748690751_683ae73f22ccb.jpg', 'health_1748690751_683ae73f22fe3.jpg', '2025-05-31 19:25:51', 'approved', 'uploads/seller/profile_1_1748758548.jpg', 3, '2025-06-01 11:50:39', NULL, 'active', 1, 'uploads/seller/cover_1_1748758217.png'),
-(5, 3, 'Miki\'s Delicious Kakanin', 'i love you', 'Ward 1-Calajoan Access Road, Calajo-an, Minglanilla, Cebu, Central Visayas, 6064, Philippines', 10.2412421, 123.8017864, 'Ward 1-Calajoan Access Road, Calajo-an, Minglanilla, Cebu, Central Visayas, 6064, Philippines', 'permit_1748790776_683c6df8c2a5d.png', 'health_1748790776_683c6df8c2da7.jpg', '2025-06-01 23:12:56', 'approved', 'uploads/seller/profile_3_1748790960.jpg', 3, '2025-06-01 23:13:33', NULL, 'active', 1, 'uploads/seller/cover_3_1748790945.jpg');
+(4, 1, 'Aaron\'s kakanin', 'asd', 'Bato-Kilate-Tagurano Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines', 7.0315146, 125.4782009, 'Bato-Kilate-Tagurano Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines', 'permit_1748690751_683ae73f22ccb.jpg', 'health_1748690751_683ae73f22fe3.jpg', '2025-05-31 19:25:51', 'approved', 'uploads/seller/profile_1_1748758548.jpg', 3, '2025-06-04 15:22:03', NULL, 'active', 1, 'uploads/seller/cover_1_1748758217.png'),
+(5, 3, 'Miki\'s Delicious Kakanin', 'i love you', 'Salsa Village, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', 7.0191200, 125.4927063, 'Salsa Village, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', 'permit_1748790776_683c6df8c2a5d.png', 'health_1748790776_683c6df8c2da7.jpg', '2025-06-01 23:12:56', 'approved', 'uploads/seller/profile_3_1748790960.jpg', 3, '2025-06-01 23:13:33', NULL, 'active', 1, 'uploads/seller/cover_3_1748790945.jpg');
 
 -- --------------------------------------------------------
 
@@ -434,7 +539,7 @@ CREATE TABLE `supplier_applications` (
 --
 
 INSERT INTO `supplier_applications` (`supplier_id`, `user_id`, `business_name`, `description`, `store_address`, `latitude`, `longitude`, `full_address`, `business_license`, `application_date`, `status`, `profile_pics`, `reviewed_by`, `reviewed_at`, `last_active`, `store_status`, `is_public`, `rating`, `cover_photo`) VALUES
-(1, 2, 'Kurumi\'s Palengke', 'asd', 'Riverside-Bacaca Road, Purok 27, Ma-a, Talomo District, Davao City, Davao Region, 8000, Philippines', 7.0809619, 125.5842018, 'Riverside-Bacaca Road, Purok 27, Ma-a, Talomo District, Davao City, Davao Region, 8000, Philippines', 'license_1748698974_683b075e41b7a.png', '2025-05-31 21:42:54', 'approved', 'uploads/supplier/profile_2_1748797143.jpg', 3, '2025-06-01 11:50:35', NULL, 'active', 1, 0.00, 'uploads/supplier/cover_2_1748797059.png');
+(1, 2, 'Kurumi\'s Palengke', 'asd', 'San Vicente, Daliao, Toril District, Davao City, Davao Region, 8025, Philippines', 7.0071936, 125.5039501, 'San Vicente, Daliao, Toril District, Davao City, Davao Region, 8025, Philippines', 'license_1748698974_683b075e41b7a.png', '2025-05-31 21:42:54', 'approved', 'uploads/supplier/profile_2_1748797143.jpg', 3, '2025-06-01 11:50:35', NULL, 'active', 1, 0.00, 'uploads/supplier/cover_2_1748797059.png');
 
 -- --------------------------------------------------------
 
@@ -456,9 +561,12 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `usertype` enum('user','seller','admin','supplier') DEFAULT 'user',
   `profile_pics` varchar(255) DEFAULT 'path/to/default/profile/pic.jpg',
+  `cover_photo` varchar(255) DEFAULT NULL,
   `latitude` decimal(10,7) DEFAULT NULL,
   `longitude` decimal(10,7) DEFAULT NULL,
   `gender` enum('male','female','other') DEFAULT NULL,
+  `status` enum('online','offline') DEFAULT 'offline',
+  `is_public` tinyint(1) DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `full_address` text DEFAULT NULL
@@ -468,11 +576,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `contact_number`, `country_id`, `postal_code`, `streetname`, `email`, `password`, `usertype`, `profile_pics`, `latitude`, `longitude`, `gender`, `created_at`, `updated_at`, `full_address`) VALUES
-(1, 'aaron', '', 'jhon', '2025-05-06', '09294999087', NULL, '8025', 'De Guzman Street', 'aaron@gmail.com', '$2y$10$WwPlm2wTHoSR5xHKV0DVU.80lg9f.ghvuQ2O3tdpbDBGERf8/xVsC', 'seller', 'uploads/profile_pics/profile_1_1748532349.jpg', 7.0152546, 125.4987365, 'male', '2025-05-23 06:04:51', '2025-06-01 09:01:47', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines'),
-(2, 'kurumi', '', 'L', '2025-05-02', '09294999233', NULL, '8000', 'R. Castillo Street', 'aa@gmail.com', '$2y$10$yeg8BacZduR3o14Q90B67er68kPftTlZjIGaCtskjW1aO1cz461NC', 'supplier', 'uploads/profile_pics/profile_2_1748698172.jpg', 7.0990636, 125.6400561, 'female', '2025-05-23 07:19:14', '2025-06-01 16:42:50', 'R. Castillo Street, Lapu-Lapu, Agdao District, Buhangin District, Davao City, Davao Region, 8000, Philippines'),
-(3, 'Miki', '', 'Frenchfriieess', '2025-01-16', '09294999087', NULL, '6008', 'Cebu North Road', 'miki@gmail.com', '$2y$10$8X0tfv7wMTSD6bNqFhSOBuEZLF/V6VLvy5HQIX7wfnxqEy67srdFe', 'seller', 'uploads/profile_pics/profile_3_1748790899.jpg', 10.8116251, 123.9901556, 'female', '2025-06-01 15:10:13', '2025-06-01 15:15:20', 'Cebu North Road, Lugo, Cebu, Central Visayas, 6008, Philippines'),
-(4, 'Darlyn', NULL, 'Dollrain', NULL, '', NULL, NULL, NULL, 'doll@gmail.com', '$2y$10$MhKI5eRxo9R2Xq3xs8gGiOWJB/MgV0996O3YyJWB3Jwx5HgyCqxQ.', 'user', 'path/to/default/profile/pic.jpg', NULL, NULL, NULL, '2025-06-02 18:54:48', '2025-06-02 18:54:48', NULL);
+INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `contact_number`, `country_id`, `postal_code`, `streetname`, `email`, `password`, `usertype`, `profile_pics`, `cover_photo`, `latitude`, `longitude`, `gender`, `status`, `is_public`, `created_at`, `updated_at`, `full_address`) VALUES
+(1, 'aaronyaaa', '', 'jhon', '2025-05-06', '09294999087', NULL, '8000', 'Bayabas-Eden Road, Purok 9', 'aaron@gmail.com', '$2y$10$WwPlm2wTHoSR5xHKV0DVU.80lg9f.ghvuQ2O3tdpbDBGERf8/xVsC', 'seller', 'uploads/profile_pics/profile_1_1748532349.jpg', 'uploads/users/cover/cover_1_1749056553.jpg', 7.0272297, 125.4845438, 'male', 'online', 1, '2025-05-23 06:04:51', '2025-06-05 03:08:40', 'Bayabas-Eden Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines'),
+(2, 'Kurumi', 'L', 'Tokisaki', '2025-05-02', '09294999233', NULL, '8025', 'MacArthur Highway, Salsa Village', 'aa@gmail.com', '$2y$10$yeg8BacZduR3o14Q90B67er68kPftTlZjIGaCtskjW1aO1cz461NC', 'supplier', 'uploads/users/profile/profile_2_1749111714.jpg', 'uploads/users/cover/cover_2_1749111686.jpg', 7.0142131, 125.4900896, 'female', 'online', 1, '2025-05-23 07:19:14', '2025-06-05 08:21:54', 'MacArthur Highway, Salsa Village, Lizada, Toril District, Davao City, Davao Region, 8025, Philippines'),
+(3, 'Miki', '', 'Frenchfriieess', '2025-01-16', '09294999087', NULL, '8022', 'Adelfa Street', 'miki@gmail.com', '$2y$10$8X0tfv7wMTSD6bNqFhSOBuEZLF/V6VLvy5HQIX7wfnxqEy67srdFe', 'seller', 'uploads/profile_pics/profile_3_1748790899.jpg', NULL, 7.0946580, 125.4973172, 'female', 'offline', 0, '2025-06-01 15:10:13', '2025-06-04 07:43:47', 'Adelfa Street, Purok 1, Santo Niño, Tugbok District, Davao City, Davao Region, 8022, Philippines'),
+(4, 'Darlyn', NULL, 'Dollrain', NULL, '', NULL, NULL, NULL, 'doll@gmail.com', '$2y$10$MhKI5eRxo9R2Xq3xs8gGiOWJB/MgV0996O3YyJWB3Jwx5HgyCqxQ.', 'user', 'path/to/default/profile/pic.jpg', NULL, NULL, NULL, NULL, 'offline', 0, '2025-06-02 18:54:48', '2025-06-02 18:54:48', NULL);
 
 --
 -- Indexes for dumped tables
@@ -484,6 +592,16 @@ INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_bi
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`cart_id`),
+  ADD KEY `fk_cart_user` (`user_id`),
+  ADD KEY `fk_cart_product` (`product_id`),
+  ADD KEY `fk_cart_ingredient` (`ingredient_id`),
+  ADD KEY `fk_cart_variant` (`variant_id`);
 
 --
 -- Indexes for table `categories`
@@ -546,12 +664,68 @@ ALTER TABLE `order_items`
   ADD KEY `variant_id` (`variant_id`);
 
 --
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_posts_user` (`user_id`);
+
+--
+-- Indexes for table `post_comments`
+--
+ALTER TABLE `post_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_comments_post` (`post_id`),
+  ADD KEY `fk_comments_user` (`user_id`),
+  ADD KEY `fk_comments_parent` (`parent_comment_id`);
+
+--
+-- Indexes for table `post_media`
+--
+ALTER TABLE `post_media`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_postmedia_post` (`post_id`);
+
+--
+-- Indexes for table `post_reactions`
+--
+ALTER TABLE `post_reactions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `post_id` (`post_id`,`user_id`),
+  ADD KEY `fk_reactions_user` (`user_id`);
+
+--
+-- Indexes for table `post_shares`
+--
+ALTER TABLE `post_shares`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_shares_post` (`post_id`),
+  ADD KEY `fk_shares_user` (`shared_by_user_id`);
+
+--
+-- Indexes for table `post_tags`
+--
+ALTER TABLE `post_tags`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `post_id` (`post_id`,`tagged_user_id`),
+  ADD KEY `fk_posttags_user` (`tagged_user_id`);
+
+--
 -- Indexes for table `pre_order_list`
 --
 ALTER TABLE `pre_order_list`
   ADD PRIMARY KEY (`pre_order_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `seller_id` (`seller_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `fk_products_ingredient` (`ingredient_id`),
+  ADD KEY `fk_products_seller` (`seller_id`),
+  ADD KEY `fk_products_category` (`category_id`);
 
 --
 -- Indexes for table `seller_applications`
@@ -586,6 +760,12 @@ ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
@@ -607,7 +787,7 @@ ALTER TABLE `ingredient_variants`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=169;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -619,19 +799,61 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT for table `post_comments`
+--
+ALTER TABLE `post_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `post_media`
+--
+ALTER TABLE `post_media`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `post_reactions`
+--
+ALTER TABLE `post_reactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `post_shares`
+--
+ALTER TABLE `post_shares`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `post_tags`
+--
+ALTER TABLE `post_tags`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pre_order_list`
 --
 ALTER TABLE `pre_order_list`
   MODIFY `pre_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `seller_applications`
@@ -654,6 +876,15 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `fk_cart_ingredient` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_cart_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_cart_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_cart_variant` FOREIGN KEY (`variant_id`) REFERENCES `ingredient_variants` (`variant_id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `categories`
@@ -707,11 +938,60 @@ ALTER TABLE `order_items`
   ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`variant_id`) REFERENCES `ingredient_variants` (`variant_id`) ON DELETE SET NULL;
 
 --
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `fk_posts_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `post_comments`
+--
+ALTER TABLE `post_comments`
+  ADD CONSTRAINT `fk_comments_parent` FOREIGN KEY (`parent_comment_id`) REFERENCES `post_comments` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_comments_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_comments_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `post_media`
+--
+ALTER TABLE `post_media`
+  ADD CONSTRAINT `fk_postmedia_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `post_reactions`
+--
+ALTER TABLE `post_reactions`
+  ADD CONSTRAINT `fk_reactions_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_reactions_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `post_shares`
+--
+ALTER TABLE `post_shares`
+  ADD CONSTRAINT `fk_shares_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_shares_user` FOREIGN KEY (`shared_by_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `post_tags`
+--
+ALTER TABLE `post_tags`
+  ADD CONSTRAINT `fk_posttags_post` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_posttags_user` FOREIGN KEY (`tagged_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `pre_order_list`
 --
 ALTER TABLE `pre_order_list`
   ADD CONSTRAINT `pre_order_list_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `pre_order_list_ibfk_2` FOREIGN KEY (`seller_id`) REFERENCES `seller_applications` (`seller_id`);
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `fk_products_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_products_ingredient` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_products_seller` FOREIGN KEY (`seller_id`) REFERENCES `seller_applications` (`seller_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `seller_applications`
