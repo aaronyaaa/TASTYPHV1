@@ -59,7 +59,6 @@ $isPublic   = !empty($currentUser['is_public']);
     <?php include '../users/components/timeline.php'; ?>
 
   <?php include '../modals/user_modal.php'; ?>
-  <?php include('../users/cart/cart_offcanvas.php'); ?>
 
 
 

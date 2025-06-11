@@ -1,0 +1,57 @@
+/* Receipt Modal Styling */
+.modal .receipt-content {
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.receipt-content .receipt-header {
+  text-align: center;
+  border-bottom: 1px dashed #ccc;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.receipt-content .receipt-header h5 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.receipt-content .receipt-details {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed #ccc;
+  padding-bottom: 0.5rem;
+}
+
+.receipt-content .table th,
+.receipt-content .table td {
+  font-size: 0.85rem;
+  padding: 0.3rem;
+  vertical-align: middle;
+}
+
+.receipt-content .table-bordered {
+  border-color: #ddd;
+}
+
+.receipt-content .text-end p {
+  margin: 0.1rem 0;
+}
+
+.receipt-content .text-end h5 {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.receipt-content .footer-note {
+  font-size: 0.75rem;
+  text-align: right;
+  color: #777;
+  margin-top: 1rem;
+  border-top: 1px dashed #ccc;
+  padding-top: 0.5rem;
+}

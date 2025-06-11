@@ -1,0 +1,154 @@
+:root {
+  --chat-bg: #ffffff;
+  --chat-primary: #6a1b9a;
+  --chat-accent: #8e24aa;
+  --chat-light: #f3e5f5;
+  --message-in-bg: #f5f5f5;
+  --message-out-bg: linear-gradient(135deg, #7b1fa2, #9c27b0);
+  --message-in-color: #333;
+  --message-out-color: #fff;
+    --kakanin-yellow: #FDEB71;
+
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--chat-bg);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: var(--chat-primary);
+  color: white;
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar a {
+  color: white;
+  padding: 12px 24px;
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: var(--kakanin-yellow);
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(106, 27, 154, 0.08);
+}
+
+.card-header {
+  background-color: white;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+  color: var(--chat-primary);
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.badge.bg-warning {
+  background-color: #ffca28;
+  color: #5f370e;
+}
+
+.badge.bg-success {
+  background-color: #66bb6a;
+}
+
+.badge.bg-primary {
+  background-color: var(--chat-primary);
+}
+
+.order-img {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.order-img img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.order-tooltip {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 240px;
+  margin-top: 8px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  font-size: 0.85rem;
+}
+
+.order-img:hover .order-tooltip {
+  display: block;
+}
+
+.order-tooltip small {
+  display: block;
+  font-weight: 600;
+  color: var(--chat-primary);
+}
+
+.order-tooltip span {
+  display: block;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.table {
+  font-size: 0.95rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th {
+  background-color: var(--chat-accent);
+  color: white;
+  font-weight: 600;
+}
+
+.table td {
+  background-color: #fff;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+}

@@ -37,19 +37,26 @@ foreach ($orders as $order) {
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="../assets/css/user_navbar.css">
   <link rel="stylesheet" href="../assets/css/order.css">
+    <link rel="stylesheet" href="../assets/css/sidebar.css"> <!-- Custom CSS for tracker -->
+
 </head>
 <body>
 <?php include '../includes/nav/chat.php'; ?>
 
 <?php include '../includes/nav/navbar_router.php'; ?>
 <?php include('modal/reason_modal.php'); ?>
+<!-- Sidebar Navigation -->
+<?php include '../seller/components/sidebar.php'; ?>
+
+
+
 <nav id="sidebar">
   <div class="mt-4" id="sidebarContent">
     <p class="text-muted">Select an order to view details.</p>
   </div>
 </nav>
 <!-- Main Wrapper -->
-<div class="main-wrapper" id="mainWrapper">
+<div class="main-wrapper" id="mainWrapper" style="margin-left: 240px;">
   <div class="container py-4" id="mainContainer">
     <h2 class="mb-4">Orders</h2>
 
@@ -120,6 +127,8 @@ foreach ($orders as $order) {
 
 <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../assets/js/order.js"></script>
 </body>

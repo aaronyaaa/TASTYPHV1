@@ -102,7 +102,7 @@ if (isset($_SESSION['userId'])) {
           <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4" aria-labelledby="userDropdown">
             <li><a class="dropdown-item d-flex gap-2" href="../users/user_profile.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../supplier/Store.php"><i class="fa-solid fa-warehouse"></i> My Supply Store</a></li>
-            <li><a class="dropdown-item d-flex gap-2" href="../supplier/orders.php"><i class="fa-solid fa-boxes-packing"></i> Supply Orders</a></li>
+            <li><a class="dropdown-item d-flex gap-2" href="../supplier/dashboard.php"><i class="fa-solid fa-boxes-packing"></i> Dashboard</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../supplier/analytics.php"><i class="fa-solid fa-chart-column"></i> Analytics</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item d-flex gap-2" href="../api/auth/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>

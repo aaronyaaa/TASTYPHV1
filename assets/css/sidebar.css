@@ -1,0 +1,58 @@
+:root {
+  --kakanin-violet: #7B4397;
+  --kakanin-violet-light: #8E44AD;
+  --kakanin-yellow: #FDEB71;
+  --kakanin-yellow-dark: #F9D342;
+}
+
+/* Sidebar Layout */
+.sidebar {
+  background: var(--kakanin-violet);
+  color: white;
+  width: 240px;
+  min-height: 100vh;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  left: 0;
+  top: 70px; /* Adjust if navbar overlaps */
+  overflow-y: auto;
+  z-index: 1030;
+}
+
+.sidebar h5 {
+  color: white;
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+/* Nav Links */
+.sidebar .nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar .nav-link {
+  color: white;
+  background-color: transparent;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar .nav-link i {
+  font-size: 1rem;
+}
+
+/* Hover and Active Styling */
+.sidebar .nav-link:hover,
+.sidebar .nav-link:focus,
+.sidebar .nav-link.active {
+  background-color: var(--kakanin-yellow);
+  color: black;
+  font-weight: 600;
+}

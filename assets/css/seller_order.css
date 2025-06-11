@@ -1,0 +1,73 @@
+    body {
+      display: flex;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 2rem;
+      background-color: #f8f9fa;
+      min-height: 100vh;
+    }
+
+    /* Tracker styling */
+    .tracker {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+    }
+    .tracker::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #dee2e6;
+      z-index: 1;
+    }
+    .tracker::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 4px;
+      width: var(--progress-width, 0%);
+      background-color: var(--progress-color, #0d6efd);
+      z-index: 2;
+      transition: width 0.3s ease;
+    }
+    .tracker-step {
+      position: relative;
+      z-index: 3;
+      background: #dee2e6;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .tracker-step.active {
+      background-color: var(--progress-color, #0d6efd);
+      color: white;
+    }
+    .tracker-label {
+      text-align: center;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+    }.progress {
+  background-color: #e9ecef;
+  border-radius: 20px;
+}
+
+.progress-bar {
+  transition: width 0.5s ease;
+}
+
+.text-muted.small.mt-2 > div {
+  font-weight: 500;
+}
