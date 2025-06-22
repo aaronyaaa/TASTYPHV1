@@ -1,0 +1,10 @@
+[22-Jun-2025 17:55:10 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Sugar' for key 'slug' in C:\xampp\New folder\htdocs\TASTYPHV1\backend\supplier\create_category.php:84
+Stack trace:
+#0 C:\xampp\New folder\htdocs\TASTYPHV1\backend\supplier\create_category.php(84): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\New folder\htdocs\TASTYPHV1\backend\supplier\create_category.php on line 84
+[22-Jun-2025 17:55:29 Europe/Berlin] PHP Fatal error:  Uncaught PDOException: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Sugar' for key 'slug' in C:\xampp\New folder\htdocs\TASTYPHV1\backend\supplier\create_category.php:84
+Stack trace:
+#0 C:\xampp\New folder\htdocs\TASTYPHV1\backend\supplier\create_category.php(84): PDOStatement->execute(Array)
+#1 {main}
+  thrown in C:\xampp\New folder\htdocs\TASTYPHV1\backend\supplier\create_category.php on line 84

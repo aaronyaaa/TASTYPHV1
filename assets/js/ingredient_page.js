@@ -123,3 +123,30 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+document.addEventListener('click', function (e) {
+  if (e.target.classList.contains('add-ingredient-btn')) {
+    const target = document.querySelector(e.target.getAttribute('data-target'));
+    const clone = target.querySelector('.ingredient-row').cloneNode(true);
+    clone.querySelectorAll('input').forEach(input => input.value = '');
+    target.appendChild(clone);
+  }
+  if (e.target.classList.contains('remove-ingredient')) {
+    const rows = e.target.closest('.ingredient-row').parentNode.querySelectorAll('.ingredient-row');
+    if (rows.length > 1) e.target.closest('.ingredient-row').remove();
+  }
+  if (e.target.classList.contains('add-step-btn')) {
+    const target = document.querySelector(e.target.getAttribute('data-target'));
+    const stepContainer = document.createElement('div');
+    stepContainer.classList.add('mb-2', 'step-row');
+    stepContainer.innerHTML = `
+      <textarea name="steps[]" class="form-control mb-2" rows="2" required></textarea>
+      <button type="button" class="btn btn-sm btn-danger remove-step">Remove</button>
+    `;
+    target.appendChild(stepContainer);
+  }
+  if (e.target.classList.contains('remove-step')) {
+    const steps = e.target.closest('.step-row').parentNode.querySelectorAll('.step-row');
+    if (steps.length > 1) e.target.closest('.step-row').remove();
+  }
+});

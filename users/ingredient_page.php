@@ -180,8 +180,35 @@
             <div class="col-12">
                 <h2 class="mb-3">Product Description</h2>
                 <p id="full-description"><?= htmlspecialchars($ingredient['description']) ?></p>
+
+
             </div>
         </div>
+        <!-- Supplier Info -->
+        <?php if (!empty($storeInfo)): ?>
+            <div class="d-flex align-items-center justify-content-between p-3 border rounded bg-white shadow-sm mb-4">
+                <div class="d-flex align-items-center">
+                    <img src="../<?= htmlspecialchars($storeInfo['profile_pics']) ?>" alt="Store Logo"
+                        class="rounded-circle me-3"
+                        style="width: 70px; height: 70px; object-fit: cover;">
+                    <div>
+                        <h5 class="mb-1"><?= htmlspecialchars($storeInfo['business_name']) ?></h5>
+                        <div class="text-muted small">Joined <?= $storeInfo['joined_ago'] ?></div>
+                    </div>
+                </div>
+
+                <div class="text-end me-3">
+                    <div><strong><?= $storeInfo['product_count'] ?></strong> Products</div>
+                    <div><strong>0</strong> Ratings</div> <!-- Replace with real rating if available -->
+                </div>
+
+                <a href="supplier_store.php?supplier_id=<?= $storeInfo['supplier_id'] ?>" class="btn btn-outline-primary">
+                    View Store
+                </a>
+            </div>
+        <?php endif; ?>
+
+
     </div>
 
     <footer class="bg-light py-4 mt-4">

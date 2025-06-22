@@ -27,6 +27,25 @@ if (!$slug) {
   $slug = trim($slug, '-');
 }
 
+// Get the supplier_id using userId
+$stmt = $pdo->prepare("SELECT supplier_id FROM supplier_applications WHERE user_id = ?");
+$stmt->execute([$userId]);
+$supplier_id = $stmt->fetchColumn();
+
+if (!$supplier_id) {
+  http_response_code(400);
+  echo json_encode(['error' => 'Supplier not found.']);
+  exit;
+}
+
+// Check slug uniqueness per supplier
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM categories WHERE slug = ? AND supplier_id = ?");
+$stmt->execute([$slug, $supplier_id]);
+if ($stmt->fetchColumn() > 0) {
+  echo json_encode(['error' => 'This category slug already exists under your account.']);
+  exit;
+}
+
 // Handle image upload
 $image_url = null;
 if (!empty($_FILES['image']['tmp_name']) && $_FILES['image']['error'] === 0) {
@@ -57,23 +76,17 @@ if (!empty($_FILES['image']['tmp_name']) && $_FILES['image']['error'] === 0) {
   $image_url = $relativePath;
 }
 
-// Get the supplier_id using userId
-$stmt = $pdo->prepare("SELECT supplier_id FROM supplier_applications WHERE user_id = ?");
-$stmt->execute([$userId]);
-$supplier_id = $stmt->fetchColumn();
-
-if (!$supplier_id) {
-  http_response_code(400);
-  echo json_encode(['error' => 'Supplier not found.']);
-  exit;
-}
-
 // Insert category
 $stmt = $pdo->prepare("
   INSERT INTO categories (supplier_id, name, slug, description, image_url, is_active)
   VALUES (?, ?, ?, ?, ?, ?)
 ");
-$stmt->execute([$supplier_id, $name, $slug, $description, $image_url, $is_active]);
 
-echo json_encode(['success' => true]);
+try {
+  $stmt->execute([$supplier_id, $name, $slug, $description, $image_url, $is_active]);
+  echo json_encode(['success' => true]);
+} catch (PDOException $e) {
+  http_response_code(500);
+  echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+}
 exit;

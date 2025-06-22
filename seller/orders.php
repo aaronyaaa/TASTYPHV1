@@ -48,12 +48,13 @@ foreach ($orders as $order) {
 <!-- Sidebar Navigation -->
 <?php include '../seller/components/sidebar.php'; ?>
 
+  <?php include('modal/recipe_modal.php'); ?>
 
 
 <nav id="sidebar">
   <div class="mt-4" id="sidebarContent">
     <p class="text-muted">Select an order to view details.</p>
-  </div>
+  </div>  
 </nav>
 <!-- Main Wrapper -->
 <div class="main-wrapper" id="mainWrapper" style="margin-left: 240px;">
@@ -131,5 +132,7 @@ foreach ($orders as $order) {
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../assets/js/order.js"></script>
+
+    
 </body>
 </html>

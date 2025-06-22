@@ -28,8 +28,8 @@ document.getElementById("signupForm").addEventListener("submit", function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("Sign up successful");
-            window.location.href = '/tastyphv1/api/auth/login.php';  // Absolute path
+            alert("Sign up successful!");
+            window.location.href = '/tastyphv1/index.php';  // Absolute path to the main index.php
         } else {
             alert(data.message || "Error during sign up");
         }

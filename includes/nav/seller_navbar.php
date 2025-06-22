@@ -48,10 +48,14 @@ if (isset($_SESSION['userId'])) {
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <form class="d-flex flex-grow-1 mx-4" role="search" action="../includes/search_page.php" method="GET">
-        <input class="form-control me-2 rounded-pill" type="search" name="query" placeholder="Search products..." aria-label="Search">
+      <form class="d-flex flex-grow-1 mx-4 position-relative" role="search" action="../includes/search_page.php" method="GET" autocomplete="off">
+        <input id="searchInput" class="form-control me-2 rounded-pill" type="search" name="q" placeholder="Search ingredients, products, recipes, stores..." aria-label="Search">
         <button class="btn btn-warning rounded-pill" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+
+        <!-- Autocomplete Dropdown -->
+        <ul class="list-group position-absolute w-100 shadow-sm z-3" id="autocompleteList" style="top: 100%; left: 0; display: none;"></ul>
       </form>
+
 
       <ul class="navbar-nav align-items-center gap-3">
 

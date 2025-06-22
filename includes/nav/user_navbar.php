@@ -30,7 +30,7 @@ if (isset($_SESSION['userId'])) {
 <link rel="stylesheet" href="../assets/css/notifications.css">
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg kakanin-navbar shadow-lg py-2" style="background: linear-gradient(90deg, #7B4397 70%, #FDEB71 100%); border-radius: 0 0 24px 24px; z-index: 1050;">
+<nav class="navbar navbar-expand-lg kakanin-navbar shadow-lg py-2 fixed-top" style="background: linear-gradient(90deg, #006466 70%, #9ffcdf 100%); z-index: 1050;">
   <div class="container-fluid px-3">
     <!-- Logo + Brand as Home -->
     <a class="navbar-brand d-flex align-items-center gap-2 text-warning fw-bold fs-4" href="../users/home.php">
@@ -45,10 +45,14 @@ if (isset($_SESSION['userId'])) {
 
     <!-- Navbar Content -->
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <form class="d-flex flex-grow-1 mx-4" role="search" action="../includes/search_page.php" method="GET">
-        <input class="form-control me-2 rounded-pill" type="search" name="query" placeholder="Search..." aria-label="Search">
+      <form class="d-flex flex-grow-1 mx-4 position-relative" role="search" action="../includes/search_page.php" method="GET" autocomplete="off">
+        <input id="searchInput" class="form-control me-2 rounded-pill" type="search" name="q" placeholder="Search ingredients, products, recipes, stores..." aria-label="Search">
         <button class="btn btn-warning rounded-pill" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+
+        <!-- Autocomplete Dropdown -->
+        <ul class="list-group position-absolute w-100 shadow-sm z-3" id="autocompleteList" style="top: 100%; left: 0; display: none;"></ul>
       </form>
+
 
       <ul class="navbar-nav align-items-center gap-3">
         <!-- Chat -->
@@ -82,12 +86,12 @@ if (isset($_SESSION['userId'])) {
             <?php if (!empty($notifications)): ?>
               <?php foreach ($notifications as $notif): ?>
                 <?php
-                  $type = $notif['type'] ?? 'default';
-                  $templatePath = "../includes/components/notifications/{$type}.php";
-                  if (!file_exists($templatePath)) {
-                    $templatePath = "../includes/components/notifications/default.php";
-                  }
-                  include $templatePath;
+                $type = $notif['type'] ?? 'default';
+                $templatePath = "../includes/components/notifications/{$type}.php";
+                if (!file_exists($templatePath)) {
+                  $templatePath = "../includes/components/notifications/default.php";
+                }
+                include $templatePath;
                 ?>
               <?php endforeach; ?>
             <?php else: ?>
@@ -111,7 +115,9 @@ if (isset($_SESSION['userId'])) {
           <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4" aria-labelledby="userDropdown">
             <li><a class="dropdown-item d-flex gap-2" href="../users/user_profile.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
             <li><a class="dropdown-item d-flex gap-2" href="../includes/start_selling.php"><i class="fa-solid fa-briefcase"></i> Start Selling</a></li>
-            <li><hr class="dropdown-divider"></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
             <li><a class="dropdown-item d-flex gap-2" href="../api/auth/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
           </ul>
         </li>
@@ -122,5 +128,5 @@ if (isset($_SESSION['userId'])) {
 
 <!-- Bootstrap + Script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/user_navbar.js"></script>
