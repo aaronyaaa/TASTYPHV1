@@ -22,6 +22,7 @@
 
 <body>
     <?php include '../includes/nav/navbar_router.php'; ?>
+  <?php include '../includes/offcanvas.php'; ?>
 
     <div class="container py-4">
         <div class="row">

@@ -1,7 +1,19 @@
 <?php foreach ($recipes as $recipe): ?>
+
+  <style>
+  .modal-dialog-scrollable .modal-content {
+    max-height: 90vh; /* Ensure it's not too tall */
+    overflow: hidden;
+  }
+  .modal-dialog-scrollable .modal-body {
+    overflow-y: auto;
+    max-height: calc(90vh - 150px); /* Adjust to leave space for header/footer */
+  }
+</style>
+
 <!-- Edit Recipe Modal -->
 <div class="modal fade" id="editRecipeModal<?= $recipe['recipe_id'] ?>" tabindex="-1">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-xl  modal-dialog-scrollable">
     <div class="modal-content">
       <form action="../backend/update_recipe.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="recipe_id" value="<?= $recipe['recipe_id'] ?>">

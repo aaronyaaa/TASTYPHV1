@@ -49,6 +49,7 @@ $isPublic         = !empty($store['is_public']);
 <?php include '../seller/components/store_header.php'; ?>
 <?php include '../seller/components/tabs.php'; ?>
   <?php include('modal/recipe_modal.php'); ?>
+        <?php include '../includes/offcanvas.php'; ?>
 
 
 

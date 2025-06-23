@@ -1,6 +1,6 @@
 <!-- Add Manual Recipe Modal -->
 <div class="modal fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-xl  modal-dialog-scrollable">
     <div class="modal-content">
       <form action="../backend/save_manual_recipe.php" method="POST" enctype="multipart/form-data">
         <div class="modal-header bg-success text-white">

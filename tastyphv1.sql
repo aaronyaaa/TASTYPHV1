@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2025 at 10:14 PM
+-- Generation Time: Jun 23, 2025 at 05:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -63,6 +63,13 @@ CREATE TABLE `cart` (
   `status` enum('active','saved','ordered') DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `ingredient_id`, `variant_id`, `unit_price`, `quantity`, `total_price`, `added_at`, `status`) VALUES
+(106, 1, NULL, 13, NULL, 150.00, 3, 450.00, '2025-06-23 06:26:36', 'active');
+
 -- --------------------------------------------------------
 
 --
@@ -71,7 +78,8 @@ CREATE TABLE `cart` (
 
 CREATE TABLE `categories` (
   `category_id` int(11) NOT NULL,
-  `supplier_id` int(11) NOT NULL,
+  `supplier_id` int(11) DEFAULT NULL,
+  `seller_id` int(11) DEFAULT NULL,
   `name` varchar(100) NOT NULL,
   `slug` varchar(100) DEFAULT NULL,
   `description` text DEFAULT NULL,
@@ -85,25 +93,80 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`category_id`, `supplier_id`, `name`, `slug`, `description`, `image_url`, `is_active`, `created_at`, `updated_at`) VALUES
-(4, 1, 'Sugar', 'sugar', 'all kinds of sugar', 'uploads/categories/category_2_1748798840.jpg', 1, '2025-06-02 01:27:20', '2025-06-02 01:27:20'),
-(5, 1, 'Egg', 'egg', 'all kinds of egg', 'uploads/categories/category_2_1748799380.jpg', 1, '2025-06-02 01:36:20', '2025-06-02 01:36:20'),
-(9, 1, 'Rice Flour', 'Rice Flour', 'All kinds of Rice Flour', 'uploads/categories/category_2_1748799484.jpg', 1, '2025-06-02 01:38:04', '2025-06-02 01:38:04'),
-(12, 1, 'Salt', 'Salt', 'All kinds of Salt', 'uploads/categories/category_2_1748799688.jpg', 1, '2025-06-02 01:41:28', '2025-06-02 01:41:28'),
-(13, 1, 'Baking Powder', 'Baking Powder', 'All kinds of Baking Powder', 'uploads/categories/category_2_1748800065.jpg', 1, '2025-06-02 01:47:45', '2025-06-02 01:47:45'),
-(14, 1, 'Butter', 'Butter', 'All kinds of Butter', 'uploads/categories/category_2_1748800180.jpg', 1, '2025-06-02 01:49:40', '2025-06-02 01:49:40'),
-(15, 1, 'Fresh Milk', 'Fresh Milk', 'All kinds of Fresh Milk', 'uploads/categories/category_2_1748800261.jpg', 1, '2025-06-02 01:51:01', '2025-06-02 01:51:01'),
-(16, 1, 'Cheese', 'Cheese', 'All kinds of Cheese', 'uploads/categories/category_2_1748800427.jpg', 1, '2025-06-02 01:53:47', '2025-06-02 01:53:47'),
-(17, 1, 'Coconut Milk', 'Coconut Milk', 'All kinds of Coconut Milk', 'uploads/categories/category_2_1748800548.jpg', 1, '2025-06-02 01:55:48', '2025-06-02 01:55:48'),
-(18, 1, 'Grated Coconut', 'Grated Coconut', 'All kinds of Grated Coconut', 'uploads/categories/category_2_1748800684.jpg', 1, '2025-06-02 01:58:04', '2025-06-02 01:58:04'),
-(19, 1, 'Banana Leaves', 'Banana Leaves', 'All kinds of Banana Leaves', 'uploads/categories/category_2_1748800768.jpg', 1, '2025-06-02 01:59:28', '2025-06-02 01:59:28'),
-(20, 2, 'Asin tibouk', 'asin', 'Very Rare Ingredient of asin', 'uploads/categories/category_6_1749740553.jpg', 1, '2025-06-12 23:02:33', '2025-06-12 23:02:33'),
-(21, 2, 'Banana', 'Banana', 'banana', 'uploads/categories/category_6_1750606893.jpg', 1, '2025-06-22 23:41:33', '2025-06-22 23:41:33'),
-(22, 2, 'Jackfruit', 'Jackfruit', 'Jackfruit', 'uploads/categories/category_6_1750607069.jpg', 1, '2025-06-22 23:44:29', '2025-06-22 23:44:29'),
-(34, 2, 'Sugar', 'sugar', 'sugarr', 'uploads/categories/category_6_1750608124.jpg', 1, '2025-06-23 00:02:04', '2025-06-23 00:02:04'),
-(35, 2, 'Lumpia Wrapper', 'Lumpia Wrapper', 'Lumpia Wrapper', 'uploads/categories/category_6_1750608211.jpg', 1, '2025-06-23 00:03:31', '2025-06-23 00:03:31'),
-(36, 2, 'oil', 'oil', 'oil', 'uploads/categories/category_6_1750608349.jpg', 1, '2025-06-23 00:05:49', '2025-06-23 00:05:49'),
-(37, 2, 'salt', 'Salt', 'salt', 'uploads/categories/category_6_1750620294.jpg', 1, '2025-06-23 03:24:54', '2025-06-23 03:24:54');
+INSERT INTO `categories` (`category_id`, `supplier_id`, `seller_id`, `name`, `slug`, `description`, `image_url`, `is_active`, `created_at`, `updated_at`) VALUES
+(4, 1, NULL, 'Sugar', 'sugar', 'all kinds of sugar', 'uploads/categories/category_2_1748798840.jpg', 1, '2025-06-02 01:27:20', '2025-06-02 01:27:20'),
+(5, 1, NULL, 'Egg', 'egg', 'all kinds of egg', 'uploads/categories/category_2_1748799380.jpg', 1, '2025-06-02 01:36:20', '2025-06-02 01:36:20'),
+(9, 1, NULL, 'Rice Flour', 'Rice Flour', 'All kinds of Rice Flour', 'uploads/categories/category_2_1748799484.jpg', 1, '2025-06-02 01:38:04', '2025-06-02 01:38:04'),
+(12, 1, NULL, 'Salt', 'Salt', 'All kinds of Salt', 'uploads/categories/category_2_1748799688.jpg', 1, '2025-06-02 01:41:28', '2025-06-02 01:41:28'),
+(13, 1, NULL, 'Baking Powder', 'Baking Powder', 'All kinds of Baking Powder', 'uploads/categories/category_2_1748800065.jpg', 1, '2025-06-02 01:47:45', '2025-06-02 01:47:45'),
+(14, 1, NULL, 'Butter', 'Butter', 'All kinds of Butter', 'uploads/categories/category_2_1748800180.jpg', 1, '2025-06-02 01:49:40', '2025-06-02 01:49:40'),
+(15, 1, NULL, 'Fresh Milk', 'Fresh Milk', 'All kinds of Fresh Milk', 'uploads/categories/category_2_1748800261.jpg', 1, '2025-06-02 01:51:01', '2025-06-02 01:51:01'),
+(16, 1, NULL, 'Cheese', 'Cheese', 'All kinds of Cheese', 'uploads/categories/category_2_1748800427.jpg', 1, '2025-06-02 01:53:47', '2025-06-02 01:53:47'),
+(17, 1, NULL, 'Coconut Milk', 'Coconut Milk', 'All kinds of Coconut Milk', 'uploads/categories/category_2_1748800548.jpg', 1, '2025-06-02 01:55:48', '2025-06-02 01:55:48'),
+(18, 1, NULL, 'Grated Coconut', 'Grated Coconut', 'All kinds of Grated Coconut', 'uploads/categories/category_2_1748800684.jpg', 1, '2025-06-02 01:58:04', '2025-06-02 01:58:04'),
+(19, 1, NULL, 'Banana Leaves', 'Banana Leaves', 'All kinds of Banana Leaves', 'uploads/categories/category_2_1748800768.jpg', 1, '2025-06-02 01:59:28', '2025-06-02 01:59:28'),
+(20, 2, NULL, 'Asin tibouk', 'asin', 'Very Rare Ingredient of asin', 'uploads/categories/category_6_1749740553.jpg', 1, '2025-06-12 23:02:33', '2025-06-12 23:02:33'),
+(21, 2, NULL, 'Banana', 'Banana', 'banana', 'uploads/categories/category_6_1750606893.jpg', 1, '2025-06-22 23:41:33', '2025-06-22 23:41:33'),
+(22, 2, NULL, 'Jackfruit', 'Jackfruit', 'Jackfruit', 'uploads/categories/category_6_1750607069.jpg', 1, '2025-06-22 23:44:29', '2025-06-22 23:44:29'),
+(34, 2, NULL, 'Sugar', 'sugar', 'sugarr', 'uploads/categories/category_6_1750608124.jpg', 1, '2025-06-23 00:02:04', '2025-06-23 00:02:04'),
+(35, 2, NULL, 'Lumpia Wrapper', 'Lumpia Wrapper', 'Lumpia Wrapper', 'uploads/categories/category_6_1750608211.jpg', 1, '2025-06-23 00:03:31', '2025-06-23 00:03:31'),
+(36, 2, NULL, 'oil', 'oil', 'oil', 'uploads/categories/category_6_1750608349.jpg', 1, '2025-06-23 00:05:49', '2025-06-23 00:05:49'),
+(37, 2, NULL, 'salt', 'Salt', 'salt', 'uploads/categories/category_6_1750620294.jpg', 1, '2025-06-23 03:24:54', '2025-06-23 03:24:54'),
+(45, NULL, 4, 'Turon Specials', 'Turon Specials', 'Turon Specials', 'uploads/categories/category_1_1750662409.jpg', 1, '2025-06-23 15:06:49', '2025-06-23 15:06:49');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cooking_history`
+--
+
+CREATE TABLE `cooking_history` (
+  `history_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `stock_created` int(11) DEFAULT 0,
+  `notes` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cooking_history`
+--
+
+INSERT INTO `cooking_history` (`history_id`, `product_id`, `user_id`, `stock_created`, `notes`, `created_at`) VALUES
+(1, 5, 1, 6, 'Cooked product via kitchen inventory.', '2025-06-23 20:49:18'),
+(2, 6, 1, 6, 'Cooked product via kitchen inventory.', '2025-06-23 21:24:35');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cooking_history_ingredients`
+--
+
+CREATE TABLE `cooking_history_ingredients` (
+  `id` int(11) NOT NULL,
+  `history_id` int(11) NOT NULL,
+  `ingredient_id` int(11) NOT NULL,
+  `ingredient_name` varchar(255) NOT NULL,
+  `quantity_used` decimal(10,2) NOT NULL,
+  `unit_type` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cooking_history_ingredients`
+--
+
+INSERT INTO `cooking_history_ingredients` (`id`, `history_id`, `ingredient_id`, `ingredient_name`, `quantity_used`, `unit_type`) VALUES
+(1, 1, 12, 'Sugar', 300.00, 'g'),
+(2, 1, 9, 'Banana', 6.00, 'pcs'),
+(3, 1, 10, 'Jackfruit', 150.00, 'g'),
+(4, 1, 11, 'Lumpia Wrapper', 6.00, 'pcs'),
+(5, 1, 13, 'Oil', 480.00, 'ml'),
+(6, 2, 9, 'Banana', 6.00, 'pcs'),
+(7, 2, 10, 'Jackfruit', 150.00, 'g'),
+(8, 2, 12, 'Sugar', 300.00, 'g'),
+(9, 2, 13, 'Oil', 480.00, 'ml'),
+(10, 2, 11, 'Lumpia Wrapper', 6.00, 'pcs');
 
 -- --------------------------------------------------------
 
@@ -174,7 +237,7 @@ CREATE TABLE `ingredients_inventory` (
 
 INSERT INTO `ingredients_inventory` (`inventory_id`, `ingredient_id`, `ingredient_name`, `quantity`, `quantity_value`, `unit_type`, `supplier_id`, `variant_id`, `user_id`, `created_at`, `updated_at`) VALUES
 (57, 13, 'Oil', 0.00, 500.00, 'ml', 2, NULL, 1, '2025-06-23 03:26:20', '2025-06-23 04:13:37'),
-(58, 12, 'Sugar', 1.00, 1500.00, 'g', 2, NULL, 1, '2025-06-23 03:26:20', '2025-06-23 04:13:37');
+(58, 12, 'Sugar', 1.00, 1400.00, 'g', 2, NULL, 1, '2025-06-23 03:26:20', '2025-06-23 15:24:06');
 
 -- --------------------------------------------------------
 
@@ -233,11 +296,11 @@ CREATE TABLE `kitchen_inventory` (
 --
 
 INSERT INTO `kitchen_inventory` (`kitchen_inventory_id`, `ingredient_id`, `ingredient_name`, `quantity`, `quantity_value`, `unit_type`, `supplier_id`, `variant_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(68, 12, 'Sugar', 3.50, 3500.00, 'g', 2, NULL, 1, '2025-06-22 19:12:50', '2025-06-22 20:13:37'),
-(69, 9, 'Banana', 5.09, 61.00, 'pcs', 2, NULL, 1, '2025-06-22 19:28:33', '2025-06-22 20:05:45'),
-(70, 10, 'Jackfruit', 3.01, 34200.00, 'g', 2, NULL, 1, '2025-06-22 20:06:49', '2025-06-22 20:10:17'),
-(71, 11, 'Lumpia Wrapper', 2.98, 90.00, 'pcs', 2, NULL, 1, '2025-06-22 20:10:30', '2025-06-22 20:12:58'),
-(72, 13, 'Oil', 2.50, 2500.00, 'ml', 2, NULL, 1, '2025-06-22 20:13:07', '2025-06-22 20:13:37');
+(68, 12, 'Sugar', 3.60, 2400.00, 'g', 2, NULL, 1, '2025-06-22 19:12:50', '2025-06-23 13:24:35'),
+(69, 9, 'Banana', 5.09, 37.00, 'pcs', 2, NULL, 1, '2025-06-22 19:28:33', '2025-06-23 13:24:35'),
+(70, 10, 'Jackfruit', 3.01, 33600.00, 'g', 2, NULL, 1, '2025-06-22 20:06:49', '2025-06-23 13:24:35'),
+(71, 11, 'Lumpia Wrapper', 2.98, 66.00, 'pcs', 2, NULL, 1, '2025-06-22 20:10:30', '2025-06-23 13:24:35'),
+(72, 13, 'Oil', 2.50, 580.00, 'ml', 2, NULL, 1, '2025-06-22 20:13:07', '2025-06-23 13:24:35');
 
 -- --------------------------------------------------------
 
@@ -271,7 +334,10 @@ INSERT INTO `messages` (`message_id`, `sender_id`, `receiver_id`, `message_text`
 (174, 2, 1, 'did you received it?', NULL, NULL, 0, 1, '2025-06-11 22:16:35', NULL),
 (175, 1, 2, 'yurr', NULL, NULL, 0, 1, '2025-06-11 22:16:42', NULL),
 (176, 2, 1, 'd', NULL, NULL, 0, 1, '2025-06-11 22:16:51', NULL),
-(177, 1, 19, 'im out of stock rn but are u still available to wait for 2 days?', NULL, NULL, 0, 0, '2025-06-20 11:58:37', NULL);
+(177, 1, 19, 'im out of stock rn but are u still available to wait for 2 days?', NULL, NULL, 0, 0, '2025-06-20 11:58:37', NULL),
+(178, 3, 1, 'HII I WANTED TO SEE YOU COME HERE IN CEBU', NULL, NULL, 0, 1, '2025-06-23 23:26:04', NULL),
+(179, 1, 3, 'WAIT FR?', NULL, NULL, 0, 1, '2025-06-23 23:26:20', NULL),
+(180, 3, 1, 'YEAH', NULL, NULL, 0, 1, '2025-06-23 23:26:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -655,17 +721,34 @@ INSERT INTO `pre_order_list` (`pre_order_id`, `user_id`, `seller_id`, `product_n
 
 CREATE TABLE `products` (
   `product_id` int(11) NOT NULL,
-  `ingredient_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  `ingredient_id` int(11) DEFAULT NULL,
   `seller_id` int(11) NOT NULL,
   `category_id` int(11) DEFAULT NULL,
   `price` decimal(10,2) NOT NULL,
   `discount_price` decimal(10,2) DEFAULT NULL,
   `stock` int(11) NOT NULL DEFAULT 0,
+  `quantity_value` decimal(10,2) DEFAULT 1.00,
+  `unit_type` enum('g','kg','ml','l','pcs','pack','bottle','can','tray','box') DEFAULT 'pcs',
   `is_active` tinyint(1) DEFAULT 1,
   `rating` decimal(3,2) DEFAULT 0.00,
+  `notes` text DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `product_name`, `slug`, `description`, `image_url`, `ingredient_id`, `seller_id`, `category_id`, `price`, `discount_price`, `stock`, `quantity_value`, `unit_type`, `is_active`, `rating`, `notes`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(5, 'Turon Specials', 'Turon Specials', 'A Delicious Turon', 'uploads/products/1750682958_Turon-Recipe.jpg', NULL, 4, NULL, 6.00, 5.00, 6, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 20:49:18', '2025-06-23 20:49:18'),
+(6, 'Turon version 1', 'Turon Specials', 'asd', 'uploads/products/1750686923_images (33).jpg', NULL, 4, NULL, 7.00, 5.00, 6, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 21:24:35', '2025-06-23 21:59:01');
 
 -- --------------------------------------------------------
 
@@ -859,10 +942,11 @@ CREATE TABLE `recipe_ingredients` (
 --
 
 INSERT INTO `recipe_ingredients` (`id`, `recipe_id`, `ingredient_name`, `ingredient_id`, `quantity_value`, `unit_type`, `notes`) VALUES
-(10, 3, 'bananas', NULL, 6.00, 'pcs', NULL),
-(11, 3, 'jackfruit', NULL, 150.00, 'g', NULL),
-(12, 3, 'Sugar', NULL, 300.00, 'g', NULL),
-(13, 3, 'Oil', NULL, 480.00, 'ml', NULL);
+(14, 3, 'bananas', NULL, 6.00, 'pcs', NULL),
+(15, 3, 'jackfruit', NULL, 150.00, 'g', NULL),
+(16, 3, 'Sugar', NULL, 300.00, 'g', NULL),
+(17, 3, 'Oil', NULL, 480.00, 'ml', NULL),
+(18, 3, 'Lumpia Wrapper', NULL, 6.00, 'pcs', NULL);
 
 -- --------------------------------------------------------
 
@@ -882,12 +966,12 @@ CREATE TABLE `recipe_steps` (
 --
 
 INSERT INTO `recipe_steps` (`step_id`, `recipe_id`, `step_number`, `instruction`) VALUES
-(13, 3, 1, 'Roll the banana on the sugar plate and ensure that the banana is coated with enough sugar\r\n6 pieces bananas, 1 1/2 cup sugar'),
-(14, 3, 2, 'Place the banana with sugar coating on the lumpia wrapper. Add a slice of ripe jackfruit on top.\r\n12 pieces lumpia wrapper, 1 cup jackfruit'),
-(15, 3, 3, 'Fold and lock the spring roll wrapper, use water to seal the edge'),
-(16, 3, 4, 'In a pan, heat the oil and put-in some sugar.Wait until the brown sugar floats\r\n2 cups cooking oil'),
-(17, 3, 5, 'Put-in the wrapped banana and fry until the wrapper turns golden brown and the extra sugar sticks on wrapper'),
-(18, 3, 6, 'Serve hot as a dessert or snack. Share and Enjoy!');
+(19, 3, 1, 'Roll the banana on the sugar plate and ensure that the banana is coated with enough sugar\r\n6 pieces bananas, 1 1/2 cup sugar'),
+(20, 3, 2, 'Place the banana with sugar coating on the lumpia wrapper. Add a slice of ripe jackfruit on top.\r\n12 pieces lumpia wrapper, 1 cup jackfruit'),
+(21, 3, 3, 'Fold and lock the spring roll wrapper, use water to seal the edge'),
+(22, 3, 4, 'In a pan, heat the oil and put-in some sugar.Wait until the brown sugar floats\r\n2 cups cooking oil'),
+(23, 3, 5, 'Put-in the wrapped banana and fry until the wrapper turns golden brown and the extra sugar sticks on wrapper'),
+(24, 3, 6, 'Serve hot as a dessert or snack. Share and Enjoy!');
 
 -- --------------------------------------------------------
 
@@ -1036,7 +1120,23 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`category_id`),
-  ADD UNIQUE KEY `unique_supplier_slug` (`supplier_id`,`slug`);
+  ADD UNIQUE KEY `unique_supplier_slug` (`supplier_id`,`slug`),
+  ADD KEY `fk_seller_category` (`seller_id`);
+
+--
+-- Indexes for table `cooking_history`
+--
+ALTER TABLE `cooking_history`
+  ADD PRIMARY KEY (`history_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `cooking_history_ingredients`
+--
+ALTER TABLE `cooking_history_ingredients`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `history_id` (`history_id`);
 
 --
 -- Indexes for table `ingredients`
@@ -1244,13 +1344,25 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT for table `cooking_history`
+--
+ALTER TABLE `cooking_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `cooking_history_ingredients`
+--
+ALTER TABLE `cooking_history_ingredients`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ingredients`
@@ -1280,7 +1392,7 @@ ALTER TABLE `kitchen_inventory`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -1346,7 +1458,7 @@ ALTER TABLE `pre_order_list`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `receipts`
@@ -1370,13 +1482,13 @@ ALTER TABLE `recipes`
 -- AUTO_INCREMENT for table `recipe_ingredients`
 --
 ALTER TABLE `recipe_ingredients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `recipe_steps`
 --
 ALTER TABLE `recipe_steps`
-  MODIFY `step_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `step_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `seller_applications`
@@ -1413,7 +1525,21 @@ ALTER TABLE `cart`
 -- Constraints for table `categories`
 --
 ALTER TABLE `categories`
-  ADD CONSTRAINT `fk_supplier_category` FOREIGN KEY (`supplier_id`) REFERENCES `supplier_applications` (`supplier_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_seller_category` FOREIGN KEY (`seller_id`) REFERENCES `seller_applications` (`seller_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_supplier_category` FOREIGN KEY (`supplier_id`) REFERENCES `supplier_applications` (`supplier_id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `cooking_history`
+--
+ALTER TABLE `cooking_history`
+  ADD CONSTRAINT `cooking_history_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cooking_history_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `seller_applications` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `cooking_history_ingredients`
+--
+ALTER TABLE `cooking_history_ingredients`
+  ADD CONSTRAINT `cooking_history_ingredients_ibfk_1` FOREIGN KEY (`history_id`) REFERENCES `cooking_history` (`history_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ingredients`

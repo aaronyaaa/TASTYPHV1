@@ -23,6 +23,7 @@
     <?php include 'store/supplier_header.php'; ?>
 
     <?php include '../includes/nav/chat.php'; ?>
+  <?php include '../includes/offcanvas.php'; ?>
 
     <?php include 'store/supplier_main.php'; ?>
 

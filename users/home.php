@@ -63,6 +63,8 @@ function prioritizeNearby($items, $area)
 <body>
     <?php include '../includes/nav/navbar_router.php'; ?>
     <?php include '../includes/nav/chat.php'; ?>
+        <?php include '../includes/offcanvas.php'; ?>
+
 
  <button id="toggleMapBtn" class="btn btn-outline-primary mb-3">
   <i class="fa fa-map-marker-alt"></i> View Map of Sellers & Suppliers

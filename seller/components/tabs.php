@@ -56,7 +56,7 @@
 
     <!-- 🏷️ Add Category Tab -->
     <div class="tab-pane fade" id="category" role="tabpanel">
-      <p class="lead">Add category content goes here.</p>
+      <?php include('categories.php'); ?>
     </div>
 
     <!-- 🕒 Business Hours Tab -->
