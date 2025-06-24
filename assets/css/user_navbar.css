@@ -411,3 +411,115 @@ html, body {
   border-bottom-color: white;
 }
 
+.dropdown-menu {
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-menu.show {
+  animation: dropdownFade 0.3s ease-out;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Custom Seller Dropdown Styling */
+.seller-dropdown {
+  background: var(--kakanin-violet) !important;
+  color: var(--kakanin-text-light);
+  width: 320px;
+  border-radius: var(--kakanin-radius);
+  box-shadow: var(--kakanin-shadow);
+}
+
+.seller-dropdown .dropdown-item {
+  color: var(--kakanin-text-light) !important;
+  background: transparent;
+  font-weight: 500;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+}
+
+.seller-dropdown .dropdown-item:hover {
+  background-color: var(--kakanin-yellow) !important;
+  color: var(--kakanin-violet) !important;
+}
+
+.seller-dropdown .dropdown-divider {
+  border-top: 2px solid var(--kakanin-yellow);
+  opacity: 0.2;
+  margin: 0.7rem 0;
+}
+
+.seller-dropdown h6,
+.seller-dropdown small {
+  color: var(--kakanin-text-light);
+}
+.supplier-dropdown {
+  background: #006466 !important;
+  color: white;
+  width: 320px;
+  border-radius: var(--kakanin-radius);
+  box-shadow: var(--kakanin-shadow);
+}
+
+.supplier-dropdown .dropdown-item {
+  color: white !important;
+  background: transparent;
+  font-weight: 500;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+}
+
+.supplier-dropdown .dropdown-item:hover {
+  background-color: var(--kakanin-yellow) !important;
+  color: #006466 !important;
+}
+
+.supplier-dropdown .dropdown-divider {
+  border-top: 2px solid var(--kakanin-yellow);
+  opacity: 0.2;
+  margin: 0.7rem 0;
+}
+
+.supplier-dropdown h6,
+.supplier-dropdown small {
+  color: white;
+}
+.user-dropdown {
+  background: #006466 !important;
+  color: var(--kakanin-text-light);
+  width: 320px;
+  border-radius: var(--kakanin-radius);
+  box-shadow: var(--kakanin-shadow);
+}
+
+.user-dropdown .dropdown-item {
+  color: var(--kakanin-text-light) !important;
+  background: transparent;
+  font-weight: 500;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+}
+
+.user-dropdown .dropdown-item:hover {
+  background-color: var(--kakanin-yellow) !important;
+  color: #006466 !important;
+}
+
+.user-dropdown .dropdown-divider {
+  border-top: 2px solid var(--kakanin-yellow);
+  opacity: 0.2;
+  margin: 0.7rem 0;
+}
+
+.user-dropdown h6,
+.user-dropdown small {
+  color: var(--kakanin-text-light);
+}

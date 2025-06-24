@@ -36,103 +36,118 @@ $stmt2 = $pdo->prepare($sql2);
 $stmt2->execute(['userId' => $userId]);
 $kitchen = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 ?>
-<!-- Tabs Header -->
-<ul class="nav nav-tabs mb-3" id="inventoryTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="ingredients-tab" data-bs-toggle="tab" data-bs-target="#ingredients" type="button" role="tab" aria-controls="ingredients" aria-selected="true">
-            <i class="fas fa-boxes-stacked me-1"></i> Ingredients Inventory
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="kitchen-tab" data-bs-toggle="tab" data-bs-target="#kitchen" type="button" role="tab" aria-controls="kitchen" aria-selected="false">
-            <i class="fas fa-kitchen-set me-1"></i> Kitchen Inventory
-        </button>
-    </li>
-</ul>
+<div class="container py-4">
+    <!-- Tabs Header -->
+    <ul class="nav nav-tabs mb-3" id="inventoryTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="ingredients-tab" data-bs-toggle="tab" data-bs-target="#ingredients" type="button" role="tab" aria-controls="ingredients" aria-selected="true">
+                <i class="fas fa-boxes-stacked me-1"></i> Ingredients Inventory
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="kitchen-tab" data-bs-toggle="tab" data-bs-target="#kitchen" type="button" role="tab" aria-controls="kitchen" aria-selected="false">
+                <i class="fas fa-kitchen-set me-1"></i> Kitchen Inventory
+            </button>
+        </li>
+    </ul>
 
-<!-- Tabs Content -->
-<div class="tab-content" id="inventoryTabsContent">
-    <!-- Ingredients Inventory Tab -->
-    <div class="tab-pane fade show active" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-light">
-                <h5 class="mb-0"><i class="fas fa-boxes-stacked me-2 text-primary"></i> Ingredients Inventory</h5>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="../backend/move_to_kitchen.php">
-                    <div class="table-responsive">
-                        <table class="table table-bordered align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Name</th>
-                                    <th>Stock</th>
-                                    <th>Total Measurement</th>
-                                    <th>Move Qty</th>
-                                    <th>Expected Remaining</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($ingredients as $row):
-                                    $unitMeasure = $row['variant_quantity_value'] ?? $row['base_quantity_value'];
-                                    $stock = $row['inv_quantity'];
-                                    $storedQtyValue = $row['inv_quantity_value'];
-                                    $calculatedQtyValue = $stock * $unitMeasure;
-                                    $totalMeasurement = max($storedQtyValue, $calculatedQtyValue);
-                                ?>
+    <!-- Tabs Content -->
+    <div class="tab-content" id="inventoryTabsContent">
+        <!-- Ingredients Inventory Tab -->
+        <div class="tab-pane fade show active" id="ingredients" role="tabpanel" aria-labelledby="ingredients-tab">
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-header bg-light border-0 d-flex align-items-center">
+                    <i class="fas fa-boxes-stacked me-2 text-primary fs-4"></i>
+                    <h5 class="mb-0 fw-bold">Ingredients Inventory</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="../backend/move_to_kitchen.php" id="moveToKitchenForm">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped align-middle mb-0">
+                                <thead class="table-light">
                                     <tr>
-                                        <td><img src="<?= !empty($row['image_url']) ? '../' . htmlspecialchars($row['image_url']) : $defaultIngredientImage ?>" class="img-thumbnail" style="width: 50px; height: 50px;"></td>
-                                        <td><?= htmlspecialchars($row['ingredient_name']) ?></td>
-                                        <td><?= number_format($stock, 2) ?></td>
-                                        <td><span id="total_<?= $row['inventory_id'] ?>"><?= number_format($totalMeasurement, 2) ?></span> <?= $row['unit_type'] ?></td>
-                                        <td>
-                                            <input type="number" name="move_qty[<?= $row['inventory_id'] ?>]" class="form-control move-input" step="0.01" min="0" max="<?= $totalMeasurement ?>" data-total="<?= $totalMeasurement ?>" data-target="remain_<?= $row['inventory_id'] ?>" placeholder="0">
-                                        </td>
-                                        <td><span id="remain_<?= $row['inventory_id'] ?>"><?= number_format($totalMeasurement, 2) ?></span> <?= $row['unit_type'] ?></td>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Stock</th>
+                                        <th>Total Measurement</th>
+                                        <th>Move Qty <i class="fas fa-arrow-right-to-bracket text-secondary" title="Move to Kitchen"></i></th>
+                                        <th>Expected Remaining</th>
                                     </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-primary mt-2">
-                            <i class="fas fa-arrow-right-to-bracket me-1"></i> Move to Kitchen
-                        </button>
-                    </div>
-                </form>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($ingredients as $row):
+                                        $unitMeasure = $row['variant_quantity_value'] ?? $row['base_quantity_value'];
+                                        $stock = $row['inv_quantity'];
+                                        $storedQtyValue = $row['inv_quantity_value'];
+                                        $calculatedQtyValue = $stock * $unitMeasure;
+                                        $totalMeasurement = max($storedQtyValue, $calculatedQtyValue);
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <img src="<?= !empty($row['image_url']) ? '../' . htmlspecialchars($row['image_url']) : $defaultIngredientImage ?>" class="rounded-circle shadow-sm border" style="width: 56px; height: 56px; object-fit: cover;" alt="Ingredient image">
+                                            </td>
+                                            <td class="fw-semibold text-dark">
+                                                <?= htmlspecialchars($row['ingredient_name']) ?>
+                                            </td>
+                                            <td><span class="badge bg-info-subtle text-info fs-6"><?= number_format($stock, 2) ?></span></td>
+                                            <td><span id="total_<?= $row['inventory_id'] ?>" class="fw-semibold text-primary"><?= number_format($totalMeasurement, 2) ?></span> <span class="text-muted small"><?= $row['unit_type'] ?></span></td>
+                                            <td style="min-width:120px;">
+                                                <input type="number" name="move_qty[<?= $row['inventory_id'] ?>]" class="form-control move-input" step="0.01" min="0" max="<?= $totalMeasurement ?>" data-total="<?= $totalMeasurement ?>" data-target="remain_<?= $row['inventory_id'] ?>" placeholder="0" title="Enter quantity to move">
+                                            </td>
+                                            <td><span id="remain_<?= $row['inventory_id'] ?>" class="fw-semibold text-success"><?= number_format($totalMeasurement, 2) ?></span> <span class="text-muted small"><?= $row['unit_type'] ?></span></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-warning px-4 py-2 fw-bold shadow-sm">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="moveSpinner" role="status" aria-hidden="true"></span>
+                                <i class="fas fa-arrow-right-to-bracket me-1"></i> Move to Kitchen
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+        <!-- Kitchen Inventory Tab -->
+        <div class="tab-pane fade" id="kitchen" role="tabpanel" aria-labelledby="kitchen-tab">
+            <?php include('kitchen_inventory.php'); ?>
+        </div>
     </div>
-    <!-- Kitchen Inventory Tab -->
-    <div class="tab-pane fade" id="kitchen" role="tabpanel" aria-labelledby="kitchen-tab">
-        <?php include('kitchen_inventory.php'); ?>
-    </div>
-
 </div>
 
+<style>
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        --bs-table-accent-bg: #f8fafc;
+    }
+    .table-hover tbody tr:hover {
+        background-color: #f1f3f9;
+    }
+    .move-input:focus {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.2rem rgba(255,193,7,.15);
+    }
+    .card-header {
+        border-bottom: 1px solid #f1f1f1;
+    }
+    .badge.bg-info-subtle {
+        background: #e7f3fe;
+        color: #0d6efd;
+        font-weight: 600;
+    }
+    .fw-semibold { font-weight: 600; }
+    .fw-bold { font-weight: 700; }
+    .shadow-sm { box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.05)!important; }
+    .rounded-circle { border-radius: 50%!important; }
+    @media (max-width: 576px) {
+        .table-responsive { font-size: 0.95rem; }
+        .card-header h5 { font-size: 1.1rem; }
+    }
+</style>
 
 <script>
-    function addIngredientRow() {
-        const index = document.querySelectorAll('#ingredientsWrapper .row').length;
-        const wrapper = document.createElement('div');
-        wrapper.className = 'row mb-2';
-        wrapper.innerHTML = `
-    <div class="col">
-      <select name="ingredients[${index}][ingredient_id]" class="form-control">
-        <?php foreach ($kitchen as $item): ?>
-          <option value="<?= $item['ingredient_id'] ?>"><?= htmlspecialchars($item['ingredient_name']) ?></option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-    <div class="col">
-      <input type="number" step="0.01" name="ingredients[${index}][quantity]" class="form-control" placeholder="Quantity">
-    </div>
-    <div class="col">
-      <input type="text" name="ingredients[${index}][unit]" class="form-control" placeholder="Unit (e.g. g, pcs)">
-    </div>`;
-        document.getElementById('ingredientsWrapper').appendChild(wrapper);
-    }
-
+    // Update expected remaining on input
     document.querySelectorAll('.move-input').forEach(input => {
         input.addEventListener('input', function() {
             const total = parseFloat(this.dataset.total);
@@ -140,5 +155,10 @@ $kitchen = $stmt2->fetchAll(PDO::FETCH_ASSOC);
             const remaining = Math.max(total - moveQty, 0).toFixed(2);
             document.getElementById(this.dataset.target).textContent = remaining;
         });
+    });
+
+    // Show spinner on submit
+    document.getElementById('moveToKitchenForm').addEventListener('submit', function(e) {
+        document.getElementById('moveSpinner').classList.remove('d-none');
     });
 </script>

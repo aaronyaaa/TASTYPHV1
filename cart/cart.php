@@ -10,16 +10,20 @@ if ($userId) {
         SELECT 
             c.*, 
             i.ingredient_name, 
-            i.image_url, 
+            i.image_url AS ingredient_image, 
             iv.variant_name, 
-            i.stock,
+            i.stock AS ingredient_stock,
+            p.product_name, 
+            p.image_url AS product_image, 
+            p.stock AS product_stock,
             COALESCE(sa.business_name, se.business_name) AS store_name,
             COALESCE(sa.supplier_id, se.seller_id) AS store_id
         FROM cart c
         LEFT JOIN ingredients i ON c.ingredient_id = i.ingredient_id
         LEFT JOIN ingredient_variants iv ON c.variant_id = iv.variant_id
+        LEFT JOIN products p ON c.product_id = p.product_id
         LEFT JOIN supplier_applications sa ON i.supplier_id = sa.supplier_id
-        LEFT JOIN seller_applications se ON i.supplier_id = se.seller_id
+        LEFT JOIN seller_applications se ON p.seller_id = se.seller_id
         WHERE c.user_id = ? AND c.status = 'active'
     ");
     $stmt->execute([$userId]);
@@ -79,20 +83,32 @@ $total = array_sum(array_column($cartItems, 'total_price'));
                                 <div class="cart-item border rounded p-3 mb-3 bg-white d-flex align-items-center">
                                     <input type="checkbox" class="form-check-input me-3 item-checkbox" checked data-item-id="<?= $item['cart_id'] ?>">
                                     <div class="me-3">
-                                        <img src="../<?= htmlspecialchars($item['image_url']) ?>" alt="<?= htmlspecialchars($item['ingredient_name']) ?>" class="img-fluid" style="width: 70px; height: 70px; object-fit: cover;">
+                                        <?php if (!empty($item['product_id'])): ?>
+                                            <a href="../users/product_page.php?product_id=<?= $item['product_id'] ?>">
+                                                <img src="../<?= htmlspecialchars($item['product_image']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>" class="img-fluid" style="width: 70px; height: 70px; object-fit: cover;">
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="../users/ingredient_page.php?ingredient_id=<?= $item['ingredient_id'] ?>">
+                                                <img src="../<?= htmlspecialchars($item['ingredient_image']) ?>" alt="<?= htmlspecialchars($item['ingredient_name']) ?>" class="img-fluid" style="width: 70px; height: 70px; object-fit: cover;">
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="flex-grow-1">
-                                        <h6 class="mb-1"><?= htmlspecialchars($item['ingredient_name']) ?></h6>
+                                        <?php if (!empty($item['product_id'])): ?>
+                                            <h6 class="mb-1"><a href="../users/product_page.php?product_id=<?= $item['product_id'] ?>" class="text-decoration-none text-dark"><?= htmlspecialchars($item['product_name']) ?></a></h6>
+                                        <?php else: ?>
+                                            <h6 class="mb-1"><a href="../users/ingredient_page.php?ingredient_id=<?= $item['ingredient_id'] ?>" class="text-decoration-none text-dark"><?= htmlspecialchars($item['ingredient_name']) ?></a></h6>
+                                        <?php endif; ?>
                                         <?php if (!empty($item['variant_name'])): ?>
                                             <small class="text-muted">Variant: <?= htmlspecialchars($item['variant_name']) ?></small><br>
                                         <?php endif; ?>
                                         <p class="mb-1" data-unit-price="<?= $item['unit_price'] ?>">Unit Price: ₱<?= number_format($item['unit_price'], 2) ?></p>
-                                        <p class="mb-1">Available Stock: <?= $item['stock'] ?></p>
+                                        <p class="mb-1">Available Stock: <?= !empty($item['product_id']) ? $item['product_stock'] : $item['ingredient_stock'] ?></p>
                                         <p class="fw-bold mb-0">Subtotal: ₱<span class="item-subtotal" id="subtotal-<?= $item['cart_id'] ?>"><?= number_format($item['total_price'], 2) ?></span></p>
                                     </div>
                                     <div class="input-group input-group-sm quantity-control" style="width: 120px;">
                                         <button class="btn btn-outline-secondary decrease-quantity" type="button" data-cart-id="<?= $item['cart_id'] ?>">-</button>
-                                        <input type="text" class="form-control text-center quantity-input" value="<?= $item['quantity'] ?>" data-cart-id="<?= $item['cart_id'] ?>" data-stock="<?= $item['stock'] ?>">
+                                        <input type="text" class="form-control text-center quantity-input" value="<?= $item['quantity'] ?>" data-cart-id="<?= $item['cart_id'] ?>" data-stock="<?= !empty($item['product_id']) ? $item['product_stock'] : $item['ingredient_stock'] ?>">
                                         <button class="btn btn-outline-secondary increase-quantity" type="button" data-cart-id="<?= $item['cart_id'] ?>">+</button>
                                     </div>
                                 </div>

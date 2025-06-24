@@ -22,7 +22,7 @@ $sellerId = $seller['seller_id'];
 $stmt = $pdo->prepare("SELECT 
     product_id, product_name, slug, description, image_url, price, discount_price, 
     stock, quantity_value, unit_type, is_active, rating, notes, 
-    created_at, updated_at 
+    created_at, updated_at, category_id 
 
     FROM products 
     WHERE seller_id = ? 
@@ -30,6 +30,11 @@ $stmt = $pdo->prepare("SELECT
 ");
 $stmt->execute([$sellerId]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch categories for this seller
+$catStmt = $pdo->prepare("SELECT category_id, name FROM categories WHERE seller_id = ?");
+$catStmt->execute([$sellerId]);
+$categories = $catStmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -119,7 +124,9 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             data-stock="<?= $row['stock'] ?>"
                                             data-qty="<?= $row['quantity_value'] ?>"
                                             data-unit="<?= $row['unit_type'] ?>"
-                                            data-active="<?= $row['is_active'] ?>">
+                                            data-active="<?= $row['is_active'] ?>"
+                                            data-category="<?= $row['category_id'] ?>"
+                                        >
                                             <i class="fas fa-edit"></i>
                                         </button>
 
@@ -149,6 +156,15 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="product_id" id="editProductId">
+                    <div class="mb-3">
+                        <label>Category</label>
+                        <select name="category_id" id="editCategory" class="form-control">
+                            <option value="">Uncategorized</option>
+                            <?php foreach ($categories as $cat): ?>
+                                <option value="<?= $cat['category_id'] ?>"><?= htmlspecialchars($cat['name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label>Product Name</label>
                         <input type="text" name="product_name" id="editProductName" class="form-control" required>
@@ -225,7 +241,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 document.getElementById('editQuantity').value = button.getAttribute('data-qty');
                 document.getElementById('editUnitType').value = button.getAttribute('data-unit');
                 document.getElementById('editIsActive').checked = button.getAttribute('data-active') === '1';
-
+                document.getElementById('editCategory').value = button.getAttribute('data-category') || '';
             });
         });
     </script>

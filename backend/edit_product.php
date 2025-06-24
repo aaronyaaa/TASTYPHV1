@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $quantityValue  = $_POST['quantity_value'] ?? 1;
     $unitType       = $_POST['unit_type'] ?? 'pcs';
     $isActive       = isset($_POST['is_active']) ? 1 : 0;
+    $categoryId     = $_POST['category_id'] ?? null;
 
     // Optional image upload
     $imagePath = null;
@@ -39,6 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 is_active = :is_active,
                 updated_at = NOW()";
 
+    if ($categoryId !== null && $categoryId !== '') {
+        $sql .= ", category_id = :category_id";
+    }
+
     if ($imagePath) {
         $sql .= ", image_url = :image_url";
     }
@@ -59,6 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':is_active' => $isActive,
         ':product_id' => $productId,
     ];
+
+    if ($categoryId !== null && $categoryId !== '') {
+        $params[':category_id'] = $categoryId;
+    }
 
     if ($imagePath) {
         $params[':image_url'] = $imagePath;

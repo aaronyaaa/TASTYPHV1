@@ -63,11 +63,36 @@
   </div>
 </div>
 
+<div id="categoryBarWrapper"
+    class="position-sticky bg-white border-bottom py-2 px-3"
+    style="top: 60px; z-index: 1000; will-change: transform;">
+    <div class="d-flex align-items-center position-relative">
+        <!-- Left Scroll Button -->
+        <button id="scrollLeftBtn" class="btn btn-sm btn-light rounded-circle shadow-sm me-2">
+            <i class="fa fa-chevron-left"></i>
+        </button>
+
+        <!-- Scrollable Category List -->
+        <div id="categoryBar" class="scroll-container flex-nowrap d-flex align-items-center overflow-hidden">
+            <button class="btn  category-tab active" data-id="">All Products</button>
+            <?php foreach ($categories as $cat): ?>
+                <button class="btn  category-tab" data-id="<?= $cat['category_id'] ?>">
+                    <?= htmlspecialchars($cat['name']) ?>
+                </button>
+            <?php endforeach; ?>
+        </div>
+        <!-- This is where products will be injected -->
+
+        <!-- Right Scroll Button -->
+        <button id="scrollRightBtn" class="btn btn-sm btn-light rounded-circle shadow-sm ms-2">
+            <i class="fa fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
+
 <!-- Divider -->
 <hr class="my-0 border-top border-secondary">
-<div class="container py-4">
-  <p>This is the store’s public page. You can customize this to show products, categories, map, etc.</p>
-</div>
+
 
 <!-- Shop Info Modal -->
 <?php include 'modal.php'; ?>

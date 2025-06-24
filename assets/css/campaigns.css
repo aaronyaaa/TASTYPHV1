@@ -1,0 +1,53 @@
+/* Campaign Carousel Enhancements */
+#campaignCarousel {
+  max-width: 1100px;
+  margin: 40px auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+#campaignCarousel .carousel-item {
+  transition: transform 0.6s ease-in-out;
+  background-color: #f9f9f9;
+}
+
+#campaignCarousel img {
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Caption styling */
+#campaignCarousel .carousel-caption {
+  bottom: 20px;
+  left: 20px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  max-width: 60%;
+}
+
+#campaignCarousel .carousel-caption h5 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+#campaignCarousel .carousel-caption p {
+  font-size: 0.95rem;
+  color: #f0f0f0;
+}
+
+/* Navigation arrows */
+#campaignCarousel .carousel-control-prev-icon,
+#campaignCarousel .carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 50%;
+}
+
+#campaignCarousel .carousel-control-prev:hover,
+#campaignCarousel .carousel-control-next:hover {
+  filter: brightness(1.2);
+}

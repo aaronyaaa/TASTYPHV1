@@ -34,6 +34,7 @@ if (isset($_SESSION['userId'])) {
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <link rel="stylesheet" href="../assets/css/notifications.css">
+<link rel="stylesheet" href="../assets/css/user_navbar.css">
 
 
 <nav class="navbar navbar-expand-lg kakanin-navbar shadow-lg py-2 fixed-top" style="background: linear-gradient(90deg, #7B4397 70%, #FDEB71 100%); position: fixed;">
@@ -101,8 +102,9 @@ if (isset($_SESSION['userId'])) {
           </ul>
         </li>
 
+
         <!-- Seller Profile -->
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown position-relative">
           <a class="nav-link dropdown-toggle text-white d-flex align-items-center gap-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <?php if (!empty($profile_pics)) : ?>
               <img src="../<?= htmlspecialchars($profile_pics) ?>" class="rounded-circle shadow-sm" style="width: 32px; height: 32px; object-fit: cover;">
@@ -113,17 +115,33 @@ if (isset($_SESSION['userId'])) {
             <?php endif; ?>
             <span><?= htmlspecialchars($first_name) ?></span>
           </a>
-          <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item d-flex gap-2" href="../users/user_profile.php"><i class="fa-solid fa-cog"></i> My Account</a></li>
-            <li><a class="dropdown-item d-flex gap-2" href="../seller/Store.php"><i class="fa-solid fa-boxes-stacked"></i> My Store</a></li>
-            <li><a class="dropdown-item d-flex gap-2" href="../seller/orders.php"><i class="fa-solid fa-clipboard-list"></i> Seller Orders</a></li>
-            <li><a class="dropdown-item d-flex gap-2" href="../seller/analytics.php"><i class="fa-solid fa-chart-line"></i> Analytics</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item d-flex gap-2" href="../api/auth/logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
-          </ul>
+
+          <div class="dropdown-menu dropdown-menu-end seller-dropdown p-3" aria-labelledby="userDropdown">
+            <div class="d-flex align-items-center gap-3 border-bottom border-light pb-3 mb-3">
+              <?php if (!empty($profile_pics)) : ?>
+                <img src="../<?= htmlspecialchars($profile_pics) ?>" class="rounded-circle border shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
+              <?php else : ?>
+                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 60px; height: 60px;">
+                  <i class="fa-solid fa-user text-white fs-4"></i>
+                </div>
+              <?php endif; ?>
+              <div>
+                <h6 class="mb-0 text-white"><?= htmlspecialchars($first_name) ?></h6>
+                <small class="text-white-50">Seller Account</small>
+              </div>
+            </div>
+
+            <a href="../users/user_profile.php" class="dropdown-item"><i class="fa-solid fa-gear"></i> My Account</a>
+            <a href="../seller/Store.php" class="dropdown-item"><i class="fa-solid fa-store"></i> My Store</a>
+            <a href="../seller/orders.php" class="dropdown-item"><i class="fa-solid fa-box"></i> Seller Orders</a>
+            <a href="../seller/analytics.php" class="dropdown-item"><i class="fa-solid fa-chart-line"></i> Analytics</a>
+            <a href="../includes/campaign.php" class="dropdown-item"><i class="fa-solid fa-chart-line"></i> Campaign</a>
+            <div class="dropdown-divider"></div>
+            <a href="../api/auth/logout.php" class="dropdown-item"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+          </div>
         </li>
+
+
       </ul>
     </div>
   </div>

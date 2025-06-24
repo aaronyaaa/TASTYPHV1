@@ -31,6 +31,85 @@
         .reaction-options span:hover {
             background-color: #f0f0f0;
         }
+
+        .fb-timeline-bg {
+            background: #f0f2f5;
+            min-height: 100vh;
+            padding: 32px 0;
+        }
+        .fb-post.card {
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            margin-bottom: 32px;
+        }
+        .fb-post .post-content img, .fb-post .post-content video {
+            border-radius: 12px;
+            max-width: 100%;
+            margin-bottom: 8px;
+            max-height: 400px;
+            object-fit: cover;
+        }
+        .fb-post .post-content video { width: 100%; }
+        .fb-post .action-bar button {
+            background: none;
+            border: none;
+            color: #65676b;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 6px 18px;
+            border-radius: 8px;
+            transition: background 0.15s;
+        }
+        .fb-post .action-bar button:hover {
+            background: #f0f2f5;
+            color: #1877f2;
+        }
+        .fb-post .avatar {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+        .fb-post .user-name {
+            font-weight: 600;
+            color: #050505;
+        }
+        .fb-post .post-time {
+            color: #65676b;
+            font-size: 0.95em;
+        }
+        .fb-reaction-bar {
+            display: flex;
+            gap: 8px;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            padding: 6px 12px;
+            position: absolute;
+            bottom: 38px;
+            left: 0;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s;
+        }
+        .fb-reaction-bar.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .fb-reaction-bar .reaction {
+            font-size: 1.7rem;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .fb-reaction-bar .reaction:hover {
+            transform: scale(1.25);
+        }
+        .action-bar {
+            position: relative;
+        }
     </style>
 </head>
 
@@ -105,6 +184,35 @@
     }, 200);
 }
 
+            });
+        });
+
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            const bar = btn.querySelector('.fb-reaction-bar');
+            let hideTimeout;
+            btn.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimeout);
+                bar.classList.add('show');
+            });
+            btn.addEventListener('mouseleave', () => {
+                hideTimeout = setTimeout(() => {
+                    bar.classList.remove('show');
+                }, 400); // 400ms delay
+            });
+            bar.addEventListener('mouseenter', () => {
+                clearTimeout(hideTimeout);
+                bar.classList.add('show');
+            });
+            bar.addEventListener('mouseleave', () => {
+                hideTimeout = setTimeout(() => {
+                    bar.classList.remove('show');
+                }, 400);
+            });
+            bar.querySelectorAll('.reaction').forEach(react => {
+                react.addEventListener('click', () => {
+                    bar.classList.remove('show');
+                    // TODO: send reaction to backend, update UI, etc.
+                });
             });
         });
     });

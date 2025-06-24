@@ -30,7 +30,7 @@ foreach ($posts as $post) {
     $profile_pic = !empty($post['profile_pics']) ? "../" . $post['profile_pics'] : "../assets/images/default-profile.png";
     $created_at = date('F j, Y g:i a', strtotime($post['created_at']));
 
-    echo "<div class='card fb-post-card shadow-sm mb-4' style='max-width: 500px; margin:auto;'>
+    echo "<div class='card fb-post card fb-post-card shadow-sm mb-4' style='max-width: 500px; margin:auto;'>
             <div class='post-header'>
                 <div class='d-flex align-items-center'>
                     <img src='{$profile_pic}' alt='Profile Picture' style='width: 40px; height: 40px; border-radius: 50%; object-fit: cover;'>
@@ -87,22 +87,23 @@ foreach ($posts as $post) {
             <span class='me-3' style='cursor:pointer;' onclick='toggleCommentInput({$post_id})'><i class='bi bi-chat'></i> Comment</span>
           </div>";
 
-    echo "<div class='action-buttons'>
-            <div class='reaction-wrapper'>
-                <button id='like-btn-{$post_id}' class='btn-like {$reactionClass}' data-post-id='{$post_id}' data-reaction='" . strtolower($userReaction) . "' onclick=\"react({$post_id})\">
-                    {$reactionIcon} {$reactionLabel}
-                </button>
-                <div class='reaction-options'>
-                    <span onclick=\"react({$post_id}, 'like')\">👍</span>
-                    <span onclick=\"react({$post_id}, 'love')\">❤️</span>
-                    <span onclick=\"react({$post_id}, 'haha')\">😂</span>
-                    <span onclick=\"react({$post_id}, 'wow')\">😲</span>
-                    <span onclick=\"react({$post_id}, 'sad')\">😢</span>
-                    <span onclick=\"react({$post_id}, 'angry')\">😠</span>
+    // Facebook-style action bar
+    $currentReaction = strtolower($userReaction);
+    echo "<div class='action-bar position-relative d-flex gap-2 py-2'>
+            <button type='button' class='like-btn position-relative' id='like-btn-{$post_id}' data-current-reaction='{$currentReaction}'>
+                <i class='fa fa-thumbs-up me-1'></i>Like
+                <div class='fb-reaction-bar' data-current-reaction='{$currentReaction}'>
+                    <span class='reaction" . ($currentReaction==='like' ? ' active' : '') . "' data-reaction='like' title='Like' onclick=\"react({$post_id},'like')\">👍</span>
+                    <span class='reaction" . ($currentReaction==='love' ? ' active' : '') . "' data-reaction='love' title='Love' onclick=\"react({$post_id},'love')\">❤️</span>
+                    <span class='reaction" . ($currentReaction==='care' ? ' active' : '') . "' data-reaction='care' title='Care' onclick=\"react({$post_id},'care')\">🤗</span>
+                    <span class='reaction" . ($currentReaction==='haha' ? ' active' : '') . "' data-reaction='haha' title='Haha' onclick=\"react({$post_id},'haha')\">😂</span>
+                    <span class='reaction" . ($currentReaction==='wow' ? ' active' : '') . "' data-reaction='wow' title='Wow' onclick=\"react({$post_id},'wow')\">😮</span>
+                    <span class='reaction" . ($currentReaction==='sad' ? ' active' : '') . "' data-reaction='sad' title='Sad' onclick=\"react({$post_id},'sad')\">😢</span>
+                    <span class='reaction" . ($currentReaction==='angry' ? ' active' : '') . "' data-reaction='angry' title='Angry' onclick=\"react({$post_id},'angry')\">😡</span>
                 </div>
-            </div>
-            <button class='action-button' onclick='toggleCommentInput({$post_id})'><i class='bi bi-chat'></i> Comment</button>
-            <button class='action-button'><i class='bi bi-share'></i> Share</button>
+            </button>
+            <button type='button'><i class='fa fa-comment me-1'></i>Comment</button>
+            <button type='button'><i class='fa fa-share me-1'></i>Share</button>
           </div>";
 
     // Comments and input box
@@ -137,6 +138,7 @@ foreach ($posts as $post) {
 <script>
 function react(postId, reactionType = null) {
     const btn = $(`#like-btn-${postId}`);
+    const bar = btn.find('.fb-reaction-bar');
     const hasReacted = btn.attr('class').includes('liked-');
     if (!reactionType) {
         reactionType = hasReacted ? btn.data('reaction') : 'like';
@@ -144,15 +146,21 @@ function react(postId, reactionType = null) {
 
     $.post('../backend/post_react.php', { postId, userId, reactionType }, function(response) {
         const emojiMap = {
-            like: '👍', love: '❤️', haha: '😂', wow: '😲', sad: '😢', angry: '😠'
+            like: '👍', love: '❤️', care: '🤗', haha: '😂', wow: '😮', sad: '😢', angry: '😡'
         };
         if (response.success) {
+            // Remove all active highlights
+            bar.find('.reaction').removeClass('active');
             if (response.removed) {
-                btn.removeClass().addClass('btn-like').html('👍 Like').data('reaction', '');
+                btn.removeClass().addClass('btn-like').html('<i class="fa fa-thumbs-up me-1"></i>Like').data('reaction', '');
+                bar.attr('data-current-reaction', '');
             } else {
                 const emoji = emojiMap[reactionType] || '👍';
                 const label = reactionType.charAt(0).toUpperCase() + reactionType.slice(1);
-                btn.removeClass().addClass(`btn-like liked-${reactionType}`).html(`${emoji} ${label}`).data('reaction', reactionType);
+                btn.removeClass().addClass(`btn-like liked-${reactionType}`).html(`<i class='fa fa-thumbs-up me-1'></i>${label}`).data('reaction', reactionType);
+                // Highlight the selected emoji
+                bar.find(`.reaction[data-reaction='${reactionType}']`).addClass('active');
+                bar.attr('data-current-reaction', reactionType);
             }
             $(`#react-summary-${postId}`).html(`${response.summary} ${response.total}`);
         }
@@ -190,26 +198,39 @@ function toggleCommentInput(postId) {
     document.getElementById(`comment-text-${postId}`).focus();
 }
 
-function rebindPostScripts() {
-    $('.reaction-wrapper').off('mouseenter mouseleave').hover(
-        function () {
-            $(this).find('.reaction-options').fadeIn(100);
-        },
-        function () {
-            const $options = $(this).find('.reaction-options');
-            hideTimeout = setTimeout(() => $options.fadeOut(100), 300);
-        }
-    );
-
-    $('.reaction-options').off('mouseenter mouseleave').on('mouseenter', function () {
-        clearTimeout(hideTimeout);
-    }).on('mouseleave', function () {
-        const $options = $(this);
-        hideTimeout = setTimeout(() => $options.fadeOut(100), 300);
+// Enhanced reaction bar logic: allow changing/unliking reactions at any time
+$(document).ready(function () {
+    document.querySelectorAll('.like-btn').forEach(btn => {
+        const bar = btn.querySelector('.fb-reaction-bar');
+        let hideTimeout;
+        btn.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+            bar.classList.add('show');
+        });
+        btn.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                bar.classList.remove('show');
+            }, 400); // 400ms delay
+        });
+        bar.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+            bar.classList.add('show');
+        });
+        bar.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                bar.classList.remove('show');
+            }, 400);
+        });
+        // Remove bar.classList.remove('show') on click, so bar stays open for more selection
+        bar.querySelectorAll('.reaction').forEach(react => {
+            react.addEventListener('click', (e) => {
+                const reactionType = react.getAttribute('data-reaction');
+                const postId = btn.id.replace('like-btn-', '');
+                react.classList.add('active');
+                react(postId, reactionType); // call react() to update
+                // Do NOT hide the bar, allow user to hover/select again
+            });
+        });
     });
-}
-
-$(document).ready(() => {
-    rebindPostScripts(); // ✅ apply reaction hover when loading
 });
 </script>

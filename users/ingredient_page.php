@@ -225,16 +225,19 @@
     <script src="https://unpkg.com/leaflet-polylinedecorator@1.7.0/dist/leaflet.polylineDecorator.min.js"></script>
     <script src="https://unpkg.com/leaflet-rotatedmarker@0.2.0/leaflet.rotatedMarker.js"></script>
     <script src="../assets/js/ingredient_map.js"></script>
-    <script>
-        initIngredientMap(
-            <?= json_encode((float)$supplier['latitude']) ?>,
-            <?= json_encode((float)$supplier['longitude']) ?>,
-            <?= json_encode((float)$user['latitude']) ?>,
-            <?= json_encode((float)$user['longitude']) ?>,
-            <?= json_encode($supplier['store_address']) ?>,
-            <?= json_encode($user['full_address']) ?>
-        );
-    </script>
+   <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initIngredientMap(
+      <?= json_encode((float)$supplier['latitude']) ?>,
+      <?= json_encode((float)$supplier['longitude']) ?>,
+      <?= json_encode((float)$user['latitude']) ?>,
+      <?= json_encode((float)$user['longitude']) ?>,
+      <?= json_encode($supplier['store_address']) ?>,
+      <?= json_encode($user['full_address']) ?>
+    );
+  });
+</script>
+
 
 
 

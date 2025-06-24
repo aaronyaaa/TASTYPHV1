@@ -71,7 +71,7 @@ $total = array_sum($statusCounts);
   <ul class="nav nav-pills flex-column mb-auto">
     <li class="nav-item"><a href="/tastyphv1/Admin/dashboard.php" class="nav-link text-white"><i class="fas fa-home me-2"></i>Dashboard</a></li>
     <li class="nav-item"><a href="/tastyphv1/Admin/includes/applications.php" class="nav-link text-white"><i class="fas fa-users me-2"></i>Users</a></li>
-    <li class="nav-item"><a href="#" class="nav-link text-white"><i class="fas fa-box-open me-2"></i>Products</a></li>
+    <li class="nav-item"><a href="/tastyphv1/Admin/includes/campaigns.php" class="nav-link text-white"><i class="fas fa-box-open me-2"></i>Campaigns</a></li>
     <li class="nav-item"><a href="#" class="nav-link text-white"><i class="fas fa-chart-line me-2"></i>Reports</a></li>
   </ul>
   <hr>

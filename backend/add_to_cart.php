@@ -10,13 +10,15 @@ if (!$userId) {
     exit;
 }
 
+$productId = !empty($_POST['product_id']) ? (int) $_POST['product_id'] : null;
 $ingredientId = !empty($_POST['ingredient_id']) ? (int) $_POST['ingredient_id'] : null;
 $variantId = isset($_POST['variant_id']) && $_POST['variant_id'] !== '' ? (int) $_POST['variant_id'] : null;
 $unitPrice = isset($_POST['unit_price']) ? (float) $_POST['unit_price'] : null;
 $quantity = isset($_POST['quantity']) ? max(1, (int) $_POST['quantity']) : 1;
 $status = 'active';
 
-if (!$ingredientId || !$unitPrice || $quantity <= 0) {
+// Must have either product or ingredient
+if ((!$productId && !$ingredientId) || !$unitPrice || $quantity <= 0) {
     echo json_encode(['success' => false, 'message' => 'Missing or invalid data']);
     exit;
 }
@@ -24,13 +26,16 @@ if (!$ingredientId || !$unitPrice || $quantity <= 0) {
 $totalPrice = $unitPrice * $quantity;
 
 try {
-    // Check if item already exists
+    // Check if item already exists (product or ingredient, not both)
     $checkStmt = $pdo->prepare("
         SELECT cart_id, quantity 
         FROM cart 
-        WHERE user_id = ? AND ingredient_id = ? AND (variant_id <=> ?) AND status = 'active'
+        WHERE user_id = ? 
+          AND " . ($productId ? "product_id = ?" : "ingredient_id = ?") . " 
+          AND (variant_id <=> ?) 
+          AND status = 'active'
     ");
-    $checkStmt->execute([$userId, $ingredientId, $variantId]);
+    $checkStmt->execute([$userId, $productId ?: $ingredientId, $variantId]);
     $existing = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
     if ($existing) {
@@ -44,12 +49,13 @@ try {
     } else {
         $insertStmt = $pdo->prepare("
             INSERT INTO cart (user_id, product_id, ingredient_id, variant_id, unit_price, quantity, total_price, status)
-            VALUES (?, NULL, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $insertStmt->execute([
             $userId,
-            $ingredientId,
-            $variantId, // this can be null
+            $productId, // product_id (can be null)
+            $ingredientId, // ingredient_id (can be null)
+            $variantId, // can be null
             $unitPrice,
             $quantity,
             $totalPrice,

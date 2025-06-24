@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2025 at 05:40 PM
+-- Generation Time: Jun 24, 2025 at 10:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -47,6 +47,96 @@ INSERT INTO `admins` (`id`, `username`, `password`, `email`, `usertype`, `create
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `campaign_clicks`
+--
+
+CREATE TABLE `campaign_clicks` (
+  `click_id` int(11) NOT NULL,
+  `campaign_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `clicked_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `campaign_clicks`
+--
+
+INSERT INTO `campaign_clicks` (`click_id`, `campaign_id`, `user_id`, `ip_address`, `user_agent`, `clicked_at`) VALUES
+(4, 6, 3, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-25 01:22:48'),
+(5, 4, 3, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-25 01:24:19'),
+(6, 4, 3, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-25 01:26:48'),
+(7, 4, 4, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-25 01:27:04'),
+(8, 6, 3, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-25 02:30:43'),
+(9, 5, 4, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-25 04:05:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `campaign_reach`
+--
+
+CREATE TABLE `campaign_reach` (
+  `reach_id` int(11) NOT NULL,
+  `campaign_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `viewed_at` datetime DEFAULT current_timestamp(),
+  `view_date` date GENERATED ALWAYS AS (cast(`viewed_at` as date)) STORED
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `campaign_reach`
+--
+
+INSERT INTO `campaign_reach` (`reach_id`, `campaign_id`, `user_id`, `ip_address`, `viewed_at`) VALUES
+(10, 6, 4, '::1', '2025-06-25 01:10:50'),
+(11, 5, 4, '::1', '2025-06-25 01:10:50'),
+(12, 4, 4, '::1', '2025-06-25 01:10:50'),
+(13, 6, 3, '::1', '2025-06-25 01:22:34'),
+(14, 5, 3, '::1', '2025-06-25 01:22:34'),
+(15, 4, 3, '::1', '2025-06-25 01:22:34'),
+(79, 6, 1, '::1', '2025-06-25 02:04:42'),
+(80, 5, 1, '::1', '2025-06-25 02:04:42'),
+(81, 4, 1, '::1', '2025-06-25 02:04:42');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `campaign_requests`
+--
+
+CREATE TABLE `campaign_requests` (
+  `campaign_id` int(11) NOT NULL,
+  `user_type` enum('seller','supplier') NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `banner_image` varchar(255) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `status` enum('pending','approved','rejected','expired') DEFAULT 'pending',
+  `admin_feedback` text DEFAULT NULL,
+  `fee_paid` decimal(10,2) DEFAULT 0.00,
+  `payment_status` enum('unpaid','paid','failed','refunded') DEFAULT 'unpaid',
+  `payment_method` varchar(50) DEFAULT NULL,
+  `paid_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `campaign_requests`
+--
+
+INSERT INTO `campaign_requests` (`campaign_id`, `user_type`, `user_id`, `title`, `description`, `banner_image`, `start_date`, `end_date`, `status`, `admin_feedback`, `fee_paid`, `payment_status`, `payment_method`, `paid_at`, `created_at`) VALUES
+(4, 'seller', 3, 'Visit Miki\'s Kakanin', '', 'uploads/campaigns/banner_685ac48fe59586.46336310.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:30:23'),
+(5, 'seller', 1, 'Delicious kakanin', '', 'uploads/campaigns/banner_685ac73a45eb29.67489880.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:41:46'),
+(6, 'seller', 4, 'Doll\'s Favorite Kakanin', 'visit!!!', 'uploads/campaigns/banner_685ac80ab5d034.32190593.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:45:14');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cart`
 --
 
@@ -62,13 +152,6 @@ CREATE TABLE `cart` (
   `added_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` enum('active','saved','ordered') DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `ingredient_id`, `variant_id`, `unit_price`, `quantity`, `total_price`, `added_at`, `status`) VALUES
-(106, 1, NULL, 13, NULL, 150.00, 3, 450.00, '2025-06-23 06:26:36', 'active');
 
 -- --------------------------------------------------------
 
@@ -112,7 +195,8 @@ INSERT INTO `categories` (`category_id`, `supplier_id`, `seller_id`, `name`, `sl
 (35, 2, NULL, 'Lumpia Wrapper', 'Lumpia Wrapper', 'Lumpia Wrapper', 'uploads/categories/category_6_1750608211.jpg', 1, '2025-06-23 00:03:31', '2025-06-23 00:03:31'),
 (36, 2, NULL, 'oil', 'oil', 'oil', 'uploads/categories/category_6_1750608349.jpg', 1, '2025-06-23 00:05:49', '2025-06-23 00:05:49'),
 (37, 2, NULL, 'salt', 'Salt', 'salt', 'uploads/categories/category_6_1750620294.jpg', 1, '2025-06-23 03:24:54', '2025-06-23 03:24:54'),
-(45, NULL, 4, 'Turon Specials', 'Turon Specials', 'Turon Specials', 'uploads/categories/category_1_1750662409.jpg', 1, '2025-06-23 15:06:49', '2025-06-23 15:06:49');
+(45, NULL, 4, 'Turon Specials', 'Turon Specials', 'Turon Specials', 'uploads/categories/category_1_1750662409.jpg', 1, '2025-06-23 15:06:49', '2025-06-23 15:06:49'),
+(46, 2, NULL, 'Milk', 'Milk', 'Milk', 'uploads/categories/category_6_1750772189.jpg', 1, '2025-06-24 21:36:29', '2025-06-24 21:36:29');
 
 -- --------------------------------------------------------
 
@@ -135,7 +219,7 @@ CREATE TABLE `cooking_history` (
 
 INSERT INTO `cooking_history` (`history_id`, `product_id`, `user_id`, `stock_created`, `notes`, `created_at`) VALUES
 (1, 5, 1, 6, 'Cooked product via kitchen inventory.', '2025-06-23 20:49:18'),
-(2, 6, 1, 6, 'Cooked product via kitchen inventory.', '2025-06-23 21:24:35');
+(17, 21, 1, 30, 'Cooked product via kitchen inventory.', '2025-06-24 00:24:51');
 
 -- --------------------------------------------------------
 
@@ -162,11 +246,11 @@ INSERT INTO `cooking_history_ingredients` (`id`, `history_id`, `ingredient_id`, 
 (3, 1, 10, 'Jackfruit', 150.00, 'g'),
 (4, 1, 11, 'Lumpia Wrapper', 6.00, 'pcs'),
 (5, 1, 13, 'Oil', 480.00, 'ml'),
-(6, 2, 9, 'Banana', 6.00, 'pcs'),
-(7, 2, 10, 'Jackfruit', 150.00, 'g'),
-(8, 2, 12, 'Sugar', 300.00, 'g'),
-(9, 2, 13, 'Oil', 480.00, 'ml'),
-(10, 2, 11, 'Lumpia Wrapper', 6.00, 'pcs');
+(15, 17, 9, 'Banana', 6.00, 'pcs'),
+(16, 17, 10, 'Jackfruit', 150.00, 'g'),
+(17, 17, 12, 'Sugar', 300.00, 'g'),
+(18, 17, 13, 'Oil', 480.00, 'ml'),
+(19, 17, 11, 'Lumpia Wrapper', 6.00, 'pcs');
 
 -- --------------------------------------------------------
 
@@ -209,7 +293,8 @@ INSERT INTO `ingredients` (`ingredient_id`, `supplier_id`, `category_id`, `ingre
 (10, 2, 22, 'Jackfruit', 'jackfruit', 'Jackfruit 12 kg', 'uploads/ingredients/ingredient_2_1750607182.jpg', 480.00, NULL, 50, 11400.00, 'g', 1, 0.00, '2025-06-22 23:46:22', '2025-06-22 23:46:22'),
 (11, 2, 35, 'Lumpia Wrapper', 'lumpia-wrapper', 'Lumpia Wrapper', 'uploads/ingredients/ingredient_2_1750608245.jpg', 52.00, NULL, 60, 30.00, 'pcs', 1, 0.00, '2025-06-23 00:04:05', '2025-06-23 00:04:05'),
 (12, 2, 34, 'Sugar', 'sugar', 'sugarr 1kg', 'uploads/ingredients/ingredient_2_1750608287.jpg', 116.00, NULL, 50, 1000.00, 'g', 1, 0.00, '2025-06-23 00:04:47', '2025-06-23 00:04:47'),
-(13, 2, 36, 'Oil', 'oil', 'Oil 1kg', 'uploads/ingredients/ingredient_2_1750608386.jpg', 150.00, NULL, 50, 1000.00, 'ml', 1, 0.00, '2025-06-23 00:06:26', '2025-06-23 00:06:26');
+(13, 2, 36, 'Oil', 'oil', 'Oil 1kg', 'uploads/ingredients/ingredient_2_1750608386.jpg', 150.00, NULL, 50, 1000.00, 'ml', 1, 0.00, '2025-06-23 00:06:26', '2025-06-23 00:06:26'),
+(14, 2, 46, 'Milk', 'milk', 'Milk', 'uploads/ingredients/ingredient_2_1750772216.jpg', 150.00, NULL, 30, 1000.00, 'ml', 1, 0.00, '2025-06-24 21:36:56', '2025-06-24 21:36:56');
 
 -- --------------------------------------------------------
 
@@ -236,8 +321,7 @@ CREATE TABLE `ingredients_inventory` (
 --
 
 INSERT INTO `ingredients_inventory` (`inventory_id`, `ingredient_id`, `ingredient_name`, `quantity`, `quantity_value`, `unit_type`, `supplier_id`, `variant_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(57, 13, 'Oil', 0.00, 500.00, 'ml', 2, NULL, 1, '2025-06-23 03:26:20', '2025-06-23 04:13:37'),
-(58, 12, 'Sugar', 1.00, 1400.00, 'g', 2, NULL, 1, '2025-06-23 03:26:20', '2025-06-23 15:24:06');
+(58, 12, 'Sugar', 1.00, 1100.00, 'g', 2, NULL, 1, '2025-06-23 03:26:20', '2025-06-25 03:15:40');
 
 -- --------------------------------------------------------
 
@@ -296,11 +380,11 @@ CREATE TABLE `kitchen_inventory` (
 --
 
 INSERT INTO `kitchen_inventory` (`kitchen_inventory_id`, `ingredient_id`, `ingredient_name`, `quantity`, `quantity_value`, `unit_type`, `supplier_id`, `variant_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(68, 12, 'Sugar', 3.60, 2400.00, 'g', 2, NULL, 1, '2025-06-22 19:12:50', '2025-06-23 13:24:35'),
-(69, 9, 'Banana', 5.09, 37.00, 'pcs', 2, NULL, 1, '2025-06-22 19:28:33', '2025-06-23 13:24:35'),
-(70, 10, 'Jackfruit', 3.01, 33600.00, 'g', 2, NULL, 1, '2025-06-22 20:06:49', '2025-06-23 13:24:35'),
-(71, 11, 'Lumpia Wrapper', 2.98, 66.00, 'pcs', 2, NULL, 1, '2025-06-22 20:10:30', '2025-06-23 13:24:35'),
-(72, 13, 'Oil', 2.50, 580.00, 'ml', 2, NULL, 1, '2025-06-22 20:13:07', '2025-06-23 13:24:35');
+(68, 12, 'Sugar', 3.90, 2070.00, 'g', 2, NULL, 1, '2025-06-22 19:12:50', '2025-06-24 19:15:40'),
+(69, 9, 'Banana', 5.09, 24.00, 'pcs', 2, NULL, 1, '2025-06-22 19:28:33', '2025-06-23 16:24:51'),
+(70, 10, 'Jackfruit', 3.01, 33450.00, 'g', 2, NULL, 1, '2025-06-22 20:06:49', '2025-06-23 16:24:51'),
+(71, 11, 'Lumpia Wrapper', 2.98, 60.00, 'pcs', 2, NULL, 1, '2025-06-22 20:10:30', '2025-06-23 16:24:51'),
+(72, 13, 'Oil', 3.00, 600.00, 'ml', 2, NULL, 1, '2025-06-22 20:13:07', '2025-06-23 16:24:51');
 
 -- --------------------------------------------------------
 
@@ -334,10 +418,11 @@ INSERT INTO `messages` (`message_id`, `sender_id`, `receiver_id`, `message_text`
 (174, 2, 1, 'did you received it?', NULL, NULL, 0, 1, '2025-06-11 22:16:35', NULL),
 (175, 1, 2, 'yurr', NULL, NULL, 0, 1, '2025-06-11 22:16:42', NULL),
 (176, 2, 1, 'd', NULL, NULL, 0, 1, '2025-06-11 22:16:51', NULL),
-(177, 1, 19, 'im out of stock rn but are u still available to wait for 2 days?', NULL, NULL, 0, 0, '2025-06-20 11:58:37', NULL),
+(177, 1, 19, 'im out of stock rn but are u still available to wait for 2 days?', NULL, NULL, 0, 1, '2025-06-20 11:58:37', NULL),
 (178, 3, 1, 'HII I WANTED TO SEE YOU COME HERE IN CEBU', NULL, NULL, 0, 1, '2025-06-23 23:26:04', NULL),
 (179, 1, 3, 'WAIT FR?', NULL, NULL, 0, 1, '2025-06-23 23:26:20', NULL),
-(180, 3, 1, 'YEAH', NULL, NULL, 0, 1, '2025-06-23 23:26:26', NULL);
+(180, 3, 1, 'YEAH', NULL, NULL, 0, 1, '2025-06-23 23:26:26', NULL),
+(181, 4, 1, 'hi', NULL, NULL, 0, 1, '2025-06-25 01:44:15', NULL);
 
 -- --------------------------------------------------------
 
@@ -419,7 +504,8 @@ INSERT INTO `orders` (`order_id`, `user_id`, `supplier_id`, `seller_id`, `paymen
 (28, 1, 2, NULL, 'cash', NULL, 132.00, '2025-06-23 03:06:57', 'delivered', 0),
 (29, 1, 2, NULL, 'cash', NULL, 348.00, '2025-06-23 03:13:50', 'delivered', 0),
 (30, 1, 2, NULL, 'cash', NULL, 2526.00, '2025-06-23 03:26:05', 'delivered', 0),
-(31, 1, 2, NULL, 'cash', NULL, 132.00, '2025-06-23 03:41:55', 'delivered', 0);
+(31, 1, 2, NULL, 'cash', NULL, 132.00, '2025-06-23 03:41:55', 'delivered', 0),
+(32, 1, 2, NULL, 'cash', NULL, 460.00, '2025-06-25 02:47:44', 'pending', 0);
 
 -- --------------------------------------------------------
 
@@ -525,7 +611,9 @@ INSERT INTO `order_items` (`order_item_id`, `order_id`, `product_id`, `ingredien
 (78, 30, NULL, 11, NULL, 3, 52.00, 2, NULL),
 (79, 30, NULL, 13, NULL, 3, 150.00, 2, NULL),
 (80, 30, NULL, 12, NULL, 3, 116.00, 2, NULL),
-(81, 31, NULL, 9, NULL, 3, 44.00, 2, NULL);
+(81, 31, NULL, 9, NULL, 3, 44.00, 2, NULL),
+(82, 32, NULL, 13, NULL, 3, 150.00, 2, NULL),
+(83, 32, NULL, NULL, NULL, 1, 10.00, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -590,7 +678,9 @@ CREATE TABLE `post_comments` (
 --
 
 INSERT INTO `post_comments` (`id`, `post_id`, `user_id`, `comment`, `parent_comment_id`, `created_at`) VALUES
-(23, 36, 1, 'd', NULL, '2025-06-11 06:44:54');
+(23, 36, 1, 'd', NULL, '2025-06-11 06:44:54'),
+(24, 42, 1, 'hi', NULL, '2025-06-24 18:55:41'),
+(25, 43, 1, 'hi', NULL, '2025-06-24 19:07:10');
 
 -- --------------------------------------------------------
 
@@ -636,10 +726,8 @@ CREATE TABLE `post_reactions` (
 --
 
 INSERT INTO `post_reactions` (`id`, `post_id`, `user_id`, `reaction_type`, `created_at`) VALUES
-(28, 40, 2, 'like', '2025-06-05 08:15:28'),
-(29, 41, 2, 'angry', '2025-06-05 08:16:01'),
-(30, 38, 1, 'like', '2025-06-08 03:56:07'),
-(33, 36, 1, 'like', '2025-06-11 06:44:57');
+(35, 42, 1, 'angry', '2025-06-24 19:05:28'),
+(36, 43, 1, 'haha', '2025-06-24 19:10:49');
 
 -- --------------------------------------------------------
 
@@ -747,8 +835,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `slug`, `description`, `image_url`, `ingredient_id`, `seller_id`, `category_id`, `price`, `discount_price`, `stock`, `quantity_value`, `unit_type`, `is_active`, `rating`, `notes`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(5, 'Turon Specials', 'Turon Specials', 'A Delicious Turon', 'uploads/products/1750682958_Turon-Recipe.jpg', NULL, 4, NULL, 6.00, 5.00, 6, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 20:49:18', '2025-06-23 20:49:18'),
-(6, 'Turon version 1', 'Turon Specials', 'asd', 'uploads/products/1750686923_images (33).jpg', NULL, 4, NULL, 7.00, 5.00, 6, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 21:24:35', '2025-06-23 21:59:01');
+(5, 'Turon Specials', 'Turon Specials', 'A Delicious Turon', 'uploads/products/1750682958_Turon-Recipe.jpg', NULL, 4, 45, 6.00, 5.00, 6, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 20:49:18', '2025-06-25 02:09:03'),
+(21, 'Lumpia Version 1', 'lumpia', 'Lami na lumpia', 'uploads/products/1750695891_Turon (1).jpg', NULL, 4, 45, 10.00, 5.00, 30, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-24 00:24:51', '2025-06-25 02:08:50');
 
 -- --------------------------------------------------------
 
@@ -919,7 +1007,8 @@ CREATE TABLE `recipes` (
 --
 
 INSERT INTO `recipes` (`recipe_id`, `user_id`, `title`, `servings`, `prep_time`, `cook_time`, `notes`, `recipe_image`, `created_at`, `updated_at`) VALUES
-(3, 1, 'Turon (Banana Lumpia with Caramel)', 7, '10 minutes', '12 minutes', '', 'uploads/recipes/1750603065_Turon-Recipe.jpg', '2025-06-22 22:37:45', '2025-06-23 01:20:24');
+(3, 1, 'Turon (Banana Lumpia with Caramel)', 7, '10 minutes', '12 minutes', '', 'uploads/recipes/1750603065_Turon-Recipe.jpg', '2025-06-22 22:37:45', '2025-06-23 01:20:24'),
+(4, 1, 'Sapin-Sapin', 8, '20 minutes', '15 minutes', 'Sapin-Sapin is a beloved Filipino rice cake known for its colorful layers and rich, chewy texture. Made from glutinous rice flour, coconut milk, sugar, and flavorings like ube (purple yam) and jackfruit, it’s a sweet treat that’s as beautiful as it is indulgent. A typical serving of sapin-sapin (around 120 grams) contains approximately 280 calories, making it a moderately high-calorie dessert. Most of those calories come from carbohydrates — about 50 grams per serving — primarily from glutinous rice and sugar, including roughly 22 grams of sugars.\r\n\r\nThe dish also provides about 6 grams of fat, with 4 grams being saturated fat, due to the use of coconut milk and latik (coconut curds or topping). Protein content is modest at around 3 grams, and dietary fiber is minimal (about 1 gram), although this can slightly increase depending on how much purple yam or jackfruit is included.\r\n\r\nSodium levels are low (around 30 mg per serving), which is typical of homemade rice cakes that don’t rely on processed ingredients. It also contains small amounts of calcium (3%) and iron (5%) of the recommended daily intake.', 'uploads/recipes/1750694973_hq720.jpg', '2025-06-24 00:09:33', '2025-06-24 00:10:20');
 
 -- --------------------------------------------------------
 
@@ -946,7 +1035,19 @@ INSERT INTO `recipe_ingredients` (`id`, `recipe_id`, `ingredient_name`, `ingredi
 (15, 3, 'jackfruit', NULL, 150.00, 'g', NULL),
 (16, 3, 'Sugar', NULL, 300.00, 'g', NULL),
 (17, 3, 'Oil', NULL, 480.00, 'ml', NULL),
-(18, 3, 'Lumpia Wrapper', NULL, 6.00, 'pcs', NULL);
+(18, 3, 'Lumpia Wrapper', NULL, 6.00, 'pcs', NULL),
+(31, 4, 'Glutinous rice flour', NULL, 240.00, 'g', NULL),
+(32, 4, 'Coconut milk', NULL, 960.00, 'ml', NULL),
+(33, 4, 'Granulated white sugar', NULL, 200.00, 'g', NULL),
+(34, 4, 'Condensed milk', NULL, 200.00, 'ml', NULL),
+(35, 4, 'jackfruit', NULL, 75.00, 'g', NULL),
+(36, 4, 'Mashed purple yam', NULL, 150.00, 'g', NULL),
+(37, 4, 'Vanilla extract', NULL, 2.50, 'ml', NULL),
+(38, 4, 'Ube extract', NULL, 1.25, 'ml', NULL),
+(39, 4, 'Cooking oil', NULL, 15.00, 'ml', NULL),
+(40, 4, 'Violet food coloring', NULL, 2.00, 'ml', NULL),
+(41, 4, 'Yellow food coloring', NULL, 2.00, 'ml', NULL),
+(42, 4, 'Latik', NULL, 50.00, 'g', NULL);
 
 -- --------------------------------------------------------
 
@@ -971,7 +1072,20 @@ INSERT INTO `recipe_steps` (`step_id`, `recipe_id`, `step_number`, `instruction`
 (21, 3, 3, 'Fold and lock the spring roll wrapper, use water to seal the edge'),
 (22, 3, 4, 'In a pan, heat the oil and put-in some sugar.Wait until the brown sugar floats\r\n2 cups cooking oil'),
 (23, 3, 5, 'Put-in the wrapped banana and fry until the wrapper turns golden brown and the extra sugar sticks on wrapper'),
-(24, 3, 6, 'Serve hot as a dessert or snack. Share and Enjoy!');
+(24, 3, 6, 'Serve hot as a dessert or snack. Share and Enjoy!'),
+(38, 4, 1, 'In a large mixing bowl, combine glutinous rice flour and sugar. Mix well.'),
+(39, 4, 2, 'Pour-in the condensed milk, coconut milk, and vanilla extract. Mix until the texture becomes smooth.'),
+(40, 4, 3, 'Divide the mixture into 3 parts.'),
+(41, 4, 4, 'Add the mashed purple yam and ube extract on the first part along with the violet food coloring. Stir thoroughly and then set aside.'),
+(42, 4, 5, 'Shred the jackfruit (without the seed) in a food processor. Add the processed jackfruit on the second part along with the yellow coloring and then mix well. Set aside. Note: leave the 3rd part as it is.'),
+(43, 4, 6, 'Arrange the steamer on your stovetop and pour-in about 1 quart of water. Turn on the heat and let the water boil.'),
+(44, 4, 7, 'Grease a round baking pan by brushing cooking oil or coconut oil.'),
+(45, 4, 8, 'Pour-in the first part (colored violet) on the greased baking pan. Make sure that the mixture settles. Cover the baking pan with a cheesecloth and then steam for 12 to 16 minutes.'),
+(46, 4, 9, 'Remove the baking pan and then pour-in the white mixture. Use a spatula to spread it on top of the violet mixture. Remove excess water from the cheesecloth by squeezing it. Put it back on the baking pan. Steam for another 12 to 16 minutes.'),
+(47, 4, 10, 'Remove the baking pan from the steamer and then pour-in the yellow mixture. Spread the mixture over the succeeding one using a spatula. Try to remove the excess water again from the cloth and then put it back on the baking pan. Steam for 15 to 20 minutes. Note: If you think that the mixture is still a bit runny, try to steam for 5 minutes more.'),
+(48, 4, 11, 'Arrange a clean banana leaf over a wide serving plate. Brush coconut or cooking oil on the leaf. Use a spatula (brushed with oil) and gently run on the side of the baking pan to prevent the mixture from sticking. Turn the baking pan over the banana leaf and let the cooked sapin-sapin fall.'),
+(49, 4, 12, 'Brush oil on top of the sapin-sapin (the violet part should be on top). Sprinkle with latik.'),
+(50, 4, 13, 'Serve for dessert. Share and enjoy!');
 
 -- --------------------------------------------------------
 
@@ -1009,6 +1123,71 @@ INSERT INTO `seller_applications` (`seller_id`, `user_id`, `business_name`, `des
 (4, 1, 'Aaron\'s kakanin', 'asd', 'Bato-Kilate-Tagurano Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines', 7.0315146, 125.4782009, 'Bato-Kilate-Tagurano Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines', 'permit_1748690751_683ae73f22ccb.jpg', 'health_1748690751_683ae73f22fe3.jpg', '2025-05-31 19:25:51', 'approved', 'uploads/seller/profile_1_1748758548.jpg', 3, '2025-06-04 15:22:03', NULL, 'active', 1, 'uploads/seller/cover_1_1748758217.png'),
 (5, 3, 'Miki\'s Delicious Kakanin', 'i love you', 'Salsa Village, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', 7.0191200, 125.4927063, 'Salsa Village, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', 'permit_1748790776_683c6df8c2a5d.png', 'health_1748790776_683c6df8c2da7.jpg', '2025-06-01 23:12:56', 'approved', 'uploads/seller/profile_3_1748790960.jpg', 3, '2025-06-01 23:13:33', NULL, 'active', 1, 'uploads/seller/cover_3_1749783757.jpg'),
 (6, 4, 'Dollrain', 'Rare ingredient', 'West Poblacion, Tubig-Dacu, Alburquerque, Bohol, Central Visayas, 6302, Philippines', 9.6119884, 123.9585574, 'West Poblacion, Tubig-Dacu, Alburquerque, Bohol, Central Visayas, 6302, Philippines', 'permit_1749739806_684ae91e6d3df.jpg', 'health_1749739806_684ae91e6d725.jpg', '2025-06-12 22:50:06', 'approved', 'uploads/seller/profile_4_1749739885.jpg', 3, '2025-06-12 22:50:38', NULL, 'active', 1, 'uploads/seller/cover_4_1749739893.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `store_visits`
+--
+
+CREATE TABLE `store_visits` (
+  `visit_id` int(11) NOT NULL,
+  `store_type` enum('seller','supplier') NOT NULL,
+  `store_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `visited_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `store_visits`
+--
+
+INSERT INTO `store_visits` (`visit_id`, `store_type`, `store_id`, `user_id`, `ip_address`, `visited_at`) VALUES
+(1, 'supplier', 1, 4, '::1', '2025-06-25 01:33:50'),
+(2, 'seller', 4, 4, '::1', '2025-06-25 01:34:05'),
+(3, 'seller', 6, 4, '::1', '2025-06-25 01:34:45'),
+(4, 'supplier', 1, 4, '::1', '2025-06-25 01:38:13'),
+(5, 'supplier', 1, 4, '::1', '2025-06-25 01:38:29'),
+(6, 'supplier', 1, 4, '::1', '2025-06-25 01:39:11'),
+(7, 'seller', 4, 4, '::1', '2025-06-25 01:43:26'),
+(8, 'seller', 4, 4, '::1', '2025-06-25 01:47:08'),
+(9, 'seller', 4, 4, '::1', '2025-06-25 01:47:25'),
+(10, 'seller', 4, 4, '::1', '2025-06-25 01:48:55'),
+(11, 'seller', 4, 4, '::1', '2025-06-25 01:50:28'),
+(12, 'seller', 4, 4, '::1', '2025-06-25 01:52:30'),
+(13, 'seller', 4, 4, '::1', '2025-06-25 01:52:31'),
+(14, 'seller', 4, 4, '::1', '2025-06-25 01:52:41'),
+(15, 'seller', 4, 4, '::1', '2025-06-25 01:53:18'),
+(16, 'seller', 4, 4, '::1', '2025-06-25 01:53:53'),
+(17, 'seller', 4, 4, '::1', '2025-06-25 01:54:30'),
+(18, 'seller', 4, 4, '::1', '2025-06-25 01:54:31'),
+(19, 'seller', 4, 4, '::1', '2025-06-25 01:54:57'),
+(20, 'seller', 4, 4, '::1', '2025-06-25 01:55:06'),
+(21, 'seller', 4, 4, '::1', '2025-06-25 01:55:47'),
+(22, 'seller', 4, 4, '::1', '2025-06-25 01:56:11'),
+(23, 'seller', 4, 4, '::1', '2025-06-25 01:56:39'),
+(24, 'supplier', 1, 4, '::1', '2025-06-25 01:58:53'),
+(25, 'seller', 4, 4, '::1', '2025-06-25 01:59:40'),
+(26, 'seller', 4, 4, '::1', '2025-06-25 01:59:45'),
+(27, 'seller', 4, 4, '::1', '2025-06-25 02:02:11'),
+(28, 'seller', 4, 4, '::1', '2025-06-25 02:02:16'),
+(29, 'seller', 4, 4, '::1', '2025-06-25 02:02:20'),
+(30, 'seller', 4, 4, '::1', '2025-06-25 02:02:29'),
+(31, 'seller', 4, 4, '::1', '2025-06-25 02:03:42'),
+(32, 'seller', 4, 4, '::1', '2025-06-25 02:03:47'),
+(33, 'seller', 4, 1, '::1', '2025-06-25 02:09:10'),
+(34, 'seller', 4, 1, '::1', '2025-06-25 02:09:23'),
+(35, 'supplier', 2, 1, '::1', '2025-06-25 02:11:30'),
+(36, 'seller', 4, 1, '::1', '2025-06-25 02:11:42'),
+(37, 'seller', 4, 1, '::1', '2025-06-25 02:11:58'),
+(38, 'seller', 4, 1, '::1', '2025-06-25 02:12:18'),
+(39, 'seller', 4, 1, '::1', '2025-06-25 02:26:03'),
+(40, 'seller', 6, 3, '::1', '2025-06-25 02:30:43'),
+(41, 'seller', 4, 1, '::1', '2025-06-25 03:14:08'),
+(42, 'supplier', 1, 1, '::1', '2025-06-25 03:14:21'),
+(43, 'seller', 4, 1, '::1', '2025-06-25 03:31:09'),
+(44, 'seller', 4, 4, '::1', '2025-06-25 04:05:21');
 
 -- --------------------------------------------------------
 
@@ -1084,8 +1263,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `contact_number`, `country_id`, `postal_code`, `streetname`, `email`, `password`, `usertype`, `profile_pics`, `cover_photo`, `latitude`, `longitude`, `gender`, `status`, `is_public`, `created_at`, `updated_at`, `full_address`) VALUES
 (1, 'aaronyaaa', '', 'jhon', '2025-05-06', '09294999087', NULL, '8000', 'Bayabas-Eden Road, Purok 9', 'aaron@gmail.com', '$2y$10$WwPlm2wTHoSR5xHKV0DVU.80lg9f.ghvuQ2O3tdpbDBGERf8/xVsC', 'seller', 'uploads/profile_pics/profile_1_1748532349.jpg', 'uploads/users/cover/cover_1_1749454267.jpg', 7.0272297, 125.4845438, 'male', 'online', 1, '2025-05-23 06:04:51', '2025-06-09 07:31:07', 'Bayabas-Eden Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines'),
 (2, 'Kurumi', 'L', 'Tokisaki', '2025-05-02', '09294999233', NULL, '8025', 'MacArthur Highway, Salsa Village', 'aa@gmail.com', '$2y$10$yeg8BacZduR3o14Q90B67er68kPftTlZjIGaCtskjW1aO1cz461NC', 'supplier', 'uploads/users/profile/profile_2_1749111714.jpg', 'uploads/users/cover/cover_2_1749111686.jpg', 7.0142131, 125.4900896, 'female', 'online', 1, '2025-05-23 07:19:14', '2025-06-09 07:27:02', 'MacArthur Highway, Salsa Village, Lizada, Toril District, Davao City, Davao Region, 8025, Philippines'),
-(3, 'Miki', '', 'Frenchfriieess', '2025-01-16', '09294999087', NULL, '8022', 'Adelfa Street', 'miki@gmail.com', '$2y$10$8X0tfv7wMTSD6bNqFhSOBuEZLF/V6VLvy5HQIX7wfnxqEy67srdFe', 'seller', 'uploads/profile_pics/profile_3_1748790899.jpg', NULL, 7.0946580, 125.4973172, 'female', 'offline', 0, '2025-06-01 15:10:13', '2025-06-04 07:43:47', 'Adelfa Street, Purok 1, Santo Niño, Tugbok District, Davao City, Davao Region, 8022, Philippines'),
-(4, 'Darlyn', NULL, 'Dollrain', NULL, '', NULL, NULL, NULL, 'doll@gmail.com', '$2y$10$MhKI5eRxo9R2Xq3xs8gGiOWJB/MgV0996O3YyJWB3Jwx5HgyCqxQ.', 'seller', 'uploads/users/profile/profile_4_1749739508.jpg', 'uploads/users/cover/cover_4_1749739515.jpg', NULL, NULL, NULL, 'offline', 0, '2025-06-02 18:54:48', '2025-06-12 14:50:38', NULL),
+(3, 'Miki', '', 'Frenchfriieess', '2025-01-16', '09294999087', NULL, '8022', 'Adelfa Street', 'miki@gmail.com', '$2y$10$8X0tfv7wMTSD6bNqFhSOBuEZLF/V6VLvy5HQIX7wfnxqEy67srdFe', 'seller', 'uploads/profile_pics/profile_3_1748790899.jpg', NULL, 7.0946580, 125.4973172, 'female', 'online', 0, '2025-06-01 15:10:13', '2025-06-24 15:32:06', 'Adelfa Street, Purok 1, Santo Niño, Tugbok District, Davao City, Davao Region, 8022, Philippines'),
+(4, 'Darlyn', '', 'Dollrain', '0000-00-00', '', NULL, '8000', 'Purok 15', 'doll@gmail.com', '$2y$10$MhKI5eRxo9R2Xq3xs8gGiOWJB/MgV0996O3YyJWB3Jwx5HgyCqxQ.', 'seller', 'uploads/users/profile/profile_4_1749739508.jpg', 'uploads/users/cover/cover_4_1749739515.jpg', 7.0284256, 125.4853401, '', 'online', 0, '2025-06-02 18:54:48', '2025-06-24 18:31:18', 'Purok 15, Bato, Toril District, Davao City, Davao Region, 8000, Philippines'),
 (6, 'Catare', NULL, 'Tamago', NULL, '', NULL, NULL, NULL, 'catare@gmail.com', '$2y$10$22XDXPmNspJBVTmvRNGKiefsovR.QtSRxvK9ALwPQQkFNqAeYGLMa', 'supplier', 'uploads/users/profile/profile_6_1749740347.jpg', 'uploads/users/cover/cover_6_1749740353.jpg', NULL, NULL, NULL, 'offline', 0, '2025-06-12 14:55:41', '2025-06-12 14:59:13', NULL),
 (12, 'dsa', NULL, 'dsa', NULL, '', NULL, NULL, NULL, 'dsa@gmail.com', '$2y$10$xCZCAkruyrWBT4yyUYws3.WgmOLVK5HWqG99teQ1W3ei0opL5XcK2', 'user', 'path/to/default/profile/pic.jpg', NULL, NULL, NULL, NULL, 'offline', 0, '2025-06-16 11:54:17', '2025-06-16 11:54:17', NULL),
 (13, '213', NULL, '123', NULL, '', NULL, NULL, NULL, '123@gmail.com', '$2y$10$BbsAhmyyPQBdCSWtRCYuzugKZVpxsYDCXmCdVEJCkFXlujB0xaEFi', 'user', 'path/to/default/profile/pic.jpg', NULL, NULL, NULL, NULL, 'offline', 0, '2025-06-16 11:54:41', '2025-06-16 11:54:41', NULL),
@@ -1104,6 +1283,29 @@ INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_bi
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indexes for table `campaign_clicks`
+--
+ALTER TABLE `campaign_clicks`
+  ADD PRIMARY KEY (`click_id`),
+  ADD KEY `campaign_id` (`campaign_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `campaign_reach`
+--
+ALTER TABLE `campaign_reach`
+  ADD PRIMARY KEY (`reach_id`),
+  ADD UNIQUE KEY `unique_reach` (`campaign_id`,`user_id`,`view_date`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `campaign_requests`
+--
+ALTER TABLE `campaign_requests`
+  ADD PRIMARY KEY (`campaign_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `cart`
@@ -1316,6 +1518,14 @@ ALTER TABLE `seller_applications`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `store_visits`
+--
+ALTER TABLE `store_visits`
+  ADD PRIMARY KEY (`visit_id`),
+  ADD KEY `store_type` (`store_type`,`store_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `supplier_applications`
 --
 ALTER TABLE `supplier_applications`
@@ -1341,34 +1551,52 @@ ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `campaign_clicks`
+--
+ALTER TABLE `campaign_clicks`
+  MODIFY `click_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `campaign_reach`
+--
+ALTER TABLE `campaign_reach`
+  MODIFY `reach_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=268;
+
+--
+-- AUTO_INCREMENT for table `campaign_requests`
+--
+ALTER TABLE `campaign_requests`
+  MODIFY `campaign_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `cooking_history`
 --
 ALTER TABLE `cooking_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `cooking_history_ingredients`
 --
 ALTER TABLE `cooking_history_ingredients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `ingredients`
 --
 ALTER TABLE `ingredients`
-  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `ingredients_inventory`
@@ -1392,7 +1620,7 @@ ALTER TABLE `kitchen_inventory`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -1404,13 +1632,13 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -1422,7 +1650,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `post_comments`
 --
 ALTER TABLE `post_comments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `post_media`
@@ -1434,7 +1662,7 @@ ALTER TABLE `post_media`
 -- AUTO_INCREMENT for table `post_reactions`
 --
 ALTER TABLE `post_reactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `post_shares`
@@ -1458,7 +1686,7 @@ ALTER TABLE `pre_order_list`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `receipts`
@@ -1476,25 +1704,31 @@ ALTER TABLE `receipt_item`
 -- AUTO_INCREMENT for table `recipes`
 --
 ALTER TABLE `recipes`
-  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `recipe_ingredients`
 --
 ALTER TABLE `recipe_ingredients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `recipe_steps`
 --
 ALTER TABLE `recipe_steps`
-  MODIFY `step_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `step_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `seller_applications`
 --
 ALTER TABLE `seller_applications`
   MODIFY `seller_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `store_visits`
+--
+ALTER TABLE `store_visits`
+  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `supplier_applications`
@@ -1511,6 +1745,26 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `campaign_clicks`
+--
+ALTER TABLE `campaign_clicks`
+  ADD CONSTRAINT `campaign_clicks_ibfk_1` FOREIGN KEY (`campaign_id`) REFERENCES `campaign_requests` (`campaign_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `campaign_clicks_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `campaign_reach`
+--
+ALTER TABLE `campaign_reach`
+  ADD CONSTRAINT `campaign_reach_ibfk_1` FOREIGN KEY (`campaign_id`) REFERENCES `campaign_requests` (`campaign_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `campaign_reach_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `campaign_requests`
+--
+ALTER TABLE `campaign_requests`
+  ADD CONSTRAINT `campaign_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `cart`

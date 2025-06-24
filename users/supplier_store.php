@@ -1,6 +1,17 @@
-<?php require_once '../backend/logic_supplier_store.php'; ?>
+<?php
+require_once '../database/db_connect.php';
+require_once '../database/session.php';
 
+$supplier_id = $_GET['supplier_id'] ?? null;
+$user_id = $_SESSION['user']['id'] ?? null;
+$ip = $_SERVER['REMOTE_ADDR'] ?? null;
 
+if ($supplier_id) {
+    $stmt = $pdo->prepare("INSERT INTO store_visits (store_type, store_id, user_id, ip_address) VALUES ('supplier', ?, ?, ?)");
+    $stmt->execute([$supplier_id, $user_id, $ip]);
+}
+require_once '../backend/logic_supplier_store.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
