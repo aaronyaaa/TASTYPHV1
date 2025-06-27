@@ -40,7 +40,7 @@ function generateSidebarContent(data) {
       </div>`;
   } else if (data.status === 'approved') {
     actions = `
-      <button class="btn btn-warning btn-sm" onclick="handleStatusUpdate(${data.pre_order_id}, 'delivered')">Mark as Delivered</button>`;
+      <button class="btn btn-warning btn-sm" onclick="openProductListModal(${data.seller_id}, ${data.pre_order_id})">Send Products</button>`;
   }
 
   const chatBtn = `
@@ -166,7 +166,6 @@ document.getElementById('declineForm').addEventListener('submit', function (e) {
   updateOrderStatus(orderId, 'declined', reason);
 });
 
-// ✅ Enable chat open from sidebar
 document.addEventListener('click', function (e) {
   const btn = e.target.closest('.open-chat-from-sidebar');
   if (btn) {
@@ -188,3 +187,86 @@ document.addEventListener('click', function (e) {
     }
   }
 });
+
+let selectedOrderId = null;
+
+function openProductListModal(sellerId, orderId) {
+  selectedOrderId = orderId;
+  fetch(`../backend/get_products.php?seller_id=${sellerId}`)
+    .then(res => res.json())
+    .then(products => {
+      const container = document.getElementById('productListContainer');
+      if (!products.length) {
+        container.innerHTML = '<tr><td colspan="4" class="text-muted text-center">No products available.</td></tr>';
+        return;
+      }
+
+      container.innerHTML = products.map((p, i) => `
+        <tr>
+          <td>
+            <input type="checkbox" class="form-check-input" name="product_ids" value="${p.product_id}" id="product${p.product_id}">
+          </td>
+          <td>
+            <label class="form-label mb-0" for="product${p.product_id}">${p.product_name}</label>
+          </td>
+          <td>${p.stock}</td>
+          <td>
+            <input type="number" name="quantity_${p.product_id}" class="form-control form-control-sm" min="1" max="${p.stock}" placeholder="0" disabled>
+          </td>
+        </tr>
+      `).join('');
+
+      // Enable quantity input only when checkbox is checked
+      container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+          const qtyInput = this.closest('tr').querySelector('input[type="number"]');
+          qtyInput.disabled = !this.checked;
+        });
+      });
+
+      const modal = new bootstrap.Modal(document.getElementById('productListModal'));
+      modal.show();
+    });
+}
+
+
+function confirmDelivery() {
+  const selectedRows = Array.from(document.querySelectorAll('#productListContainer tr')).filter(row =>
+    row.querySelector('input[type="checkbox"]').checked
+  );
+
+  if (!selectedRows.length) return alert('Please select at least one product.');
+
+  const productsToSend = selectedRows.map(row => {
+    const productId = row.querySelector('input[type="checkbox"]').value;
+    const qty = parseInt(row.querySelector('input[type="number"]').value || '0');
+    return { product_id: productId, quantity: qty };
+  });
+
+  if (productsToSend.some(p => !p.quantity || p.quantity <= 0)) {
+    return alert('Please enter a valid quantity for each selected product.');
+  }
+
+  fetch('../backend/product_inventory_log.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      order_id: selectedOrderId,
+      products: productsToSend
+    })
+  })
+    .then(res => res.json())
+    .then(result => {
+      if (result.success) {
+        updateOrderStatus(selectedOrderId, 'delivered');
+        bootstrap.Modal.getInstance(document.getElementById('productListModal')).hide();
+      } else {
+        alert('Inventory logging failed: ' + (result.error || 'Unknown error'));
+      }
+    })
+    .catch(err => {
+      console.error('Fetch error:', err);
+      alert('Something went wrong. Please try again.');
+    });
+}
+

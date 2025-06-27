@@ -86,7 +86,7 @@ foreach ($campaigns as $camp) {
   <?php if (!empty($campaigns)): ?>
     <div id="campaignCarousel" class="carousel slide mb-5"
       data-bs-ride="carousel"
-      data-bs-interval="3000"
+      data-bs-interval="2500"
       data-bs-pause="false">
       <div class="carousel-inner">
         <?php foreach ($campaigns as $index => $camp): ?>

@@ -126,12 +126,53 @@ foreach ($orders as $order) {
   </div>
 </div>
 
+
+    <script src="../assets/js/order.js"></script>
+
+<div class="modal fade" id="productListModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">📦 Select Products to Deliver</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-3">
+          Choose which products to include and specify how many units to deliver.
+        </p>
+        <form id="productSelectionForm">
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Product Name</th>
+                  <th scope="col">Available Stock</th>
+                  <th scope="col">Deliver Quantity</th>
+                </tr>
+              </thead>
+              <tbody id="productListContainer">
+                <!-- JavaScript will populate this -->
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="confirmDelivery()">Confirm Delivery</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="../assets/js/order.js"></script>
 
     
 </body>
