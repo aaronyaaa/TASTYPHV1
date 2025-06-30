@@ -35,8 +35,38 @@ function prioritizeNearby($items, $area)
 [$nearbyStores, $otherStores] = prioritizeNearby($allStores, $matchedArea);
 [$nearbySuppliers, $otherSuppliers] = prioritizeNearby($allSuppliers, $matchedArea);
 
-$ingredients = $pdo->query("SELECT * FROM ingredients WHERE is_active = 1 ORDER BY created_at DESC LIMIT 12")->fetchAll(PDO::FETCH_ASSOC);
-$products = $pdo->query("SELECT * FROM products WHERE is_active = 1 ORDER BY created_at DESC LIMIT 12")->fetchAll(PDO::FETCH_ASSOC);
+$products = $pdo->query("
+  SELECT p.*, 
+    (
+      SELECT COALESCE(SUM(oi.quantity), 0)
+      FROM order_items oi
+      JOIN orders o ON o.order_id = oi.order_id AND o.status = 'delivered'
+      WHERE oi.product_id = p.product_id
+    ) + (
+      SELECT COALESCE(SUM(pi.quantity), 0)
+      FROM product_inventory pi
+      WHERE pi.product_id = p.product_id AND pi.activity_type = 'delivery'
+    ) AS total_sold
+  FROM products p
+  WHERE p.is_active = 1
+  ORDER BY p.created_at DESC
+  LIMIT 12
+")->fetchAll(PDO::FETCH_ASSOC);
+
+$ingredients = $pdo->query("
+  SELECT i.*, 
+    (
+      SELECT COALESCE(SUM(oi.quantity), 0)
+      FROM order_items oi
+      JOIN orders o ON o.order_id = oi.order_id AND o.status = 'delivered'
+      WHERE oi.ingredient_id = i.ingredient_id
+    ) AS total_sold
+  FROM ingredients i
+  WHERE i.is_active = 1
+  ORDER BY i.created_at DESC
+  LIMIT 12
+")->fetchAll(PDO::FETCH_ASSOC);
+
 
 // Name Maps
 $supplierMap = $pdo->query("SELECT supplier_id, business_name FROM supplier_applications")->fetchAll(PDO::FETCH_KEY_PAIR);
@@ -58,6 +88,38 @@ foreach ($campaigns as $camp) {
   }
 }
 
+$topProducts = $pdo->query("
+    SELECT p.product_id, p.product_name, p.image_url, p.price, p.seller_id, 
+           COALESCE(SUM(oi.quantity), 0) + COALESCE(SUM(pi.quantity), 0) AS total_sold
+    FROM products p
+    LEFT JOIN order_items oi ON oi.product_id = p.product_id
+    LEFT JOIN orders o ON o.order_id = oi.order_id AND o.status = 'delivered'
+    LEFT JOIN product_inventory pi ON pi.product_id = p.product_id AND pi.activity_type = 'delivery'
+    GROUP BY p.product_id
+    ORDER BY total_sold DESC
+")->fetchAll(PDO::FETCH_ASSOC);
+
+// Only include if there's at least 1 actual sale
+$topProducts = array_filter($topProducts, function ($p) {
+  return (int)$p['total_sold'] > 0;
+});
+$topProducts = array_values($topProducts);
+
+
+$topIngredients = $pdo->query("
+    SELECT i.ingredient_id, i.ingredient_name, i.image_url, i.price, i.supplier_id,
+           COALESCE(SUM(oi.quantity), 0) AS total_sold
+    FROM ingredients i
+    LEFT JOIN order_items oi ON oi.ingredient_id = i.ingredient_id
+    LEFT JOIN orders o ON o.order_id = oi.order_id AND o.status = 'delivered'
+    GROUP BY i.ingredient_id
+    ORDER BY total_sold DESC
+")->fetchAll(PDO::FETCH_ASSOC);
+
+$topIngredients = array_filter($topIngredients, function ($i) {
+  return (int)$i['total_sold'] > 0;
+});
+$topIngredients = array_values($topIngredients);
 ?>
 
 <!DOCTYPE html>
@@ -72,6 +134,7 @@ foreach ($campaigns as $camp) {
   <link rel="stylesheet" href="../assets/css/public_stores.css">
   <link rel="stylesheet" href="../assets/css/marketplace.css">
   <link rel="stylesheet" href="../assets/css/campaigns.css">
+  <link rel="stylesheet" href="../assets/css/best.css">
 
 </head>
 
@@ -151,12 +214,87 @@ foreach ($campaigns as $camp) {
   </button>
 
 
+  <section class="public-stores my-5 px-3">
+    <h2 class="mb-4">🔥 Best Sellers</h2>
+
+    <!-- Top Selling Products -->
+    <h4 class="mb-3">Top Selling Products</h4>
+    <div class="best-sale-scroll">
+      <?php foreach ($topProducts as $index => $product): ?>
+        <?php
+        $rankClass = match ($index) {
+          0 => 'top-rank-1',
+          1 => 'top-rank-2',
+          2 => 'top-rank-3',
+          default => ''
+        };
+        ?>
+        <div class="best-product-card <?= $rankClass ?>">
+          <a href="../users/product_page.php?product_id=<?= $product['product_id'] ?>" class="text-decoration-none text-dark">
+            <div class="card shadow-sm border-0 position-relative">
+              <?php if ($index < 3): ?>
+                <div class="circle-rank-badge rank-<?= $index + 1 ?>">
+                  <?= $index + 1 ?>
+                </div>
+              <?php endif; ?>
+              <div class="image-wrapper">
+                <img src="<?= !empty($product['image_url']) ? '../' . htmlspecialchars($product['image_url']) : '../assets/images/default-category.png' ?>" alt="<?= htmlspecialchars($product['product_name']) ?>">
+              </div>
+              <div class="card-body">
+                <h6 class="mb-1 fw-semibold"><?= htmlspecialchars($product['product_name']) ?></h6>
+                <small class="text-muted d-block mb-1">By <?= htmlspecialchars($sellerMap[$product['seller_id']] ?? 'Unknown Seller') ?></small>
+                <span class="text-success fw-bold">₱<?= number_format($product['price'], 2) ?></span><br>
+                <small class="text-muted">Sold: <?= $product['total_sold'] ?></small>
+              </div>
+            </div>
+          </a>
+        </div>
+      <?php endforeach; ?>
+    </div>
+
+    <!-- Top Selling Ingredients -->
+    <h4 class="mb-3 mt-4">Top Selling Ingredients</h4>
+    <div class="best-sale-scroll">
+      <?php foreach ($topIngredients as $index => $ingredient): ?>
+        <?php
+        $rankClass = match ($index) {
+          0 => 'top-rank-1',
+          1 => 'top-rank-2',
+          2 => 'top-rank-3',
+          default => ''
+        };
+        ?>
+        <div class="best-ingredient-card <?= $rankClass ?>">
+          <a href="../users/ingredient_page.php?ingredient_id=<?= $ingredient['ingredient_id'] ?>" class="text-decoration-none text-dark">
+            <div class="card shadow-sm border-0 position-relative">
+              <?php if ($index < 3): ?>
+                <div class="circle-rank-badge rank-<?= $index + 1 ?>">
+                  <?= $index + 1 ?>
+                </div>
+              <?php endif; ?>
+              <div class="image-wrapper">
+                <img src="<?= !empty($ingredient['image_url']) ? '../' . htmlspecialchars($ingredient['image_url']) : '../assets/images/default-category.png' ?>" alt="<?= htmlspecialchars($ingredient['ingredient_name']) ?>">
+              </div>
+              <div class="card-body">
+                <h6 class="mb-1 fw-semibold"><?= htmlspecialchars($ingredient['ingredient_name']) ?></h6>
+                <small class="text-muted d-block mb-1">From <?= htmlspecialchars($supplierMap[$ingredient['supplier_id']] ?? 'Unknown Supplier') ?></small>
+                <span class="text-success fw-bold">₱<?= number_format($ingredient['price'], 2) ?></span><br>
+                <small class="text-muted">Sold: <?= $ingredient['total_sold'] ?></small>
+              </div>
+            </div>
+          </a>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </section>
 
 
 
 
 
-  <!-- Marketplace – Products -->
+
+
+  <!-- Marketplace – Homemade Products -->
   <section class="public-stores my-5 px-3">
     <h2 class="mb-4">Marketplace – Homemade Products</h2>
     <?php if (empty($products)): ?>
@@ -172,6 +310,7 @@ foreach ($campaigns as $camp) {
                 <h5 class="ingredient-title"><?= htmlspecialchars($product['product_name']) ?></h5>
                 <p class="ingredient-description">Product by <?= htmlspecialchars($sellerMap[$product['seller_id']] ?? 'Unknown Seller') ?></p>
                 <p class="price-tag mb-0">₱<?= number_format($product['price'], 2) ?></p>
+                <small class="text-muted">Sold: <?= $product['total_sold'] ?? 0 ?></small>
               </div>
             </div>
           </a>
@@ -179,6 +318,7 @@ foreach ($campaigns as $camp) {
       <?php endforeach; ?>
     </div>
   </section>
+
 
 
   <!-- Public Stores -->
@@ -227,6 +367,7 @@ foreach ($campaigns as $camp) {
                 <h5 class="ingredient-title"><?= htmlspecialchars($ingredient['ingredient_name']) ?></h5>
                 <p class="ingredient-description">Ingredient from <?= htmlspecialchars($supplierMap[$ingredient['supplier_id']] ?? 'Unknown Supplier') ?></p>
                 <p class="price-tag mb-0">₱<?= number_format($ingredient['price'], 2) ?></p>
+                <small class="text-muted">Sold: <?= $ingredient['total_sold'] ?? 0 ?></small>
               </div>
             </div>
           </a>
@@ -234,6 +375,7 @@ foreach ($campaigns as $camp) {
       <?php endforeach; ?>
     </div>
   </section>
+
 
 
 

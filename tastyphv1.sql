@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 27, 2025 at 10:59 AM
+-- Generation Time: Jun 30, 2025 at 08:56 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -80,7 +80,8 @@ INSERT INTO `campaign_clicks` (`click_id`, `campaign_id`, `user_id`, `ip_address
 (17, 5, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-26 15:12:55'),
 (18, 4, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-27 15:55:07'),
 (19, 6, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-27 15:55:13'),
-(20, 5, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-27 15:55:22');
+(20, 5, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36', '2025-06-27 15:55:22'),
+(21, 7, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', '2025-06-28 02:19:09');
 
 -- --------------------------------------------------------
 
@@ -123,7 +124,14 @@ INSERT INTO `campaign_reach` (`reach_id`, `campaign_id`, `user_id`, `ip_address`
 (476, 6, 6, '::1', '2025-06-27 15:57:11'),
 (477, 5, 6, '::1', '2025-06-27 15:57:11'),
 (478, 4, 6, '::1', '2025-06-27 15:57:11'),
-(509, 7, 1, '::1', '2025-06-27 16:46:01');
+(509, 7, 1, '::1', '2025-06-27 16:46:01'),
+(528, 7, 1, '::1', '2025-06-28 01:14:13'),
+(529, 6, 1, '::1', '2025-06-28 01:14:13'),
+(530, 5, 1, '::1', '2025-06-28 01:14:13'),
+(531, 4, 1, '::1', '2025-06-28 01:14:13'),
+(604, 6, 1, '::1', '2025-06-30 14:32:27'),
+(605, 5, 1, '::1', '2025-06-30 14:32:27'),
+(606, 4, 1, '::1', '2025-06-30 14:32:27');
 
 -- --------------------------------------------------------
 
@@ -386,6 +394,108 @@ INSERT INTO `ingredient_variants` (`variant_id`, `ingredient_id`, `supplier_id`,
 (1, 1, 1, '213', 123.00, 123.00, 123, 123.00, 'kg', 'uploads/variants/variant_1_1748809709.jpg', 1, 0.00, '2025-06-02 04:28:29', '2025-06-02 04:28:29'),
 (2, 1, 1, '123', 213.00, 123.00, 123, 123.00, 'g', 'uploads/variants/variant_1_1748812068.jpg', 1, 0.00, '2025-06-02 05:07:48', '2025-06-02 05:07:48'),
 (3, 13, 2, 'Oil', 100.00, 99.00, 50, 500.00, 'g', 'uploads/variants/variant_2_1750614570.jpg', 1, 0.00, '2025-06-23 01:49:30', '2025-06-23 01:49:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kakanin_dataset`
+--
+
+CREATE TABLE `kakanin_dataset` (
+  `id` int(11) NOT NULL,
+  `recipe_title` varchar(255) NOT NULL,
+  `steps` text DEFAULT NULL,
+  `servings` int(11) DEFAULT NULL,
+  `prep_time` varchar(50) DEFAULT NULL,
+  `cook_time` varchar(50) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `kakanin_dataset`
+--
+
+INSERT INTO `kakanin_dataset` (`id`, `recipe_title`, `steps`, `servings`, `prep_time`, `cook_time`, `notes`, `created_at`) VALUES
+(1, 'Turon', '1. Coat banana with sugar. 2. Wrap in lumpia wrapper with jackfruit. 3. Fry in oil until golden.', 6, '10 minutes', '15 minutes', 'Sweet banana rolls wrapped and fried until golden.', '2025-06-28 02:11:23'),
+(2, 'Sapin-Sapin', '1. Mix ingredients per layer. 2. Steam layer by layer. 3. Top with latik.', 8, '20 minutes', '30 minutes', 'Layered sticky rice cake flavored with ube and jackfruit.', '2025-06-28 02:11:23'),
+(3, 'Bibingka', '1. Mix batter. 2. Pour into banana leaf-lined mold. 3. Top with cheese and egg. 4. Bake.', 6, '15 minutes', '25 minutes', 'Traditional rice cake baked in banana leaf, topped with salted egg and cheese.', '2025-06-28 02:11:23'),
+(4, 'Puto', '1. Mix all ingredients. 2. Pour into molds. 3. Steam until cooked.', 10, '10 minutes', '20 minutes', 'Steamed rice cake usually served with cheese on top.', '2025-06-28 02:11:23'),
+(5, 'Kutsinta', '1. Mix ingredients. 2. Pour into molds. 3. Steam until set.', 10, '15 minutes', '30 minutes', 'Sticky rice cake with a jelly-like texture, often served with grated coconut.', '2025-06-28 02:11:24'),
+(6, 'Palitaw', '1. Form dough balls. 2. Boil until they float. 3. Roll in coconut and sugar mixture.', 8, '10 minutes', '10 minutes', 'Flat rice cake boiled and coated in coconut and sugar.', '2025-06-28 02:11:24'),
+(7, 'Biko', '1. Cook rice. 2. Simmer with coconut milk and sugar. 3. Top with latik.', 6, '15 minutes', '40 minutes', 'Sticky sweet rice cake topped with coconut curds (latik).', '2025-06-28 02:11:24'),
+(8, 'Maja Blanca', '1. Boil ingredients. 2. Pour into tray. 3. Chill until set.', 6, '10 minutes', '20 minutes', 'Coconut pudding dessert with corn kernels.', '2025-06-28 02:11:24'),
+(9, 'Cassava Cake', '1. Mix all ingredients. 2. Bake until top is golden.', 6, '20 minutes', '40 minutes', 'Sweet, soft, and chewy cassava-based cake.', '2025-06-28 02:11:24'),
+(10, 'Suman', '1. Mix rice and coconut milk. 2. Wrap in banana leaves. 3. Steam until cooked.', 6, '30 minutes', '60 minutes', 'Rice and coconut wrapped in banana leaf and steamed.', '2025-06-28 02:11:24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kakanin_ingredients`
+--
+
+CREATE TABLE `kakanin_ingredients` (
+  `id` int(11) NOT NULL,
+  `recipe_id` int(11) NOT NULL,
+  `ingredient_name` varchar(255) NOT NULL,
+  `quantity_value` decimal(10,2) DEFAULT NULL,
+  `unit_type` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `kakanin_ingredients`
+--
+
+INSERT INTO `kakanin_ingredients` (`id`, `recipe_id`, `ingredient_name`, `quantity_value`, `unit_type`) VALUES
+(1, 1, 'Banana', 6.00, 'pcs'),
+(2, 1, 'Sugar', 300.00, 'g'),
+(3, 1, 'Jackfruit', 150.00, 'g'),
+(4, 1, 'Lumpia Wrapper', 6.00, 'pcs'),
+(5, 1, 'Oil', 480.00, 'ml'),
+(6, 2, 'Glutinous Rice Flour', 240.00, 'g'),
+(7, 2, 'Coconut Milk', 960.00, 'ml'),
+(8, 2, 'Sugar', 200.00, 'g'),
+(9, 2, 'Ube', 150.00, 'g'),
+(10, 2, 'Jackfruit', 75.00, 'g'),
+(11, 2, 'Food Coloring', 2.00, 'ml'),
+(12, 3, 'Rice Flour', 250.00, 'g'),
+(13, 3, 'Coconut Milk', 400.00, 'ml'),
+(14, 3, 'Sugar', 100.00, 'g'),
+(15, 3, 'Salted Egg', 1.00, 'pc'),
+(16, 3, 'Cheese', 50.00, 'g'),
+(17, 3, 'Banana Leaf', 1.00, 'pc'),
+(18, 4, 'Rice Flour', 200.00, 'g'),
+(19, 4, 'Sugar', 100.00, 'g'),
+(20, 4, 'Baking Powder', 10.00, 'g'),
+(21, 4, 'Milk', 150.00, 'ml'),
+(22, 4, 'Cheese', 50.00, 'g'),
+(23, 5, 'Tapioca Flour', 200.00, 'g'),
+(24, 5, 'Brown Sugar', 150.00, 'g'),
+(25, 5, 'Lye Water', 5.00, 'ml'),
+(26, 5, 'Annatto', 2.00, 'ml'),
+(27, 6, 'Glutinous Rice Flour', 200.00, 'g'),
+(28, 6, 'Water', 100.00, 'ml'),
+(29, 6, 'Sugar', 50.00, 'g'),
+(30, 6, 'Sesame Seeds', 30.00, 'g'),
+(31, 6, 'Coconut', 100.00, 'g'),
+(32, 7, 'Sticky Rice', 300.00, 'g'),
+(33, 7, 'Coconut Milk', 400.00, 'ml'),
+(34, 7, 'Brown Sugar', 150.00, 'g'),
+(35, 7, 'Latik', 50.00, 'g'),
+(36, 8, 'Coconut Milk', 400.00, 'ml'),
+(37, 8, 'Cornstarch', 100.00, 'g'),
+(38, 8, 'Sugar', 100.00, 'g'),
+(39, 8, 'Corn', 100.00, 'g'),
+(40, 8, 'Milk', 100.00, 'ml'),
+(41, 9, 'Grated Cassava', 400.00, 'g'),
+(42, 9, 'Coconut Milk', 300.00, 'ml'),
+(43, 9, 'Sugar', 100.00, 'g'),
+(44, 9, 'Egg', 1.00, 'pc'),
+(45, 9, 'Condensed Milk', 200.00, 'ml'),
+(46, 10, 'Glutinous Rice', 250.00, 'g'),
+(47, 10, 'Coconut Milk', 300.00, 'ml'),
+(48, 10, 'Salt', 2.00, 'g'),
+(49, 10, 'Banana Leaf', 2.00, 'pcs');
 
 -- --------------------------------------------------------
 
@@ -827,9 +937,9 @@ CREATE TABLE `pre_order_list` (
 INSERT INTO `pre_order_list` (`pre_order_id`, `user_id`, `seller_id`, `product_name`, `quantity`, `unit`, `preferred_date`, `preferred_time`, `additional_notes`, `status`, `request_date`, `updated_at`, `full_address`, `decline_reason`) VALUES
 (1, 1, 4, 'bibingka', 12, 'pcs', '2025-06-02', '2:00pm', 'asd', 'approved', '2025-06-01 16:56:18', '2025-06-01 19:47:42', 'De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
 (2, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'approved', '2025-06-01 18:20:39', '2025-06-01 19:47:38', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
-(3, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'approved', '2025-06-01 18:21:13', '2025-06-01 19:47:35', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
-(4, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'approved', '2025-06-01 18:21:19', '2025-06-01 19:47:31', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
-(5, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'approved', '2025-06-01 18:21:24', '2025-06-01 19:47:27', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
+(3, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'delivered', '2025-06-01 18:21:13', '2025-06-30 14:54:16', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
+(4, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'delivered', '2025-06-01 18:21:19', '2025-06-30 14:50:59', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
+(5, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'delivered', '2025-06-01 18:21:24', '2025-06-30 14:49:13', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
 (6, 1, 4, 'dsad', 1, '1', '2025-06-14', '3:00pm', 'dsa', 'declined', '2025-06-01 18:41:12', '2025-06-01 19:27:41', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', 'iw'),
 (7, 1, 4, 'dsad', 1, '1', '2025-06-14', '3:00pm', 'dsa', 'delivered', '2025-06-01 18:42:41', '2025-06-26 16:06:40', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
 (8, 2, 4, 'ss', 1, '1', '2025-06-06', '3:00pm', 'asd', 'declined', '2025-06-01 18:43:06', '2025-06-01 19:17:46', 'Bato-Kilate-Tagurano Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines', 'yawa HAHAHAHA'),
@@ -876,8 +986,8 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `slug`, `description`, `image_url`, `ingredient_id`, `seller_id`, `category_id`, `price`, `discount_price`, `stock`, `quantity_value`, `unit_type`, `is_active`, `rating`, `notes`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(5, 'Turon Specials', 'Turon Specials', 'A Delicious Turon', 'uploads/products/1750682958_Turon-Recipe.jpg', NULL, 4, 45, 6.00, 5.00, 4, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 20:49:18', '2025-06-26 16:32:40'),
-(21, 'Lumpia Version 1', 'lumpia', 'Lami na lumpia', 'uploads/products/1750695891_Turon (1).jpg', NULL, 4, 45, 10.00, 5.00, 28, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-24 00:24:51', '2025-06-26 16:32:40'),
+(5, 'Turon Specials', 'Turon Specials', 'A Delicious Turon', 'uploads/products/1750682958_Turon-Recipe.jpg', NULL, 4, 45, 6.00, 5.00, 1, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 20:49:18', '2025-06-30 14:54:25'),
+(21, 'Lumpia Version 1', 'lumpia', 'Lami na lumpia', 'uploads/products/1750695891_Turon (1).jpg', NULL, 4, 45, 10.00, 5.00, 26, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-24 00:24:51', '2025-06-30 14:54:16'),
 (42, 'Turon Version 2 ', 'Turon', 'lami na turon', 'uploads/products/1751011485_TURON-500x500.jpg', NULL, 4, 45, 10.00, 8.00, 6, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-27 16:04:45', '2025-06-27 16:06:21');
 
 -- --------------------------------------------------------
@@ -905,7 +1015,15 @@ INSERT INTO `product_inventory` (`inventory_id`, `product_id`, `seller_id`, `ord
 (1, 5, 4, 5, 1, 'delivery', 'Delivered to customer via order #5', '2025-06-26 16:16:14'),
 (2, 21, 4, 5, 1, 'delivery', 'Delivered to customer via order #5', '2025-06-26 16:16:14'),
 (3, 5, 4, 16, 1, 'delivery', 'Delivered to customer via order #16', '2025-06-26 16:32:40'),
-(4, 21, 4, 16, 1, 'delivery', 'Delivered to customer via order #16', '2025-06-26 16:32:40');
+(4, 21, 4, 16, 1, 'delivery', 'Delivered to customer via order #16', '2025-06-26 16:32:40'),
+(5, 5, 4, 5, 1, 'delivery', 'Delivered to customer via order #5', '2025-06-30 14:40:37'),
+(6, 5, 4, 5, 1, 'delivery', 'Delivered to customer via order #5', '2025-06-30 14:41:52'),
+(7, 5, 4, 16, 1, 'delivery', 'Delivered to customer via order #16', '2025-06-30 14:45:05'),
+(8, 5, 4, 16, 1, 'delivery', 'Delivered to customer via order #16', '2025-06-30 14:46:29'),
+(9, 5, 4, 16, 1, 'delivery', 'Delivered to customer via order #16', '2025-06-30 14:47:05'),
+(10, 21, 4, 5, 1, 'delivery', 'Delivered to customer via order #5', '2025-06-30 14:49:13'),
+(11, 5, 4, 4, 11, 'delivery', 'Delivered to customer via order #4', '2025-06-30 14:50:59'),
+(12, 21, 4, 3, 1, 'delivery', 'Delivered to customer via order #3', '2025-06-30 14:54:16');
 
 -- --------------------------------------------------------
 
@@ -1283,7 +1401,8 @@ INSERT INTO `store_visits` (`visit_id`, `store_type`, `store_id`, `user_id`, `ip
 (66, 'seller', 6, 1, '::1', '2025-06-27 15:55:13'),
 (67, 'seller', 4, 1, '::1', '2025-06-27 15:55:22'),
 (68, 'seller', 6, 6, '::1', '2025-06-27 16:00:31'),
-(69, 'supplier', 1, 6, '::1', '2025-06-27 16:00:46');
+(69, 'supplier', 1, 6, '::1', '2025-06-27 16:00:46'),
+(70, 'seller', 4, 1, '::1', '2025-06-28 02:19:09');
 
 -- --------------------------------------------------------
 
@@ -1458,6 +1577,19 @@ ALTER TABLE `ingredient_variants`
   ADD PRIMARY KEY (`variant_id`),
   ADD KEY `ingredient_id` (`ingredient_id`),
   ADD KEY `supplier_id` (`supplier_id`);
+
+--
+-- Indexes for table `kakanin_dataset`
+--
+ALTER TABLE `kakanin_dataset`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `kakanin_ingredients`
+--
+ALTER TABLE `kakanin_ingredients`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `recipe_id` (`recipe_id`);
 
 --
 -- Indexes for table `kitchen_inventory`
@@ -1659,13 +1791,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `campaign_clicks`
 --
 ALTER TABLE `campaign_clicks`
-  MODIFY `click_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `click_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `campaign_reach`
 --
 ALTER TABLE `campaign_reach`
-  MODIFY `reach_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=528;
+  MODIFY `reach_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=646;
 
 --
 -- AUTO_INCREMENT for table `campaign_requests`
@@ -1714,6 +1846,18 @@ ALTER TABLE `ingredients_inventory`
 --
 ALTER TABLE `ingredient_variants`
   MODIFY `variant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `kakanin_dataset`
+--
+ALTER TABLE `kakanin_dataset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `kakanin_ingredients`
+--
+ALTER TABLE `kakanin_ingredients`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `kitchen_inventory`
@@ -1797,7 +1941,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `product_inventory`
 --
 ALTER TABLE `product_inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `receipts`
@@ -1839,7 +1983,7 @@ ALTER TABLE `seller_applications`
 -- AUTO_INCREMENT for table `store_visits`
 --
 ALTER TABLE `store_visits`
-  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `supplier_applications`
@@ -1919,6 +2063,12 @@ ALTER TABLE `ingredients`
 ALTER TABLE `ingredient_variants`
   ADD CONSTRAINT `ingredient_variants_ibfk_1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `ingredient_variants_ibfk_2` FOREIGN KEY (`supplier_id`) REFERENCES `supplier_applications` (`supplier_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `kakanin_ingredients`
+--
+ALTER TABLE `kakanin_ingredients`
+  ADD CONSTRAINT `kakanin_ingredients_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `kakanin_dataset` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `messages`

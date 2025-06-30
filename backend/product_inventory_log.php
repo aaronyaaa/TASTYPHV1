@@ -2,9 +2,9 @@
 include_once("../database/session.php");
 include_once("../database/db_connect.php");
 
-session_start();
 header('Content-Type: application/json');
-ini_set('display_errors', 1); error_reporting(E_ALL); // DEV only
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'error' => 'Invalid request method.']);
@@ -22,7 +22,7 @@ if (!$orderId || !$userId || empty($items)) {
     exit;
 }
 
-// 🔍 Lookup seller_id using user ID
+// 🔍 Get the seller_id from session user
 $stmt = $pdo->prepare("SELECT seller_id FROM seller_applications WHERE user_id = ?");
 $stmt->execute([$userId]);
 $sellerId = $stmt->fetchColumn();
@@ -35,21 +35,32 @@ if (!$sellerId) {
 try {
     $pdo->beginTransaction();
 
-    $stmt = $pdo->prepare("
+    $insert = $pdo->prepare("
         INSERT INTO product_inventory (product_id, seller_id, order_id, quantity, activity_type, notes)
         VALUES (?, ?, ?, ?, 'delivery', ?)
     ");
 
+    $update = $pdo->prepare("
+        UPDATE products
+        SET stock = stock - ?
+        WHERE product_id = ? AND seller_id = ?
+    ");
+
     foreach ($items as $item) {
-        $productId = intval($item['product_id']);
-        $quantity = intval($item['quantity']);
-        $notes = 'Delivered to customer via order #' . $orderId;
+        $productId = (int) $item['product_id'];
+        $quantity = (int) $item['quantity'];
+        $notes = "Delivered to customer via order #{$orderId}";
 
-        $stmt->execute([$productId, $sellerId, $orderId, $quantity, $notes]);
+        // Validate values
+        if ($productId <= 0 || $quantity <= 0) {
+            throw new Exception("Invalid product ID or quantity.");
+        }
 
-        // Decrease stock
-        $updateStock = $pdo->prepare("UPDATE products SET stock = stock - ? WHERE product_id = ? AND seller_id = ?");
-        $updateStock->execute([$quantity, $productId, $sellerId]);
+        // Insert delivery record
+        $insert->execute([$productId, $sellerId, $orderId, $quantity, $notes]);
+
+        // Update stock
+        $update->execute([$quantity, $productId, $sellerId]);
     }
 
     $pdo->commit();

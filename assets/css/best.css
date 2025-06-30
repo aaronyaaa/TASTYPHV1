@@ -1,0 +1,126 @@
+.best-sale-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+}
+.best-sale-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.best-sale-scroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+/* Shared card layout for product & ingredient best-sellers */
+.best-product-card,
+.best-ingredient-card {
+  flex: 0 0 auto;
+  width: 200px;
+  scroll-snap-align: start;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.best-product-card:hover,
+.best-ingredient-card:hover {
+  transform: translateY(-3px);
+}
+
+.best-product-card img,
+.best-ingredient-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  background-color: #fafafa;
+  border-bottom: 1px solid #eee;
+}
+
+.best-product-card .card-body,
+.best-ingredient-card .card-body {
+  padding: 0.8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.best-product-card .ingredient-title,
+.best-ingredient-card .ingredient-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  color: #333;
+}
+
+.best-product-card .ingredient-description,
+.best-ingredient-card .ingredient-description {
+  font-size: 0.75rem;
+  color: #888;
+  margin-bottom: 0.4rem;
+}
+
+.best-product-card .price-tag,
+.best-ingredient-card .price-tag {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #d63031;
+}
+
+.card {
+  position: relative;
+}
+
+.circle-rank-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10), 0 0 0 2px #fff;
+  border: 2px solid #fff;
+  z-index: 2;
+  color: #333;
+  background: #eee;
+  letter-spacing: 1px;
+}
+
+.circle-rank-badge.rank-1 {
+  background: radial-gradient(circle at 60% 40%, #ffe066 80%, #ffd700 100%);
+  color: #bfa100;
+  box-shadow: 0 0 12px #ffe06699, 0 2px 8px rgba(0,0,0,0.18);
+}
+.circle-rank-badge.rank-2 {
+  background: radial-gradient(circle at 60% 40%, #e0e0e0 80%, #bfc1c2 100%);
+  color: #888;
+  box-shadow: 0 0 12px #e0e0e099, 0 2px 8px rgba(0,0,0,0.18);
+}
+.circle-rank-badge.rank-3 {
+  background: radial-gradient(circle at 60% 40%, #ffb07c 80%, #cd7f32 100%);
+  color: #7c4a03;
+  box-shadow: 0 0 12px #ffb07c99, 0 2px 8px rgba(0,0,0,0.18);
+}
+
+/* Remove old .top-rank-badge styles */
+.top-rank-badge, .top-rank-badge.rank-1, .top-rank-badge.rank-2, .top-rank-badge.rank-3 {
+  display: none !important;
+}
+
+/* Remove .best-card-outer styles if present */
+.best-card-outer {
+  all: unset;
+}
