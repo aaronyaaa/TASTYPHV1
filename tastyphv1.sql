@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 30, 2025 at 08:56 AM
+-- Generation Time: Jun 30, 2025 at 10:37 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -185,6 +185,13 @@ CREATE TABLE `cart` (
   `added_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` enum('active','saved','ordered') DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `ingredient_id`, `variant_id`, `unit_price`, `quantity`, `total_price`, `added_at`, `status`) VALUES
+(110, 1, 5, NULL, NULL, 6.00, 1, 6.00, '2025-06-30 07:35:05', 'active');
 
 -- --------------------------------------------------------
 
@@ -523,7 +530,7 @@ CREATE TABLE `kitchen_inventory` (
 
 INSERT INTO `kitchen_inventory` (`kitchen_inventory_id`, `ingredient_id`, `ingredient_name`, `quantity`, `quantity_value`, `unit_type`, `supplier_id`, `variant_id`, `user_id`, `created_at`, `updated_at`) VALUES
 (68, 12, 'Sugar', 3.90, 1958.00, 'g', 2, NULL, 1, '2025-06-22 19:12:50', '2025-06-27 08:04:45'),
-(69, 9, 'Banana', 5.09, 18.00, 'pcs', 2, NULL, 1, '2025-06-22 19:28:33', '2025-06-27 08:04:45'),
+(69, 9, 'Banana', 5.09, 16.00, 'pcs', 2, NULL, 1, '2025-06-22 19:28:33', '2025-06-30 07:28:36'),
 (70, 10, 'Jackfruit', 3.01, 33190.00, 'g', 2, NULL, 1, '2025-06-22 20:06:49', '2025-06-27 08:04:45'),
 (71, 11, 'Lumpia Wrapper', 2.98, 54.00, 'pcs', 2, NULL, 1, '2025-06-22 20:10:30', '2025-06-27 08:04:45'),
 (72, 13, 'Oil', 3.00, 560.00, 'ml', 2, NULL, 1, '2025-06-22 20:13:07', '2025-06-27 08:04:45');
@@ -935,8 +942,8 @@ CREATE TABLE `pre_order_list` (
 --
 
 INSERT INTO `pre_order_list` (`pre_order_id`, `user_id`, `seller_id`, `product_name`, `quantity`, `unit`, `preferred_date`, `preferred_time`, `additional_notes`, `status`, `request_date`, `updated_at`, `full_address`, `decline_reason`) VALUES
-(1, 1, 4, 'bibingka', 12, 'pcs', '2025-06-02', '2:00pm', 'asd', 'approved', '2025-06-01 16:56:18', '2025-06-01 19:47:42', 'De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
-(2, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'approved', '2025-06-01 18:20:39', '2025-06-01 19:47:38', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
+(1, 1, 4, 'bibingka', 12, 'pcs', '2025-06-02', '2:00pm', 'asd', 'delivered', '2025-06-01 16:56:18', '2025-06-30 16:22:57', 'De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
+(2, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'delivered', '2025-06-01 18:20:39', '2025-06-30 16:19:24', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
 (3, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'delivered', '2025-06-01 18:21:13', '2025-06-30 14:54:16', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
 (4, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'delivered', '2025-06-01 18:21:19', '2025-06-30 14:50:59', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
 (5, 1, 4, 'asd', 123, 'pcs', '2025-06-01', '3:00pm', 'asdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasddddddddddddddddddddddddddddddddddddddddddddddddddddasdasdddddddddddddddddddddddddddddddddddddddddddddddddddd', 'delivered', '2025-06-01 18:21:24', '2025-06-30 14:49:13', 'Cosmopolitan Funeral Chapel, De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines', NULL),
@@ -950,7 +957,7 @@ INSERT INTO `pre_order_list` (`pre_order_id`, `user_id`, `seller_id`, `product_n
 (13, 3, 4, 'otn', 21, 'pcs', '2025-06-04', '3:00pm', 'asd', 'delivered', '2025-06-02 00:28:12', '2025-06-26 15:40:19', 'Cebu North Road, Lugo, Cebu, Central Visayas, 6008, Philippines', NULL),
 (14, 3, 4, 'yawa gana unta pls', 1, '1', '2025-06-07', '3:00pm', '2', 'declined', '2025-06-12 22:35:42', '2025-06-12 22:37:57', 'Adelfa Street, Purok 1, Santo Niño, Tugbok District, Davao City, Davao Region, 8022, Philippines', 'di ko kayh wa niggana'),
 (15, 3, 4, 'Biko', 20, 'pcs', '2025-06-14', '3:00pm', 'make it surprise', 'pending', '2025-06-12 22:37:34', '2025-06-12 22:37:34', 'Adelfa Street, Purok 1, Santo Niño, Tugbok District, Davao City, Davao Region, 8022, Philippines', NULL),
-(16, 19, 4, 'turon', 2, 'pcs', '2025-06-23', '12:00pm', 'none', 'approved', '2025-06-20 11:26:48', '2025-06-20 12:03:10', 'upperpiedad toril', NULL);
+(16, 19, 4, 'turon', 2, 'pcs', '2025-06-23', '12:00pm', 'none', 'delivered', '2025-06-20 11:26:48', '2025-06-30 16:19:41', 'upperpiedad toril', NULL);
 
 -- --------------------------------------------------------
 
@@ -986,9 +993,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `slug`, `description`, `image_url`, `ingredient_id`, `seller_id`, `category_id`, `price`, `discount_price`, `stock`, `quantity_value`, `unit_type`, `is_active`, `rating`, `notes`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(5, 'Turon Specials', 'Turon Specials', 'A Delicious Turon', 'uploads/products/1750682958_Turon-Recipe.jpg', NULL, 4, 45, 6.00, 5.00, 1, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 20:49:18', '2025-06-30 14:54:25'),
-(21, 'Lumpia Version 1', 'lumpia', 'Lami na lumpia', 'uploads/products/1750695891_Turon (1).jpg', NULL, 4, 45, 10.00, 5.00, 26, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-24 00:24:51', '2025-06-30 14:54:16'),
-(42, 'Turon Version 2 ', 'Turon', 'lami na turon', 'uploads/products/1751011485_TURON-500x500.jpg', NULL, 4, 45, 10.00, 8.00, 6, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-27 16:04:45', '2025-06-27 16:06:21');
+(5, 'Turon Specials', 'Turon Specials', 'A Delicious Turon', 'uploads/products/1750682958_Turon-Recipe.jpg', NULL, 4, 45, 6.00, 5.00, 2, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-23 20:49:18', '2025-06-30 16:22:57'),
+(21, 'Lumpia Version 1', 'lumpia', 'Lami na lumpia', 'uploads/products/1750695891_Turon (1).jpg', NULL, 4, 45, 10.00, 5.00, 25, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-24 00:24:51', '2025-06-30 16:22:57'),
+(42, 'Turon Version 2 ', 'Turon', 'lami na turon', 'uploads/products/1751011485_TURON-500x500.jpg', NULL, 4, 45, 10.00, 8.00, 5, 1.00, 'pcs', 1, 0.00, 'Cooked product via kitchen inventory.', 1, 1, '2025-06-27 16:04:45', '2025-06-30 16:22:57');
 
 -- --------------------------------------------------------
 
@@ -1023,7 +1030,12 @@ INSERT INTO `product_inventory` (`inventory_id`, `product_id`, `seller_id`, `ord
 (9, 5, 4, 16, 1, 'delivery', 'Delivered to customer via order #16', '2025-06-30 14:47:05'),
 (10, 21, 4, 5, 1, 'delivery', 'Delivered to customer via order #5', '2025-06-30 14:49:13'),
 (11, 5, 4, 4, 11, 'delivery', 'Delivered to customer via order #4', '2025-06-30 14:50:59'),
-(12, 21, 4, 3, 1, 'delivery', 'Delivered to customer via order #3', '2025-06-30 14:54:16');
+(12, 21, 4, 3, 1, 'delivery', 'Delivered to customer via order #3', '2025-06-30 14:54:16'),
+(13, 5, 4, 2, 1, 'delivery', 'Delivered to customer via order #2', '2025-06-30 16:19:24'),
+(14, 5, 4, 16, 1, 'delivery', 'Delivered to customer via order #16', '2025-06-30 16:19:41'),
+(15, 5, 4, 1, 1, 'delivery', 'Delivered to customer via order #1', '2025-06-30 16:22:57'),
+(16, 21, 4, 1, 1, 'delivery', 'Delivered to customer via order #1', '2025-06-30 16:22:57'),
+(17, 42, 4, 1, 1, 'delivery', 'Delivered to customer via order #1', '2025-06-30 16:22:57');
 
 -- --------------------------------------------------------
 
@@ -1402,7 +1414,9 @@ INSERT INTO `store_visits` (`visit_id`, `store_type`, `store_id`, `user_id`, `ip
 (67, 'seller', 4, 1, '::1', '2025-06-27 15:55:22'),
 (68, 'seller', 6, 6, '::1', '2025-06-27 16:00:31'),
 (69, 'supplier', 1, 6, '::1', '2025-06-27 16:00:46'),
-(70, 'seller', 4, 1, '::1', '2025-06-28 02:19:09');
+(70, 'seller', 4, 1, '::1', '2025-06-28 02:19:09'),
+(71, 'supplier', 1, 1, '::1', '2025-06-30 15:37:08'),
+(72, 'supplier', 1, 1, '::1', '2025-06-30 15:40:57');
 
 -- --------------------------------------------------------
 
@@ -1797,7 +1811,7 @@ ALTER TABLE `campaign_clicks`
 -- AUTO_INCREMENT for table `campaign_reach`
 --
 ALTER TABLE `campaign_reach`
-  MODIFY `reach_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=646;
+  MODIFY `reach_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=811;
 
 --
 -- AUTO_INCREMENT for table `campaign_requests`
@@ -1809,7 +1823,7 @@ ALTER TABLE `campaign_requests`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1821,13 +1835,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `cooking_history`
 --
 ALTER TABLE `cooking_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `cooking_history_ingredients`
 --
 ALTER TABLE `cooking_history_ingredients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `ingredients`
@@ -1935,13 +1949,13 @@ ALTER TABLE `pre_order_list`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `product_inventory`
 --
 ALTER TABLE `product_inventory`
-  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `inventory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `receipts`
@@ -1983,7 +1997,7 @@ ALTER TABLE `seller_applications`
 -- AUTO_INCREMENT for table `store_visits`
 --
 ALTER TABLE `store_visits`
-  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `supplier_applications`
