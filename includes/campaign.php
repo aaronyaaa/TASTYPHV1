@@ -123,6 +123,40 @@ if ($range === 'now') {
         $data[] = (int)($clickData[$d] ?? 0);
     }
 }
+
+// Fetch historical campaigns (approved, rejected, expired)
+$historicalStmt = $pdo->prepare("SELECT * FROM campaign_requests WHERE user_type = 'seller' AND user_id = ? AND status IN ('approved', 'rejected', 'expired') AND end_date < ? ORDER BY end_date DESC");
+$historicalStmt->execute([$userId, $today]);
+$historicalCampaigns = $historicalStmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$filter = $_GET['filter'] ?? 'current';
+
+switch ($filter) {
+    case 'previous':
+        // Fetch previous campaigns (expired or approved but ended)
+        $campaignStmt = $pdo->prepare("SELECT * FROM campaign_requests WHERE user_type = 'seller' AND user_id = ? AND status IN ('approved', 'expired') AND end_date < ? ORDER BY end_date DESC");
+        $campaignStmt->execute([$userId, $today]);
+        $campaigns = $campaignStmt->fetchAll(PDO::FETCH_ASSOC);
+        break;
+
+    case 'pending':
+        // Fetch campaigns that are still pending (not approved yet)
+        $campaignStmt = $pdo->prepare("SELECT * FROM campaign_requests WHERE user_type = 'seller' AND user_id = ? AND status = 'pending' ORDER BY created_at DESC");
+        $campaignStmt->execute([$userId]);
+        $campaigns = $campaignStmt->fetchAll(PDO::FETCH_ASSOC);
+        break;
+
+    case 'current':
+    default:
+        // Fetch current campaigns (approved, not expired, started)
+        $campaignStmt = $pdo->prepare("SELECT * FROM campaign_requests WHERE user_type = 'seller' AND user_id = ? AND status = 'approved' AND start_date <= ? AND end_date >= ? ORDER BY start_date DESC");
+        $campaignStmt->execute([$userId, $today, $today]);
+        $campaigns = $campaignStmt->fetchAll(PDO::FETCH_ASSOC);
+        break;
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -174,46 +208,46 @@ if ($range === 'now') {
             </div>
         <?php endif; ?>
 
-        <?php if (!empty($activeCampaigns)): ?>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
-                <?php foreach ($activeCampaigns as $index => $campaign):
-                    $isExpired = strtotime($campaign['end_date']) < strtotime(date('Y-m-d')); ?>
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+            <h5 class="mb-0">Campaigns</h5>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="fa fa-filter me-1"></i> Filter Campaigns
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="?filter=current"><i class="fa fa-check-circle me-2"></i> Current Campaigns</a></li>
+                    <li><a class="dropdown-item" href="?filter=previous"><i class="fa fa-clock me-2"></i> Previous Campaigns</a></li>
+                    <li><a class="dropdown-item" href="?filter=pending"><i class="fa fa-hourglass me-2"></i> Pending Campaigns</a></li>
+                </ul>
+            </div>
+        </div>
 
+        <!-- Display Campaigns -->
+        <?php if (!empty($campaigns)): ?>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+                <?php foreach ($campaigns as $campaign): ?>
                     <div class="col">
                         <div class="card h-100 shadow-sm border-0 text-center">
                             <div class="card-body">
                                 <h5 class="mb-3">
                                     <?= htmlspecialchars($campaign['title']) ?>
-                                    <?php if ($isExpired): ?>
-                                        <span class="badge bg-danger ms-2">Expired</span>
-                                    <?php endif; ?>
+                                    <span class="badge <?= $campaign['status'] === 'expired' ? 'bg-danger' : ($campaign['status'] === 'rejected' ? 'bg-warning' : 'bg-success') ?> ms-2"><?= ucfirst($campaign['status']) ?></span>
                                 </h5>
-
-                                <img src="../<?= htmlspecialchars($campaign['banner_image']) ?>"
-                                    alt="Campaign Banner"
-                                    class="campaign-banner mb-3 <?= $isExpired ? 'opacity-50' : '' ?>"
-                                    data-campaign-id="<?= $campaign['campaign_id'] ?>"
-                                    data-start-date="<?= $campaign['start_date'] ?>"
-                                    data-end-date="<?= $campaign['end_date'] ?>"
-                                    onclick="<?= $isExpired ? '' : 'openCampaignModal(this)' ?>">
-
+                                <img src="../<?= htmlspecialchars($campaign['banner_image']) ?>" alt="Campaign Banner" class="campaign-banner mb-3" data-campaign-id="<?= $campaign['campaign_id'] ?>" onclick="openCampaignModal(this)">
                                 <p class="text-muted mb-1">
                                     From <?= htmlspecialchars($campaign['start_date']) ?> to <?= htmlspecialchars($campaign['end_date']) ?>
                                 </p>
-
                                 <?php if (!empty($campaign['description'])): ?>
                                     <p class="small"><?= htmlspecialchars($campaign['description']) ?></p>
                                 <?php endif; ?>
                             </div>
-
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div class="alert alert-info">No active campaign at the moment.</div>
+            <div class="alert alert-info">No campaigns found.</div>
         <?php endif; ?>
-
 
         <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
             <h5 class="mb-0">Campaign Clicks</h5>
@@ -233,6 +267,8 @@ if ($range === 'now') {
 
         <div id="chart"></div>
     </div>
+
+
 
     <!-- Modal: Real-Time View Tracker -->
     <div class="modal fade" id="viewTrackerModal" tabindex="-1" aria-labelledby="viewTrackerModalLabel" aria-hidden="true">
@@ -390,12 +426,14 @@ if ($range === 'now') {
         function createDatePicker(startDate, endDate, mode, onChange) {
             const container = document.getElementById('datePickerContainer');
             container.innerHTML = '';
+
+            // Ensuring that the 'From' and 'To' date picker is restricted based on the campaign's date range
             if (mode === 'hourly') {
                 const input = document.createElement('input');
                 input.type = 'date';
                 input.className = 'form-control form-control-sm d-inline-block w-auto ms-2';
-                input.min = startDate;
-                input.max = endDate;
+                input.min = startDate; // Minimum allowed date is the campaign start date
+                input.max = endDate; // Maximum allowed date is the campaign end date
                 input.value = new Date().toISOString().slice(0, 10).localeCompare(startDate) < 0 ? startDate : (new Date().toISOString().slice(0, 10).localeCompare(endDate) > 0 ? endDate : new Date().toISOString().slice(0, 10));
                 input.onchange = () => onChange(input.value);
                 container.appendChild(input);
@@ -407,12 +445,14 @@ if ($range === 'now') {
                 from.min = startDate;
                 from.max = endDate;
                 from.value = startDate;
+
                 const to = document.createElement('input');
                 to.type = 'date';
                 to.className = 'form-control form-control-sm d-inline-block w-auto ms-2';
                 to.min = startDate;
                 to.max = endDate;
                 to.value = endDate;
+
                 from.onchange = () => {
                     if (from.value > to.value) to.value = from.value;
                     onChange(from.value, to.value);
@@ -421,6 +461,7 @@ if ($range === 'now') {
                     if (to.value < from.value) from.value = to.value;
                     onChange(from.value, to.value);
                 };
+
                 container.appendChild(document.createTextNode('From: '));
                 container.appendChild(from);
                 container.appendChild(document.createTextNode(' To: '));
@@ -428,6 +469,8 @@ if ($range === 'now') {
                 return [from, to];
             }
         }
+
+
 
         function fetchViewTrackerData(campaignId, mode = 'daily', date = null, from = null, to = null) {
             let url = `../backend/fetch_campaign_views.php?campaign_id=${campaignId}&mode=${mode}`;
@@ -574,7 +617,9 @@ if ($range === 'now') {
             const campaignId = element.getAttribute('data-campaign-id');
             const startDate = element.getAttribute('data-start-date');
             const endDate = element.getAttribute('data-end-date');
-            startRealTimeTracker(campaignId, startDate, endDate);
+
+            // Use the start and end date to set the restrictions on the date pickers
+            startRealTimeTracker(campaignId, startDate, endDate); // This function now handles the date range restrictions
             const modal = new bootstrap.Modal(document.getElementById('viewTrackerModal'));
             modal.show();
         }

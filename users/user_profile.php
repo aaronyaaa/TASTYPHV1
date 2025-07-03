@@ -68,6 +68,8 @@ $isPublic   = !empty($currentUser['is_public']);
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="../assets/js/user.js"></script>
   <script src="../assets/js/user_photo.js"></script>
+  <?php include '../includes/footer.php'; ?>
+
 
   <script>
     window.initialLatitude = <?php echo $user['latitude'] ?? 'null'; ?>;

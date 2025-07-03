@@ -6,14 +6,20 @@
         <ul class="nav flex-column">
             <li class="nav-item mb-2">
                 <a href="orders.php" class="nav-link<?= basename($_SERVER['PHP_SELF']) === 'orders.php' ? ' active' : '' ?>">
-                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                    <i class="bi bi-speedometer2 me-2"></i> Pre Orders
                 </a>
             </li>
+            <li class="nav-item mb-2">
+                <a href="order.php" class="nav-link<?= basename($_SERVER['PHP_SELF']) === 'order.php' ? ' active' : '' ?>">
+                    <i class="bi bi-box-seam me-2"></i> Orders
+                </a>
+            </li>   
             <li class="nav-item mb-2">
                 <a href="my_orders.php" class="nav-link<?= basename($_SERVER['PHP_SELF']) === 'my_orders.php' ? ' active' : '' ?>">
                     <i class="bi bi-box-seam me-2"></i> My Orders
                 </a>
             </li>
+           
         </ul>
     </div>
 </div>

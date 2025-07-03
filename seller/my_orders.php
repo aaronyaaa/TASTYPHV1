@@ -8,17 +8,22 @@ if (!$userId) exit('Unauthorized.');
 $stmt = $pdo->prepare("
   SELECT o.order_id, o.status, o.order_date, o.total_price,
          oi.quantity, oi.unit_price,
-         i.ingredient_name, i.image_url,
+         i.ingredient_name, i.image_url AS ingredient_image,
+         p.product_name, p.image_url AS product_image,
+         COALESCE(sa.business_name, sa2.business_name) AS store_name,
          u.latitude AS user_latitude, u.longitude AS user_longitude,
          sa.latitude AS supplier_latitude, sa.longitude AS supplier_longitude
   FROM orders o
   JOIN order_items oi ON o.order_id = oi.order_id
   LEFT JOIN ingredients i ON oi.ingredient_id = i.ingredient_id
-  JOIN users u ON o.user_id = u.id
+  LEFT JOIN products p ON oi.product_id = p.product_id
   LEFT JOIN supplier_applications sa ON o.supplier_id = sa.supplier_id
+  LEFT JOIN seller_applications sa2 ON o.seller_id = sa2.seller_id
+  JOIN users u ON o.user_id = u.id
   WHERE o.user_id = ?
   ORDER BY o.order_date DESC
 ");
+
 $stmt->execute([$userId]);
 $rawItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -135,7 +140,7 @@ $statusLabels = [
     <link rel="stylesheet" href="../assets/css/user_navbar.css">
     <link rel="stylesheet" href="../assets/css/seller_order.css">
     <link rel="stylesheet" href="../assets/css/sidebar.css">
-        <link rel="stylesheet" href="../assets/css/receipt.css">
+    <link rel="stylesheet" href="../assets/css/receipt.css">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
@@ -181,7 +186,7 @@ $statusLabels = [
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="text-muted small">
-                                <strong>Order #<?= $orderId ?></strong> — Ordered on <?= date('d M Y', strtotime($data['meta']['order_date'])) ?>
+                                <strong><?= htmlspecialchars($data['items'][0]['store_name'] ?? 'Order') ?></strong> — Ordered on <?= date('d M Y', strtotime($data['meta']['order_date'])) ?>
                             </div>
                             <div class="d-flex align-items-center gap-2">
                                 <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#mapModal<?= $orderId ?>">
@@ -217,8 +222,13 @@ $statusLabels = [
                                 <?php foreach ($data['items'] as $item): ?>
                                     <tr>
                                         <td class="d-flex align-items-center gap-2">
-                                            <img src="../<?= $item['image_url'] ?: 'assets/images/default-product.png' ?>" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;">
-                                            <?= htmlspecialchars($item['ingredient_name']) ?>
+                                            <?php
+                                            $name = $item['product_name'] ?: $item['ingredient_name'];
+                                            $img = $item['product_image'] ?: $item['ingredient_image'] ?: 'assets/images/default-product.png';
+                                            ?>
+                                            <img src="../<?= $img ?>" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;">
+                                            <?= htmlspecialchars($name) ?>
+
                                         </td>
                                         <td><?= $item['quantity'] ?></td>
                                         <td>₱<?= number_format($item['unit_price'], 2) ?></td>

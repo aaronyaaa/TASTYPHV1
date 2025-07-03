@@ -1,8 +1,11 @@
 /* Campaign Carousel Enhancements */
 #campaignCarousel {
-  max-width: 1100px;
-  margin: 40px auto;
-  border-radius: 12px;
+  max-width: 98vw;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
@@ -50,4 +53,39 @@
 #campaignCarousel .carousel-control-prev:hover,
 #campaignCarousel .carousel-control-next:hover {
   filter: brightness(1.2);
+}
+
+/* Overlay for campaign carousel */
+.carousel-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.45) 100%);
+  z-index: 2;
+}
+
+.carousel-overlay h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.carousel-overlay p.lead {
+  font-size: 1.25rem;
+  color: #f0f0f0;
+  margin-bottom: 2rem;
+}
+
+.explore-btn {
+  background: #ff8800;
+  border: none;
+  color: #fff;
+  font-size: 1.15rem;
+  border-radius: 2rem;
+  padding: 0.75rem 2.5rem;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.explore-btn:hover, .explore-btn:focus {
+  background: #ff9900;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255,136,0,0.18);
+  text-decoration: none;
 }

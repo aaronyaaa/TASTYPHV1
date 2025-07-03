@@ -22,7 +22,7 @@ if (!$method || !is_array($cartIds) || count($cartIds) === 0) {
 try {
     $pdo->beginTransaction();
 
-    // Fetch cart items
+    // Fetch relevant cart items
     $inQuery = implode(',', array_fill(0, count($cartIds), '?'));
     $params = array_merge([$userId], $cartIds);
 
@@ -30,9 +30,10 @@ try {
         SELECT 
             c.*, 
             i.supplier_id,
-            NULL AS seller_id  -- Default seller_id to NULL
+            p.seller_id
         FROM cart c
         LEFT JOIN ingredients i ON c.ingredient_id = i.ingredient_id
+        LEFT JOIN products p ON c.product_id = p.product_id
         WHERE c.user_id = ? AND c.cart_id IN ($inQuery) AND c.status = 'active'
     ");
     $stmt->execute($params);
@@ -45,7 +46,6 @@ try {
 
     $total = array_sum(array_column($cartItems, 'total_price'));
 
-    // Payment validations
     if ($method === 'cash') {
         $cash = (float) ($data['cash_amount'] ?? 0);
         if ($cash < $total) {
@@ -54,47 +54,77 @@ try {
         }
     }
 
-    // Get first item as source for supplier
-    $firstItem = $cartItems[0];
-    $insertOrder = $pdo->prepare("
-        INSERT INTO orders (user_id, supplier_id, payment_method, total_price)
-        VALUES (?, ?, ?, ?)
-    ");
-    $insertOrder->execute([
-        $userId,
-        $firstItem['supplier_id'],
-        $method,
-        $total
-    ]);
-    $orderId = $pdo->lastInsertId();
+    // Group cart items
+    $productOrders = [];
+    $ingredientOrders = [];
 
-    // Insert order items
-    $insertItem = $pdo->prepare("
-        INSERT INTO order_items 
-        (order_id, ingredient_id, variant_id, quantity, unit_price, supplier_id, seller_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ");
     foreach ($cartItems as $item) {
-        $insertItem->execute([
-            $orderId,
-            $item['ingredient_id'],
-            $item['variant_id'] ?: null,
-            $item['quantity'],
-            $item['unit_price'],
-            $item['supplier_id'],
-            null // seller_id is not part of your schema (yet), set to null
-        ]);
+        if ($item['product_id']) {
+            $productOrders[$item['seller_id']][] = $item;
+        } elseif ($item['ingredient_id']) {
+            $ingredientOrders[$item['supplier_id']][] = $item;
+        }
     }
 
-    // Delete processed items
-    $deleteStmt = $pdo->prepare("DELETE FROM cart WHERE cart_id = ?");
-    foreach ($cartItems as $item) {
-        $deleteStmt->execute([$item['cart_id']]);
+    // Process product orders
+    foreach ($productOrders as $sellerId => $items) {
+        $orderTotal = array_sum(array_column($items, 'total_price'));
+
+        $insertOrder = $pdo->prepare("
+            INSERT INTO orders (user_id, seller_id, payment_method, total_price)
+            VALUES (?, ?, ?, ?)
+        ");
+        $insertOrder->execute([$userId, $sellerId, $method, $orderTotal]);
+        $orderId = $pdo->lastInsertId();
+
+        $insertItem = $pdo->prepare("
+            INSERT INTO order_items (order_id, product_id, quantity, unit_price, seller_id)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+
+        foreach ($items as $item) {
+            $insertItem->execute([
+                $orderId,
+                $item['product_id'],
+                $item['quantity'],
+                $item['unit_price'],
+                $sellerId
+            ]);
+            $pdo->prepare("DELETE FROM cart WHERE cart_id = ?")->execute([$item['cart_id']]);
+        }
+    }
+
+    // Process ingredient orders
+    foreach ($ingredientOrders as $supplierId => $items) {
+        $orderTotal = array_sum(array_column($items, 'total_price'));
+
+        $insertOrder = $pdo->prepare("
+            INSERT INTO orders (user_id, supplier_id, payment_method, total_price)
+            VALUES (?, ?, ?, ?)
+        ");
+        $insertOrder->execute([$userId, $supplierId, $method, $orderTotal]);
+        $orderId = $pdo->lastInsertId();
+
+        $insertItem = $pdo->prepare("
+            INSERT INTO order_items (order_id, ingredient_id, variant_id, quantity, unit_price, supplier_id)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ");
+
+        foreach ($items as $item) {
+            $insertItem->execute([
+                $orderId,
+                $item['ingredient_id'],
+                $item['variant_id'] ?: null,
+                $item['quantity'],
+                $item['unit_price'],
+                $supplierId
+            ]);
+            $pdo->prepare("DELETE FROM cart WHERE cart_id = ?")->execute([$item['cart_id']]);
+        }
     }
 
     $pdo->commit();
-
-    echo json_encode(['success' => true, 'message' => 'Order placed successfully!']);
+    echo json_encode(['success' => true, 'message' => 'Orders placed successfully!']);
 } catch (PDOException $e) {
     $pdo->rollBack();
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);

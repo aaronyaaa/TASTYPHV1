@@ -96,6 +96,8 @@ $profilePic = $_SESSION['user']['profile_pics'] ?? null;
   <script src="../assets/js/map_handler.js"></script>
   <script src="../assets/js/addressModal.js"></script>
     <script src="../assets/js/settingsTabs.js"></script>
+    <?php include '../includes/footer.php'; ?>
+
 <script>
   // Preview uploaded image before form submit
   document.getElementById('profile-image-input').addEventListener('change', function(event) {

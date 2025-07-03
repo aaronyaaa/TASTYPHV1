@@ -1,4 +1,3 @@
-
     .ingredient-card-1 {
       background: #fff;
       border: 1px solid #eee;
@@ -48,4 +47,23 @@
       font-weight: 700;
       font-size: 0.85rem;
       color: #d63031;
+    }
+
+    /* Public Stores & Suppliers Visit Button Styling */
+    .public-stores .btn-visit-store,
+    .public-stores .btn-visit-supplier {
+      background: #ff8800;
+      color: #fff !important;
+      font-weight: 700;
+      border-radius: 2rem;
+      border: none;
+      transition: color 0.2s, background 0.2s;
+    }
+    .public-stores .btn-visit-store:hover,
+    .public-stores .btn-visit-supplier:hover,
+    .public-stores .btn-visit-store:focus,
+    .public-stores .btn-visit-supplier:focus {
+      color: #111 !important;
+      background: #ffb84d;
+      text-decoration: none;
     }

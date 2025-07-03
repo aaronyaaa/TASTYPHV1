@@ -111,7 +111,8 @@ body {
 /* --- Shift content only on desktop when sidebar opens --- */
 @media (min-width: 993px) {
   .main-wrapper.sidebar-opened {
-    margin-right: 360px;
+    margin-right: 500px !important;
+    transition: margin-right 0.3s;
   }
 }
 
@@ -126,20 +127,27 @@ body {
 
 /* --- Right Sidebar Panel --- */
 #orderDetailsPanel {
-  width: 360px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 500px;
+  max-width: 100%;
   background: #fff;
   height: 100%;
-  padding: 1rem;
+  padding: 1.5rem;
   border-left: 1px solid #ddd;
   overflow-y: auto;
   position: absolute;
-  top: 0;
-  right: 0;
   transform: translateX(100%);
-  transition: transform 0.35s ease-in-out;
-  z-index: 999;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1050;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
+#orderSidebarCloseBtn {
+  margin: 0.25rem 0.25rem 0 0;
+  z-index: 1001;
+}
 
 /* --- Sidebar Content --- */
 #orderDetailsContent .text-center img {
@@ -152,18 +160,20 @@ body {
 
 #orderDetailsContent h5 {
   margin-top: 0.5rem;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 
 #orderDetailsContent .badge {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   margin-top: 0.3rem;
+  padding: 0.5em 1em;
+  border-radius: 20px;
 }
 
 #orderDetailsContent .text-start p {
   margin-bottom: 0.4rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #333;
   display: flex;
   align-items: center;
@@ -175,8 +185,8 @@ body {
 }
 
 /* --- Map --- */
-#map {
-  height: 240px;
+#orderMap, #map {
+  height: 200px;
   margin-top: 1rem;
   border-radius: 10px;
   border: 1px solid #dee2e6;
@@ -203,4 +213,61 @@ body {
   background-color: #f9f9f9;
 }
 
+/* --- Sidebar Buttons --- */
+#orderDetailsPanel .btn {
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+}
+#orderDetailsPanel .btn-outline-primary {
+  border-color: #7B4397;
+  color: #7B4397;
+}
+#orderDetailsPanel .btn-outline-primary:hover {
+  background-color: #7B4397;
+  color: white;
+}
+#orderDetailsPanel .btn-success {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+}
+#orderDetailsPanel .btn-success:hover {
+  background-color: #157347;
+  border-color: #157347;
+}
+#orderDetailsPanel .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+#orderDetailsPanel .btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #bb2d3b;
+}
+#orderDetailsPanel .btn-warning {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #212529;
+}
+#orderDetailsPanel .btn-warning:hover {
+  background-color: #e0a800;
+  border-color: #d39e00;
+}
+
+/* --- Main content shifts when sidebar is open --- */
+.main-wrapper.sidebar-opened {
+  margin-right: 0 !important;
+}
+
 /* --- Responsive Sidebar --- */
+@media (max-width: 992px) {
+  .main-wrapper.sidebar-opened {
+    margin-right: 0 !important;
+  }
+  #orderDetailsPanel {
+    width: 100vw !important;
+  }
+}

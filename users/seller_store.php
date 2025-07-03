@@ -49,6 +49,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="../assets/js/seller_store.js"></script>
+    <?php include '../includes/footer.php'; ?>
 </body>
 
 </html>

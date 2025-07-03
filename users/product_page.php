@@ -217,11 +217,7 @@ if (!empty($product['latitude']) && !empty($product['longitude']) && !empty($use
             </a>
         </div>
     </div>
-    <footer class="bg-light py-4 mt-4">
-        <div class="container text-center">
-            <p>&copy; <?= date('Y') ?> TASTYPHV1. All rights reserved.</p>
-        </div>
-    </footer>
+    <?php include '../includes/footer.php'; ?>
     <script src="../assets/js/cart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
