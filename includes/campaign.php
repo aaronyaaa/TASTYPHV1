@@ -149,9 +149,9 @@ switch ($filter) {
 
     case 'current':
     default:
-        // Fetch current campaigns (approved, not expired, started)
-        $campaignStmt = $pdo->prepare("SELECT * FROM campaign_requests WHERE user_type = 'seller' AND user_id = ? AND status = 'approved' AND start_date <= ? AND end_date >= ? ORDER BY start_date DESC");
-        $campaignStmt->execute([$userId, $today, $today]);
+        // Fetch current campaigns (approved, not expired, started) AND upcoming campaigns (approved, not started yet)
+        $campaignStmt = $pdo->prepare("SELECT * FROM campaign_requests WHERE user_type = 'seller' AND user_id = ? AND status = 'approved' AND end_date >= ? ORDER BY start_date ASC");
+        $campaignStmt->execute([$userId, $today]);
         $campaigns = $campaignStmt->fetchAll(PDO::FETCH_ASSOC);
         break;
 }
@@ -167,7 +167,9 @@ switch ($filter) {
     <title>Campaign Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../assets/css/campaign_form.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="../assets/js/campaign.js"></script>
     <style>
         .campaign-banner {
             max-width: 100%;
@@ -185,6 +187,117 @@ switch ($filter) {
 
         .apexcharts-tooltip {
             z-index: 9999 !important;
+        }
+
+        /* Campaign Form Styles */
+        .pricing-option {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .pricing-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-option.border-primary {
+            border-color: #0d6efd !important;
+            background-color: rgba(13, 110, 253, 0.05) !important;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        .payment-section {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        #selectedPricing {
+            border-left: 4px solid #0d6efd;
+        }
+
+        .form-control:read-only {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            border-radius: 8px;
+            border: none;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            color: #856404;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .modal-xl {
+                max-width: 95%;
+                margin: 1rem;
+            }
+        }
+
+        /* Countdown Timer Styles */
+        .time-status {
+            margin: 0.5rem 0;
+        }
+
+        .time-status .badge {
+            font-size: 0.8rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .time-status .badge.bg-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .time-status .badge.bg-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+        }
+
+        .time-status .badge.bg-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%) !important;
+            box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        .countdown-text {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .campaign-card {
+            transition: all 0.3s ease;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .campaign-card:hover .time-status .badge {
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -225,15 +338,79 @@ switch ($filter) {
         <!-- Display Campaigns -->
         <?php if (!empty($campaigns)): ?>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
-                <?php foreach ($campaigns as $campaign): ?>
+                <?php foreach ($campaigns as $campaign): 
+                    // Calculate time remaining or time until start
+                    $now = new DateTime();
+                    $startDate = new DateTime($campaign['start_date']);
+                    $endDate = new DateTime($campaign['end_date']);
+                    $endDate->setTime(23, 59, 59); // Set to end of day
+                    
+                    $timeStatus = '';
+                    $timeClass = '';
+                    $isRunning = false;
+                    $isStartingSoon = false;
+                    
+                    if ($campaign['status'] === 'approved') {
+                        if ($now >= $startDate && $now <= $endDate) {
+                            // Campaign is running
+                            $isRunning = true;
+                            $timeRemaining = $now->diff($endDate);
+                            
+                            if ($timeRemaining->days > 0) {
+                                $timeStatus = $timeRemaining->days . ' day' . ($timeRemaining->days > 1 ? 's' : '') . ' left';
+                            } elseif ($timeRemaining->h > 0) {
+                                $timeStatus = $timeRemaining->h . ' hour' . ($timeRemaining->h > 1 ? 's' : '') . ' left';
+                            } elseif ($timeRemaining->i > 0) {
+                                $timeStatus = $timeRemaining->i . ' minute' . ($timeRemaining->i > 1 ? 's' : '') . ' left';
+                            } else {
+                                $timeStatus = $timeRemaining->s . ' second' . ($timeRemaining->s > 1 ? 's' : '') . ' left';
+                            }
+                            $timeClass = 'text-success';
+                        } elseif ($now < $startDate) {
+                            // Campaign hasn't started yet
+                            $timeUntilStart = $now->diff($startDate);
+                            
+                            if ($timeUntilStart->days > 0) {
+                                $timeStatus = 'Starts in ' . $timeUntilStart->days . ' day' . ($timeUntilStart->days > 1 ? 's' : '');
+                            } elseif ($timeUntilStart->h > 0) {
+                                $timeStatus = 'Starts in ' . $timeUntilStart->h . ' hour' . ($timeUntilStart->h > 1 ? 's' : '');
+                            } elseif ($timeUntilStart->i > 0) {
+                                $timeStatus = 'Starts in ' . $timeUntilStart->i . ' minute' . ($timeUntilStart->i > 1 ? 's' : '');
+                            } else {
+                                $timeStatus = 'Starts in ' . $timeUntilStart->s . ' second' . ($timeUntilStart->s > 1 ? 's' : '');
+                            }
+                            $timeClass = 'text-warning';
+                            $isStartingSoon = true;
+                        } else {
+                            // Campaign has ended
+                            $timeStatus = 'Ended';
+                            $timeClass = 'text-muted';
+                        }
+                    }
+                ?>
                     <div class="col">
-                        <div class="card h-100 shadow-sm border-0 text-center">
+                        <div class="card h-100 shadow-sm border-0 text-center campaign-card" 
+                             data-campaign-id="<?= $campaign['campaign_id'] ?>"
+                             data-start-date="<?= $campaign['start_date'] ?>"
+                             data-end-date="<?= $campaign['end_date'] ?>"
+                             data-status="<?= $campaign['status'] ?>">
                             <div class="card-body">
                                 <h5 class="mb-3">
                                     <?= htmlspecialchars($campaign['title']) ?>
                                     <span class="badge <?= $campaign['status'] === 'expired' ? 'bg-danger' : ($campaign['status'] === 'rejected' ? 'bg-warning' : 'bg-success') ?> ms-2"><?= ucfirst($campaign['status']) ?></span>
                                 </h5>
                                 <img src="../<?= htmlspecialchars($campaign['banner_image']) ?>" alt="Campaign Banner" class="campaign-banner mb-3" data-campaign-id="<?= $campaign['campaign_id'] ?>" onclick="openCampaignModal(this)">
+                                
+                                <!-- Time Status -->
+                                <?php if ($campaign['status'] === 'approved' && $timeStatus): ?>
+                                    <div class="time-status mb-2">
+                                        <span class="badge <?= $isRunning ? 'bg-success' : ($isStartingSoon ? 'bg-warning' : 'bg-secondary') ?>">
+                                            <i class="fas <?= $isRunning ? 'fa-play' : ($isStartingSoon ? 'fa-clock' : 'fa-stop') ?> me-1"></i>
+                                            <span class="countdown-text"><?= $timeStatus ?></span>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                                
                                 <p class="text-muted mb-1">
                                     From <?= htmlspecialchars($campaign['start_date']) ?> to <?= htmlspecialchars($campaign['end_date']) ?>
                                 </p>
@@ -346,283 +523,140 @@ switch ($filter) {
     </div>
 
     <!-- Modal Form -->
-    <div class="modal fade" id="campaignModal" tabindex="-1" aria-labelledby="campaignModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <form method="POST" enctype="multipart/form-data" class="modal-content">
+    <div class="modal fade campaign-form-modal" id="campaignModal" tabindex="-1" aria-labelledby="campaignModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <form id="campaignForm" enctype="multipart/form-data" class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="campaignModalLabel">Submit New Campaign</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Campaign Title *</label>
-                        <input type="text" name="title" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Start Date *</label>
-                        <input type="date" name="start_date" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">End Date *</label>
-                        <input type="date" name="end_date" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Banner Image (1200x400) *</label>
-                        <input type="file" name="banner_image" class="form-control" accept="image/*" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Description (optional)</label>
-                        <textarea name="description" class="form-control" rows="3"></textarea>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Campaign Details -->
+                            <div class="mb-3">
+                                <label class="form-label">Campaign Title *</label>
+                                <input type="text" name="title" id="campaignTitle" class="form-control" required>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Start Date *</label>
+                                        <input type="date" name="start_date" id="startDate" class="form-control" required min="<?= date('Y-m-d') ?>">
+                                        <small class="text-muted">Choose when you want your campaign to start</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">End Date *</label>
+                                        <input type="date" name="end_date" id="endDate" class="form-control" required readonly>
+                                        <small class="text-muted">Automatically calculated based on duration</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Banner Image (1200x400) *</label>
+                                <input type="file" name="banner_image" id="bannerImage" class="form-control" accept="image/*" required>
+                                <div id="imagePreview" class="mt-2" style="display: none;">
+                                    <img id="previewImg" src="" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Description (optional)</label>
+                                <textarea name="description" id="campaignDescription" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <!-- Pricing Options -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Campaign Pricing</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="pricingOptions" class="mb-3">
+                                        <div class="text-center">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <small class="text-muted">Loading pricing options...</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="selectedPricing" class="alert alert-info" style="display: none;">
+                                        <h6 class="mb-2">Selected Plan</h6>
+                                        <div id="pricingDetails"></div>
+                                        <div id="dateRangeInfo" class="mt-2 small text-muted" style="display: none;">
+                                            <i class="fas fa-calendar-alt me-1"></i>
+                                            Campaign will run from <span id="displayStartDate"></span> to <span id="displayEndDate"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Section -->
+                            <div class="card mt-3">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Payment Method</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Payment Method *</label>
+                                        <select id="paymentMethod" class="form-select" required>
+                                            <option value="">Select payment method</option>
+                                            <option value="cash">Cash</option>
+                                            <option value="gcash">GCash</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Cash Payment -->
+                                    <div id="cashPayment" class="payment-section" style="display: none;">
+                                        <div class="mb-3">
+                                            <label class="form-label">Cash Amount *</label>
+                                            <input type="number" id="cashAmount" class="form-control" min="0" step="0.01" placeholder="Enter amount">
+                                        </div>
+                                        <div id="cashChange" class="alert alert-success" style="display: none;">
+                                            <strong>Change:</strong> ₱<span id="changeAmount">0.00</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- GCash Payment -->
+                                    <div id="gcashPayment" class="payment-section" style="display: none;">
+                                        <div class="mb-3">
+                                            <label class="form-label">GCash Receipt *</label>
+                                            <input type="file" id="gcashReceipt" class="form-control" accept="image/*">
+                                            <small class="text-muted">Upload screenshot of your payment receipt</small>
+                                        </div>
+                                        <div id="receiptPreview" class="mt-2" style="display: none;">
+                                            <img id="receiptImg" src="" alt="Receipt" style="max-width: 100%; max-height: 150px; border-radius: 6px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Submit Campaign</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitCampaign">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" style="display: none;"></span>
+                        Submit Campaign
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        const options = {
-            series: [{
-                name: 'Total Clicks',
-                data: <?= json_encode($data) ?>
-            }],
-            chart: {
-                height: 350,
-                type: 'line',
-                zoom: {
-                    enabled: false
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                width: 4,
-                curve: 'smooth'
-            },
-            title: {
-                text: 'Ad Clicks Over Time',
-                align: 'left'
-            },
-            xaxis: {
-                categories: <?= json_encode($labels) ?>
-            },
-            tooltip: {
-                y: {
-                    formatter: val => val + " clicks"
-                }
-            },
-            grid: {
-                borderColor: '#f1f1f1'
-            }
-        };
-        new ApexCharts(document.querySelector("#chart"), options).render();
-
-        let trackerChart = null;
-        let trackerInterval = null;
-
-        function createDatePicker(startDate, endDate, mode, onChange) {
-            const container = document.getElementById('datePickerContainer');
-            container.innerHTML = '';
-
-            // Ensuring that the 'From' and 'To' date picker is restricted based on the campaign's date range
-            if (mode === 'hourly') {
-                const input = document.createElement('input');
-                input.type = 'date';
-                input.className = 'form-control form-control-sm d-inline-block w-auto ms-2';
-                input.min = startDate; // Minimum allowed date is the campaign start date
-                input.max = endDate; // Maximum allowed date is the campaign end date
-                input.value = new Date().toISOString().slice(0, 10).localeCompare(startDate) < 0 ? startDate : (new Date().toISOString().slice(0, 10).localeCompare(endDate) > 0 ? endDate : new Date().toISOString().slice(0, 10));
-                input.onchange = () => onChange(input.value);
-                container.appendChild(input);
-                return input;
-            } else if (mode === 'daily') {
-                const from = document.createElement('input');
-                from.type = 'date';
-                from.className = 'form-control form-control-sm d-inline-block w-auto ms-2';
-                from.min = startDate;
-                from.max = endDate;
-                from.value = startDate;
-
-                const to = document.createElement('input');
-                to.type = 'date';
-                to.className = 'form-control form-control-sm d-inline-block w-auto ms-2';
-                to.min = startDate;
-                to.max = endDate;
-                to.value = endDate;
-
-                from.onchange = () => {
-                    if (from.value > to.value) to.value = from.value;
-                    onChange(from.value, to.value);
-                };
-                to.onchange = () => {
-                    if (to.value < from.value) from.value = to.value;
-                    onChange(from.value, to.value);
-                };
-
-                container.appendChild(document.createTextNode('From: '));
-                container.appendChild(from);
-                container.appendChild(document.createTextNode(' To: '));
-                container.appendChild(to);
-                return [from, to];
-            }
-        }
-
-
-
-        function fetchViewTrackerData(campaignId, mode = 'daily', date = null, from = null, to = null) {
-            let url = `../backend/fetch_campaign_views.php?campaign_id=${campaignId}&mode=${mode}`;
-            if (mode === 'hourly' && date) url += `&date=${date}`;
-            if (mode === 'daily' && from && to) url += `&from=${from}&to=${to}`;
-            return fetch(url).then(res => res.json());
-        }
-
-        function renderViewTrackerChart(data, mode, startDate, endDate) {
-            const options = {
-                series: [{
-                        name: 'Clicks',
-                        data: data.values,
-                        color: '#008FFB'
-                    },
-                    {
-                        name: 'Reach',
-                        data: data.reach_values,
-                        color: '#00E396'
-                    }
-                ],
-                chart: {
-                    type: 'line',
-                    height: 350,
-                    animations: {
-                        enabled: true
-                    }
-                },
-                xaxis: {
-                    categories: data.labels,
-                    title: {
-                        text: mode === 'daily' ? 'Date' : 'Hour'
-                    }
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    width: 4,
-                    curve: 'smooth'
-                },
-                tooltip: {
-                    y: {
-                        formatter: val => val + ' users'
-                    }
-                },
-                title: {
-                    text: 'Campaign Views',
-                    align: 'left'
-                },
-                grid: {
-                    borderColor: '#f1f1f1'
-                },
-                legend: {
-                    show: true,
-                    position: 'top',
-                    horizontalAlign: 'right'
-                }
-            };
-
-            if (trackerChart) trackerChart.destroy();
-            trackerChart = new ApexCharts(document.querySelector("#viewTrackerChart"), options);
-            trackerChart.render();
-
-            // Update info text
-            if (mode === 'hourly') {
-                document.getElementById('viewTrackerDateRange').textContent = `For ${data.date}`;
-            } else {
-                document.getElementById('viewTrackerDateRange').textContent = `From ${data.from} to ${data.to}`;
-            }
-
-            // Set text values
-            document.getElementById('viewSum').textContent = data.view_sum ?? 0;
-            document.getElementById('totalView').textContent = data.total_views ?? 0;
-            document.getElementById('reach').textContent = data.reach ?? 0;
-            document.getElementById('clicks').textContent = data.clicks ?? 0;
-            document.getElementById('totalClicks').textContent = data.total_clicks ?? 0;
-
-            // Calculate percentages safely
-            const totalViews = data.total_views || 1; // prevent divide-by-zero
-            const viewPercent = Math.min(100, (data.view_sum / totalViews) * 100);
-            const reachPercent = Math.min(100, (data.reach / totalViews) * 100);
-            const clicksPercent = Math.min(100, (data.clicks / totalViews) * 100);
-            const totalClicksPercent = Math.min(100, (data.total_clicks / totalViews) * 100);
-
-            // Update progress bars
-            document.getElementById('viewProgress').style.width = `${viewPercent}%`;
-            document.getElementById('totalViewProgress').style.width = `100%`;
-            document.getElementById('reachProgress').style.width = `${reachPercent}%`;
-            document.getElementById('clicksProgress').style.width = `${clicksPercent}%`;
-            document.getElementById('totalClicksProgress').style.width = `${totalClicksPercent}%`;
-        }
-
-
-        function startRealTimeTracker(campaignId, startDate, endDate) {
-            let mode = document.getElementById('viewMode').value;
-            let date = null,
-                from = null,
-                to = null;
-            let picker = null;
-
-            function update() {
-                fetchViewTrackerData(campaignId, mode, date, from, to).then(data => {
-                    renderViewTrackerChart(data, mode, startDate, endDate);
-                });
-            }
-
-            function onPickerChange(a, b) {
-                if (mode === 'hourly') {
-                    date = a;
-                } else {
-                    from = a;
-                    to = b;
-                }
-                update();
-            }
-            picker = createDatePicker(startDate, endDate, mode, onPickerChange);
-            if (mode === 'hourly') {
-                date = picker.value;
-            } else {
-                from = picker[0].value;
-                to = picker[1].value;
-            }
-            update();
-            if (trackerInterval) clearInterval(trackerInterval);
-            trackerInterval = setInterval(update, 5000);
-            document.getElementById('viewMode').onchange = function() {
-                mode = this.value;
-                picker = createDatePicker(startDate, endDate, mode, onPickerChange);
-                if (mode === 'hourly') {
-                    date = picker.value;
-                    from = to = null;
-                } else {
-                    from = picker[0].value;
-                    to = picker[1].value;
-                    date = null;
-                }
-                update();
-            };
-        }
-    </script>
-    <script>
-        function openCampaignModal(element) {
-            const campaignId = element.getAttribute('data-campaign-id');
-            const startDate = element.getAttribute('data-start-date');
-            const endDate = element.getAttribute('data-end-date');
-
-            // Use the start and end date to set the restrictions on the date pickers
-            startRealTimeTracker(campaignId, startDate, endDate); // This function now handles the date range restrictions
-            const modal = new bootstrap.Modal(document.getElementById('viewTrackerModal'));
-            modal.show();
-        }
+        // Initialize chart with PHP data
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartData = <?= json_encode($data) ?>;
+            const chartLabels = <?= json_encode($labels) ?>;
+            initializeChart(chartData, chartLabels);
+        });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -3,7 +3,13 @@ include("../database/session.php");
 
 $first_name = $_SESSION['user']['first_name'] ?? 'User';
 $profile_pics = $_SESSION['user']['profile_pics'] ?? '';
-$cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
+$cartCount = 0;
+if (isset($_SESSION['userId'])) {
+  $userId = $_SESSION['userId'];
+  $stmt = $pdo->prepare("SELECT COUNT(*) FROM cart WHERE user_id = ? AND status = 'active'");
+  $stmt->execute([$userId]);
+  $cartCount = (int) $stmt->fetchColumn();
+}
 
 require_once '../database/db_connect.php';
 
@@ -13,12 +19,10 @@ $notifications = [];
 if (isset($_SESSION['userId'])) {
   $userId = $_SESSION['userId'];
 
-  // Count unread notifications
   $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE receiver_id = ? AND is_read = 0");
   $stmt->execute([$userId]);
   $notifCount = $stmt->fetchColumn();
 
-  // Fetch latest notifications
   $stmt = $pdo->prepare("SELECT * FROM notifications WHERE receiver_id = ? ORDER BY created_at DESC LIMIT 6");
   $stmt->execute([$userId]);
   $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -63,11 +67,8 @@ if (isset($_SESSION['userId'])) {
         <li class="nav-item position-relative">
           <a class="nav-link text-white" href="../cart/cart.php">
             <i class="fa-solid fa-cart-shopping"></i>
-            <?php if ($cartCount > 0): ?>
-              <span class="badge bg-warning text-dark position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.75rem;">
-                <?= $cartCount ?>
-              </span>
-            <?php endif; ?>
+            <span id="cart-badge" class="badge bg-warning text-dark position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.75rem;"><?= $cartCount ?></span>
+            <span id="cart-loader" class="spinner-border spinner-border-sm text-warning position-absolute top-0 start-100 translate-middle" role="status" style="display: none;"></span>
           </a>
         </li>
 
@@ -145,3 +146,4 @@ if (isset($_SESSION['userId'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/user_navbar.js"></script>
+<script src="../assets/js/add_to_cart.js"></script>

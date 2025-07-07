@@ -12,12 +12,13 @@
 .public-stores .card {
   border-radius: 0.75rem;
   background-color: #fff;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  animation: fadeInUp 0.6s ease both;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10); /* Stronger shadow */
+  transition: box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  animation: bounceIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .public-stores .card:hover {
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
-  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  transform: translateY(-8px) scale(1.04);
 }
 
 /* Fade-in-up keyframes */
@@ -29,6 +30,24 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(40px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.04) translateY(-8px);
+  }
+  80% {
+    transform: scale(0.98) translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
 

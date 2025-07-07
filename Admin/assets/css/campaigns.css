@@ -1,0 +1,143 @@
+/* Campaign Table Styles */
+.campaign-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.campaign-row:hover {
+    background-color: #f8f9fa;
+}
+
+.campaign-row.table-active {
+    background-color: #e3f2fd !important;
+    border-left: 4px solid #2196f3;
+}
+
+/* Campaign Details Sidebar */
+.campaign-details {
+    font-size: 0.9rem;
+}
+
+.campaign-details h6 {
+    color: #495057;
+    font-weight: 600;
+}
+
+.campaign-details .text-muted {
+    font-size: 0.75rem;
+}
+
+.campaign-details .fw-bold {
+    color: #212529;
+}
+
+/* Payment and Pricing Info */
+.pricing-info, .payment-info {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.pricing-info .text-success,
+.payment-info .text-success {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Status Summary */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.65em;
+}
+
+/* Campaign Banner */
+#campaignBanner {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Receipt Image */
+#campaignReceipt {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Action Buttons */
+.approve-campaign-btn, .reject-campaign-btn {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+}
+
+.approve-campaign-btn:hover {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.reject-campaign-btn:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Alert Styles */
+.alert {
+    margin-bottom: 1rem;
+    border-radius: 6px;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+    color: #0f5132;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    color: #842029;
+}
+
+/* Table Improvements */
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    vertical-align: middle;
+    padding: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .campaign-details {
+        font-size: 0.8rem;
+    }
+    
+    .pricing-info, .payment-info {
+        padding: 8px;
+    }
+    
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Empty State */
+.text-center.text-muted {
+    padding: 2rem 1rem;
+}
+
+.text-center.text-muted i {
+    opacity: 0.5;
+} 

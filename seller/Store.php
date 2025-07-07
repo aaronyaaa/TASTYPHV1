@@ -36,7 +36,6 @@ $isPublic         = !empty($store['is_public']);
 <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="../assets/css/store_modal.css">
-<link rel="stylesheet" href="../assets/css/user_navbar.css">
 <link rel="stylesheet" href="../assets/css/tabs.css">
 
 
@@ -44,6 +43,7 @@ $isPublic         = !empty($store['is_public']);
 
 </head>
 <body>
+  
 <?php include '../includes/nav/navbar_router.php'; ?>
 <?php include('modal/header_modal.php'); ?>
 <?php include '../seller/components/store_header.php'; ?>

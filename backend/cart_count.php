@@ -8,7 +8,7 @@ $userId = $_SESSION['userId'] ?? null;
 $count = 0;
 
 if ($userId) {
-    $stmt = $pdo->prepare("SELECT SUM(quantity) FROM cart WHERE user_id = ? AND status = 'active'");
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM cart WHERE user_id = ? AND status = 'active'");
     $stmt->execute([$userId]);
     $count = (int) $stmt->fetchColumn();
 }

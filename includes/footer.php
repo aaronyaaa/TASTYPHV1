@@ -1,9 +1,9 @@
 <?php /* Modern Footer for TastyPH */ ?>
-<footer class="tastyph-footer footer-main bg-dark text-light pt-5 pb-3 mt-5">
+<footer class="tastyph-footer footer-main  text-light pt-5 pb-3 mt-5" id="contact">
     <div class="container-xl">
         <div class="row gy-4">
             <div class="col-12 col-md-4">
-                <h4 class="fw-bold mb-2 tastyph-footer-title" style="color: #ff8800;">TastyPH</h4>
+                <h4 class="fw-bold mb-2 tastyph-footer-title" style="color: #FDEB71;">TastyPH</h4>
                 <p class="mb-0 text-light-50 tastyph-footer-desc">Your trusted marketplace for fresh, local, and artisan food products.</p>
             </div>
             <div class="col-6 col-md-2">
@@ -37,9 +37,17 @@
                             Instagram
                         </a>
                     </li>
-
                     <li><a href="#" class="text-light-50 text-decoration-none tastyph-footer-link">Twitter</a></li>
                     <li><a href="#" class="text-light-50 text-decoration-none tastyph-footer-link">Newsletter</a></li>
+                </ul>
+            </div>
+            <!-- Contact Us Section -->
+            <div class="col-12 col-md-4 mt-4">
+                <h6 class="fw-bold mb-3 tastyph-footer-heading">Contact Us</h6>
+                <ul class="list-unstyled tastyph-footer-list tastyph-footer-contact">
+                    <li class="mb-2"><i class="fas fa-phone-alt me-2" style="color:#FDEB71;"></i> <a href="tel:+639294999087" class="text-light-50 text-decoration-none tastyph-footer-link">+63 9294999087</a></li>
+                    <li class="mb-2"><i class="fas fa-envelope me-2" style="color:#FDEB71;"></i> <a href="mailto:gutangaaronjhon@gmail.com" class="text-light-50 text-decoration-none tastyph-footer-link">gutangaaronjhon@gmail.com</a></li>
+                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2" style="color:#FDEB71;"></i> upperpiedad Purok 9 toril davao city</li>
                 </ul>
             </div>
         </div>
@@ -49,12 +57,12 @@
 </footer>
 <style>
     .tastyph-footer {
-        background: #232b32;
+        background: #7B4397;
         font-family: 'Poppins', Arial, sans-serif;
         letter-spacing: 0.01em;
     }
     .tastyph-footer .tastyph-footer-title {
-        color: #ff8800;
+        color: #FDEB71;
         font-size: 2.1rem;
         letter-spacing: 0.02em;
     }
@@ -65,7 +73,7 @@
         margin-bottom: 0.5rem;
     }
     .tastyph-footer .tastyph-footer-heading {
-        color: #ff8800;
+        color: #FDEB71;
         font-size: 1.1rem;
         margin-bottom: 1rem;
         letter-spacing: 0.01em;
@@ -106,4 +114,12 @@
             font-size: 0.98rem;
         }
     }
+    .tastyph-footer-contact i {
+        min-width: 1.2em;
+        text-align: center;
+        font-size: 1.08em;
+        vertical-align: middle;
+    }
 </style>
+<!-- Make sure Font Awesome is loaded for icons -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->

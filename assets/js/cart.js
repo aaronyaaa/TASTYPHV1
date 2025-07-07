@@ -246,7 +246,7 @@ checkoutBtn.addEventListener('click', () => {
     .then(data => {
       if (data.success) {
         alert('✅ Checkout complete!');
-        window.location.href = 'thank_you.php';
+        window.location.href = 'cart.php';
       } else {
         alert(`❌ ${data.message}`);
       }

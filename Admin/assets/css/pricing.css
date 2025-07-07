@@ -1,0 +1,167 @@
+/* Campaign Pricing Modal Styles */
+.pricing-modal .modal-dialog {
+    max-width: 800px;
+}
+
+.pricing-card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.pricing-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 8px 8px 0 0;
+    padding: 1rem;
+}
+
+.pricing-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.pricing-duration {
+    font-size: 1.1rem;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.pricing-description {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.pricing-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.pricing-table {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-table th {
+    background: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.pricing-table td {
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.pricing-badge {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+}
+
+.pricing-form {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.pricing-form .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.pricing-form .form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+}
+
+.pricing-form .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.pricing-btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.pricing-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.pricing-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.pricing-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.pricing-empty i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Alert styles */
+.alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pricing-modal .modal-dialog {
+        margin: 1rem;
+        max-width: calc(100% - 2rem);
+    }
+    
+    .pricing-form .row {
+        flex-direction: column;
+    }
+    
+    .pricing-form .col-md-4 {
+        margin-bottom: 1rem;
+    }
+    
+    .pricing-actions {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .pricing-actions .btn {
+        width: 100%;
+    }
+} 

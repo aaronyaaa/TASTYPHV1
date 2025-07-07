@@ -49,6 +49,29 @@ if ($search) {
   ");
   $stmt->execute([$like, $altLike, $like, $altLike]);
   $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+  // Load everything by default
+  $countStmt = $pdo->query("
+    SELECT COUNT(*) FROM (
+      SELECT ingredient_id FROM ingredients
+      UNION
+      SELECT seller_id FROM seller_applications
+    ) AS total
+  ");
+  $total = $countStmt->fetchColumn();
+  $totalPages = ceil($total / $limit);
+
+  $stmt = $pdo->query("(
+      SELECT 'Ingredient' AS type, ingredient_id, ingredient_name AS name, image_url, price, NULL AS seller_id, supplier_id
+      FROM ingredients
+      LIMIT $offset, $limit
+    ) UNION (
+      SELECT 'Store' AS type, NULL AS ingredient_id, business_name AS name, profile_pics AS image_url, NULL AS price, seller_id, NULL AS supplier_id
+      FROM seller_applications
+      LIMIT $offset, $limit
+    )
+  ");
+  $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
 
@@ -65,7 +88,6 @@ if ($search) {
 
   <!-- Custom Card Styles -->
   <style>
-
     .ingredient-card-1 {
       background: #fff;
       border: 1px solid #eee;
@@ -77,11 +99,9 @@ if ($search) {
       flex-direction: column;
       overflow: hidden;
     }
-
     .ingredient-card-1:hover {
       transform: translateY(-3px);
     }
-
     .ingredient-card-1 img {
       width: 100%;
       height: 140px;
@@ -89,7 +109,6 @@ if ($search) {
       background-color: #fafafa;
       border-bottom: 1px solid #eee;
     }
-
     .ingredient-card-1 .card-body {
       padding: 0.8rem 1rem;
       display: flex;
@@ -97,20 +116,17 @@ if ($search) {
       justify-content: space-between;
       flex-grow: 1;
     }
-
     .ingredient-title {
       font-size: 0.9rem;
       font-weight: 600;
       margin-bottom: 0.2rem;
       color: #333;
     }
-
     .ingredient-description {
       font-size: 0.75rem;
       color: #888;
       margin-bottom: 0.4rem;
     }
-
     .price-tag {
       font-weight: 700;
       font-size: 0.85rem;
@@ -124,66 +140,75 @@ if ($search) {
   <?php include 'offcanvas.php'; ?>
 
   <div class="container mt-5 pt-4">
-    <?php if ($search): ?>
-      <h4 class="mb-4">Results for: "<?= htmlspecialchars($originalSearch) ?>"</h4>
-
-      <?php if (!empty($results)): ?>
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3">
-          <?php foreach ($results as $item): ?>
-            <?php
-              $url = '#';
-              if ($item['type'] === 'Ingredient' && $item['ingredient_id']) {
-                $url = "../users/ingredient_page.php?ingredient_id=" . $item['ingredient_id'];
-              } elseif ($item['type'] === 'Store' && $item['seller_id']) {
-                $url = "seller_store.php?seller_id=" . $item['seller_id'];
-              }
-            ?>
-            <div class="col">
-              <a href="<?= $url ?>" class="text-decoration-none text-dark">
-                <div class="ingredient-card-1">
-                  <img src="<?= !empty($item['image_url']) ? '../' . htmlspecialchars($item['image_url']) : '../assets/images/default-category.png' ?>"
-                       alt="<?= htmlspecialchars($item['name']) ?>"
-                       class="ingredient-image-1">
-
-                  <div class="card-body">
-                    <h5 class="ingredient-title"><?= htmlspecialchars($item['name']) ?></h5>
-                    <p class="ingredient-description"><?= $item['type'] ?></p>
-                    <?php if (!empty($item['price'])): ?>
-                      <p class="price-tag mb-0">₱<?= number_format($item['price'], 2) ?></p>
-                    <?php endif; ?>
-                  </div>
-                </div>
-              </a>
-            </div>
-          <?php endforeach; ?>
-        </div>
-
-        <!-- Pagination -->
-        <nav class="mt-4" aria-label="Search pagination">
-          <ul class="pagination justify-content-center">
-            <?php if ($page > 1): ?>
-              <li class="page-item">
-                <a class="page-link" href="?q=<?= urlencode($search) ?>&page=<?= $page - 1 ?>">Previous</a>
-              </li>
-            <?php endif; ?>
-
-            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-              <li class="page-item <?= $i === $page ? 'active' : '' ?>">
-                <a class="page-link" href="?q=<?= urlencode($search) ?>&page=<?= $i ?>"><?= $i ?></a>
-              </li>
-            <?php endfor; ?>
-
-            <?php if ($page < $totalPages): ?>
-              <li class="page-item">
-                <a class="page-link" href="?q=<?= urlencode($search) ?>&page=<?= $page + 1 ?>">Next</a>
-              </li>
-            <?php endif; ?>
-          </ul>
-        </nav>
-
+    <h4 class="mb-4">
+      <?php if ($search): ?>
+        Results for: "<?= htmlspecialchars($originalSearch) ?>"
       <?php else: ?>
-        <p class="text-muted">No results found for "<?= htmlspecialchars($originalSearch) ?>"</p>
+        All Products and Stores
       <?php endif; ?>
+    </h4>
+
+    <?php if (!empty($results)): ?>
+      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3">
+        <?php foreach ($results as $item): ?>
+          <?php
+            $url = '#';
+            if ($item['type'] === 'Ingredient' && $item['ingredient_id']) {
+              $url = "../users/ingredient_page.php?ingredient_id=" . $item['ingredient_id'];
+            } elseif ($item['type'] === 'Store' && $item['seller_id']) {
+              $url = "seller_store.php?seller_id=" . $item['seller_id'];
+            }
+          ?>
+          <div class="col">
+            <a href="<?= $url ?>" class="text-decoration-none text-dark">
+              <div class="ingredient-card-1">
+                <img src="<?= !empty($item['image_url']) ? '../' . htmlspecialchars($item['image_url']) : '../assets/images/default-category.png' ?>"
+                     alt="<?= htmlspecialchars($item['name']) ?>"
+                     class="ingredient-image-1">
+                <div class="card-body">
+                  <h5 class="ingredient-title"><?= htmlspecialchars($item['name']) ?></h5>
+                  <p class="ingredient-description"><?= $item['type'] ?></p>
+                  <?php if (!empty($item['price'])): ?>
+                    <p class="price-tag mb-0">₱<?= number_format($item['price'], 2) ?></p>
+                  <?php endif; ?>
+                </div>
+              </div>
+            </a>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+      <!-- Pagination -->
+      <nav class="mt-4" aria-label="Search pagination">
+        <ul class="pagination justify-content-center">
+          <?php if ($page > 1): ?>
+            <li class="page-item">
+              <a class="page-link" href="?q=<?= urlencode($originalSearch) ?>&page=<?= $page - 1 ?>">Previous</a>
+            </li>
+          <?php endif; ?>
+
+          <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <li class="page-item <?= $i === $page ? 'active' : '' ?>">
+              <a class="page-link" href="?q=<?= urlencode($originalSearch) ?>&page=<?= $i ?>"><?= $i ?></a>
+            </li>
+          <?php endfor; ?>
+
+          <?php if ($page < $totalPages): ?>
+            <li class="page-item">
+              <a class="page-link" href="?q=<?= urlencode($originalSearch) ?>&page=<?= $page + 1 ?>">Next</a>
+            </li>
+          <?php endif; ?>
+        </ul>
+      </nav>
+
+    <?php else: ?>
+      <p class="text-muted">
+        <?php if ($search): ?>
+          No results found for "<?= htmlspecialchars($originalSearch) ?>"
+        <?php else: ?>
+          No products or stores available yet.
+        <?php endif; ?>
+      </p>
     <?php endif; ?>
   </div>
 

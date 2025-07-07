@@ -1,56 +1,110 @@
 /* Sidebar Panel */
 .sidebar {
-  background-color: #ffffff;
-  border-right: 1px solid #dee2e6;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.03);
-  padding: 2rem 1.5rem;
+  background: rgba(255,255,255,0.85);
+  border-right: 1px solid #e0e0e0;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
   min-height: 100vh;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 /* Tab Pills - Vertical Sidebar */
+#quickTabs {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  border-bottom: none;
+  background: transparent;
+  margin-bottom: 1.5rem;
+}
+
+#quickTabs .nav-item {
+  list-style: none;
+}
+
 #quickTabs .nav-link {
-  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 110px;
+  min-height: 80px;
+  border-radius: 12px 12px 0 0;
+  background: none;
+  color: #7B4397;
+  border: none;
+  margin: 0 0.2rem;
+  padding: 1rem 1.5rem 0.5rem 1.5rem;
+  transition: all 0.2s;
+  font-size: 1.1rem;
   font-weight: 500;
-  color: #495057;
-  padding: 0.6rem 1rem;
-  transition: all 0.2s ease;
-}
-
-#quickTabs .nav-link:hover {
-  background-color: #f8f9fa;
-  color: #212529;
-}
-
-#quickTabs .nav-link.active {
-  background-color: #198754;
-  color: #fff !important;
-  font-weight: 600;
-  box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.15);
+  gap: 0.2rem;
+  box-shadow: none;
+  border-bottom: 3px solid transparent;
 }
 
 #quickTabs .nav-link i {
-  width: 20px;
-  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 0.1rem;
+  display: block;
+}
+
+#quickTabs .nav-link span {
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin-top: 0.1rem;
+  letter-spacing: 0.01em;
+}
+
+#quickTabs .nav-link.active, #quickTabs .nav-link:focus {
+  background: #FDEB71;
+  color: #7B4397 !important;
+  border-bottom: 3px solid #7B4397;
+  font-weight: 700;
+  box-shadow: 0 2px 8px #fde47144;
+}
+
+#quickTabs .nav-link.active i, #quickTabs .nav-link:focus i {
+  color: #7B4397;
+}
+
+#quickTabs .nav-link:not(.active):hover {
+  background: #fff6f6;
+  color: #ff6f6f;
+}
+
+#quickTabs .nav-link:not(.active):hover i {
+  color: #ff6f6f;
 }
 
 /* Main Content Area */
 .main-content {
-  background-color: #f8f9fa;
-  padding: 2rem;
+  background: linear-gradient(120deg, #f8f9fa 60%, #f3e9ff 100%);
+  padding: 2.5rem 2rem;
 }
 
 .tab-content {
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  padding: 2rem;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.03);
+  background: rgba(255,255,255,0.95);
+  border-radius: 1rem;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
   min-height: 80vh;
+  border: 1px solid #ececec;
+  transition: box-shadow 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
 /* Text and Titles */
 .tab-content p.lead {
   font-weight: 500;
-  color: #6c757d;
+  color: #7B4397;
+  letter-spacing: 0.01em;
 }
 
 /* Utility Fixes */
@@ -58,10 +112,154 @@
   .sidebar {
     min-height: auto;
     padding: 1.5rem 1rem;
+    position: static;
+    box-shadow: 0 2px 8px rgba(31,38,135,0.04);
   }
 
   #quickTabs .nav-link {
-    padding: 0.5rem 0.75rem;
+    min-width: 70px;
+    min-height: 60px;
     font-size: 0.95rem;
+    padding: 0.5rem 0.5rem 0.2rem 0.5rem;
+  }
+
+  #quickTabs .nav-link i {
+    font-size: 1.2rem;
+  }
+
+  .tab-content {
+    padding: 1.2rem 0.5rem;
+    border-radius: 0.7rem;
+  }
+}
+
+.tabs-card {
+  background: #fff;
+  border-radius: 1.2rem 1.2rem 0 0;
+  box-shadow: 0 4px 24px rgba(123,67,151,0.07);
+  padding: 0.5rem 1.5rem 0 1.5rem;
+  margin-bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.seller-tabs-bar {
+  width: 100%;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  border-bottom: 1.5px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.tabs-scroll {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  outline: none;
+  color: #7B4397;
+  font-weight: 500;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.5rem 1.2rem 0.2rem 1.2rem;
+  border-radius: 1.2rem 1.2rem 0 0;
+  transition: background 0.2s, color 0.2s;
+  position: relative;
+  cursor: pointer;
+}
+.tab-btn.active, .tab-btn:focus {
+  background: #FDEB71;
+  color: #7B4397;
+}
+.tab-btn.active::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 3px;
+  background: #7B4397;
+  border-radius: 2px;
+  position: absolute;
+  left: 20%;
+  bottom: 0;
+}
+.tab-btn i {
+  font-size: 1.7rem;
+}
+.seller-tab-content {
+  padding: 2rem 1rem;
+  background: #fff;
+  border-radius: 0 0 1.2rem 1.2rem;
+  box-shadow: 0 4px 24px rgba(123,67,151,0.07);
+  min-height: 60vh;
+  margin-bottom: 2rem;
+}
+.tab-pane-custom { display: block; }
+.tab-pane-custom.d-none { display: none !important; }
+
+/* Product Card Example (for future use) */
+.product-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(123,67,151,0.07);
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.product-card:hover {
+  box-shadow: 0 8px 32px rgba(123,67,151,0.13);
+  transform: translateY(-4px) scale(1.01);
+}
+.product-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 0.7rem;
+}
+.product-info h5 {
+  margin: 0 0 0.2rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.product-info .price {
+  color: #7B4397;
+  font-weight: 700;
+}
+.product-info .actions button {
+  background: none;
+  border: none;
+  color: #7B4397;
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .tabs-scroll {
+    gap: 0.5rem;
+    padding: 0.2rem 0;
+  }
+  .tab-btn {
+    font-size: 0.95rem;
+    padding: 0.3rem 0.7rem 0.1rem 0.7rem;
+  }
+  .tab-btn i {
+    font-size: 1.2rem;
+  }
+  .seller-tab-content {
+    padding: 1rem 0.2rem;
+    border-radius: 0 0 0.7rem 0.7rem;
   }
 }

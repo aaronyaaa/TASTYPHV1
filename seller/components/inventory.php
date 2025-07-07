@@ -36,6 +36,7 @@ $stmt2 = $pdo->prepare($sql2);
 $stmt2->execute(['userId' => $userId]);
 $kitchen = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <div class="container py-4">
     <!-- Tabs Header -->
     <ul class="nav nav-tabs mb-3" id="inventoryTabs" role="tablist">

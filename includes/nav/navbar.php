@@ -17,22 +17,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="collapse navbar-collapse justify-content-end d-none d-lg-flex">
       <ul class="navbar-nav align-items-center gap-2">
         <li class="nav-item">
-          <a href="index.php" class="nav-link text-white <?php echo $current_page === 'index.php' ? 'active' : ''; ?>" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); display:flex; align-items:center; gap:0.5rem;">
+          <a href="#hero" class="nav-link text-white<?php echo $current_page === 'index.php' ? ' active' : ''; ?>" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); display:flex; align-items:center; gap:0.5rem;">
             <i class="fas fa-home"></i> Home
           </a>
         </li>
         <li class="nav-item">
-          <a href="menu.php" class="nav-link text-white <?php echo $current_page === 'menu.php' ? 'active' : ''; ?>" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
-            <i class="fas fa-utensils"></i> Menu
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="about.php" class="nav-link text-white <?php echo $current_page === 'about.php' ? 'active' : ''; ?>" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
+          <a href="#about" class="nav-link text-white" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
             <i class="fas fa-info-circle"></i> About
           </a>
         </li>
         <li class="nav-item">
-          <a href="contact.php" class="nav-link text-white <?php echo $current_page === 'contact.php' ? 'active' : ''; ?>" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
+          <a href="#menu" class="nav-link text-white" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
+            <i class="fas fa-utensils"></i> Menu
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#contact" class="nav-link text-white" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
             <i class="fas fa-envelope"></i> Contact
           </a>
         </li>
@@ -50,12 +50,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
           </li>
         <?php else: ?>
           <li class="nav-item">
-            <a href="#" class="nav-link text-white auth-link" data-target="login" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
+            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#loginModal" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
               <i class="fas fa-sign-in-alt"></i> Login
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link text-white auth-link" data-target="signup" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
+            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#signupModal" style="font-weight:500; font-size:1rem; border-radius:12px; padding:0.8rem 1.2rem; display:flex; align-items:center; gap:0.5rem;">
               <i class="fas fa-user-plus"></i> Sign Up
             </a>
           </li>
@@ -74,22 +74,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <div class="offcanvas-body p-0">
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a href="index.php" class="nav-link text-white px-3 py-2 <?php echo $current_page === 'index.php' ? 'active' : ''; ?>">
+        <a href="#hero" class="nav-link text-white px-3 py-2<?php echo $current_page === 'index.php' ? ' active' : ''; ?>">
           <i class="fas fa-home me-2"></i> Home
         </a>
       </li>
       <li class="nav-item">
-        <a href="menu.php" class="nav-link text-white px-3 py-2 <?php echo $current_page === 'menu.php' ? 'active' : ''; ?>">
-          <i class="fas fa-utensils me-2"></i> Menu
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="about.php" class="nav-link text-white px-3 py-2 <?php echo $current_page === 'about.php' ? 'active' : ''; ?>">
+        <a href="#about" class="nav-link text-white px-3 py-2">
           <i class="fas fa-info-circle me-2"></i> About
         </a>
       </li>
       <li class="nav-item">
-        <a href="contact.php" class="nav-link text-white px-3 py-2 <?php echo $current_page === 'contact.php' ? 'active' : ''; ?>">
+        <a href="#menu" class="nav-link text-white px-3 py-2">
+          <i class="fas fa-utensils me-2"></i> Menu
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#contact" class="nav-link text-white px-3 py-2">
           <i class="fas fa-envelope me-2"></i> Contact
         </a>
       </li>
@@ -106,12 +106,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </li>
       <?php else: ?>
         <li class="nav-item">
-          <a href="#" class="nav-link text-white px-3 py-2 auth-link" data-target="login">
+          <a href="#" class="nav-link text-white px-3 py-2" data-bs-toggle="modal" data-bs-target="#loginModal">
             <i class="fas fa-sign-in-alt me-2"></i> Login
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link text-white px-3 py-2 auth-link" data-target="signup">
+          <a href="#" class="nav-link text-white px-3 py-2" data-bs-toggle="modal" data-bs-target="#signupModal">
             <i class="fas fa-user-plus me-2"></i> Sign Up
           </a>
         </li>

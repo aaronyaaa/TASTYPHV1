@@ -155,7 +155,6 @@ function haversineDistance(
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -329,11 +328,6 @@ function haversineDistance(
     </section>
 
 
-
-
-
-
-
     <!-- Marketplace – Homemade Products -->
     <section class="public-stores my-5 px-3">
       <h2 class="mb-4">Marketplace – Homemade Products</h2>
@@ -358,8 +352,6 @@ function haversineDistance(
         <?php endforeach; ?>
       </div>
     </section>
-
-
 
     <!-- Public Stores -->
     <section class="public-stores my-5 px-3">

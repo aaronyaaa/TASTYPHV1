@@ -150,3 +150,16 @@ if (isset($_SESSION['userId'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/add_to_cart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
+
+    if (searchInput) {
+      searchInput.addEventListener('focus', function () {
+        const searchValue = searchInput.value.trim();
+        const query = searchValue ? '?q=' + encodeURIComponent(searchValue) : '';
+        window.location.href = '../includes/search_page.php' + query;
+      });
+    }
+  });
+</script>

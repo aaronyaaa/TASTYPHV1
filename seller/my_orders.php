@@ -49,6 +49,18 @@ $statusLabels = [
     'delivered' => 'Delivered',
     'cancelled' => 'Cancelled'
 ];
+
+// Fetch pre-orders for this user
+$preOrders = [];
+$preOrderStmt = $pdo->prepare("
+    SELECT pol.*, sa.business_name AS seller_name
+    FROM pre_order_list pol
+    LEFT JOIN seller_applications sa ON pol.seller_id = sa.seller_id
+    WHERE pol.user_id = ?
+    ORDER BY pol.request_date DESC
+");
+$preOrderStmt->execute([$userId]);
+$preOrders = $preOrderStmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!-- HTML content starts -->
@@ -152,6 +164,63 @@ $statusLabels = [
 
     <div class="main-content" style="margin-left: 240px;">
         <h3 class="mb-4">My Orders</h3>
+
+        <!-- Pre-Orders Section -->
+        <h4 class="mb-3">Pre-Orders</h4>
+        <?php if (empty($preOrders)): ?>
+            <div class="alert alert-info">You have no pre-orders yet.</div>
+        <?php else: ?>
+            <?php foreach ($preOrders as $pre): ?>
+                <div class="card mb-4 shadow-sm border border-warning">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <span class="badge bg-warning text-dark me-2">Pre-Order</span>
+                                <strong><?= htmlspecialchars($pre['product_name']) ?></strong>
+                                <span class="text-muted small">from <?= htmlspecialchars($pre['seller_name'] ?? 'Unknown Seller') ?></span>
+                            </div>
+                            <span class="badge <?=
+                                match($pre['status']) {
+                                    'pending' => 'bg-secondary',
+                                    'approved' => 'bg-info text-dark',
+                                    'declined' => 'bg-danger',
+                                    'delivered' => 'bg-success',
+                                    default => 'bg-dark'
+                                }
+                            ?>">
+                                <?= ucfirst($pre['status']) ?>
+                            </span>
+                        </div>
+                        <table class="table table-borderless align-middle mb-0">
+                            <tr>
+                                <th>Quantity</th>
+                                <td><?= $pre['quantity'] ?> <?= htmlspecialchars($pre['unit']) ?></td>
+                                <th>Preferred Date</th>
+                                <td><?= htmlspecialchars($pre['preferred_date']) ?> <?= htmlspecialchars($pre['preferred_time']) ?></td>
+                            </tr>
+                            <tr>
+                                <th>Requested</th>
+                                <td><?= date('d M Y', strtotime($pre['request_date'])) ?></td>
+                                <th>Order Status</th>
+                                <td><?= ucfirst($pre['status']) ?></td>
+                            </tr>
+                            <?php if (!empty($pre['additional_notes'])): ?>
+                            <tr>
+                                <th>Notes</th>
+                                <td colspan="3"><?= htmlspecialchars($pre['additional_notes']) ?></td>
+                            </tr>
+                            <?php endif; ?>
+                            <?php if (!empty($pre['full_address'])): ?>
+                            <tr>
+                                <th>Delivery Address</th>
+                                <td colspan="3"><?= htmlspecialchars($pre['full_address']) ?></td>
+                            </tr>
+                            <?php endif; ?>
+                        </table>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
         <?php if (empty($orderGroups)): ?>
             <div class="alert alert-info">You have no orders yet.</div>

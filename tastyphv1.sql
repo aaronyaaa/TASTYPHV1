@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 12:17 AM
+-- Generation Time: Jul 07, 2025 at 02:23 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -47,6 +47,28 @@ INSERT INTO `admins` (`id`, `username`, `password`, `email`, `usertype`, `create
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `admin_logs`
+--
+
+CREATE TABLE `admin_logs` (
+  `log_id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `action` varchar(100) NOT NULL,
+  `details` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin_logs`
+--
+
+INSERT INTO `admin_logs` (`log_id`, `admin_id`, `action`, `details`, `created_at`) VALUES
+(1, 3, 'campaign_status_update', '{\"campaign_id\":13,\"old_status\":\"pending\",\"new_status\":\"approved\",\"campaign_title\":\"asdsad\"}', '2025-07-07 00:00:41'),
+(2, 3, 'campaign_status_update', '{\"campaign_id\":12,\"old_status\":\"pending\",\"new_status\":\"approved\",\"campaign_title\":\"asd\"}', '2025-07-07 00:16:29');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `campaign_clicks`
 --
 
@@ -85,6 +107,32 @@ INSERT INTO `campaign_clicks` (`click_id`, `campaign_id`, `user_id`, `ip_address
 (22, 8, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', '2025-07-02 16:50:39'),
 (23, 8, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', '2025-07-03 16:54:22'),
 (24, 8, 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36', '2025-07-04 04:47:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `campaign_pricing`
+--
+
+CREATE TABLE `campaign_pricing` (
+  `pricing_id` int(11) NOT NULL,
+  `duration_days` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `campaign_pricing`
+--
+
+INSERT INTO `campaign_pricing` (`pricing_id`, `duration_days`, `price`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 3, 50.00, '3 Days Campaign', 1, '2025-07-06 23:11:14', '2025-07-06 23:11:14'),
+(2, 7, 100.00, '1 Week Campaign', 1, '2025-07-06 23:11:14', '2025-07-06 23:11:14'),
+(3, 14, 180.00, '2 Weeks Campaign', 1, '2025-07-06 23:11:14', '2025-07-06 23:11:14'),
+(4, 30, 300.00, '1 Month Campaign', 1, '2025-07-06 23:11:14', '2025-07-06 23:11:14');
 
 -- --------------------------------------------------------
 
@@ -141,7 +189,14 @@ INSERT INTO `campaign_reach` (`reach_id`, `campaign_id`, `user_id`, `ip_address`
 (964, 8, 1, '::1', '2025-07-02 16:50:36'),
 (971, 8, 2, '::1', '2025-07-02 17:29:04'),
 (981, 8, 1, '::1', '2025-07-03 13:07:18'),
-(987, 8, 1, '::1', '2025-07-04 03:02:30');
+(987, 8, 1, '::1', '2025-07-04 03:02:30'),
+(1155, 8, 19, '::1', '2025-07-04 20:38:37'),
+(1177, 8, 3, '::1', '2025-07-04 20:53:21'),
+(1178, 8, 1, '::1', '2025-07-05 17:08:37'),
+(1191, 8, 1, '::1', '2025-07-06 11:22:26'),
+(1200, 8, 20, '::1', '2025-07-06 11:34:24'),
+(1230, 8, 1, '::1', '2025-07-07 00:03:53'),
+(1238, 12, 1, '::1', '2025-07-07 08:16:35');
 
 -- --------------------------------------------------------
 
@@ -153,6 +208,8 @@ CREATE TABLE `campaign_requests` (
   `campaign_id` int(11) NOT NULL,
   `user_type` enum('seller','supplier') NOT NULL,
   `user_id` int(11) NOT NULL,
+  `pricing_id` int(11) DEFAULT NULL,
+  `duration_days` int(11) DEFAULT NULL,
   `title` varchar(100) NOT NULL,
   `description` text DEFAULT NULL,
   `banner_image` varchar(255) NOT NULL,
@@ -160,7 +217,7 @@ CREATE TABLE `campaign_requests` (
   `end_date` date NOT NULL,
   `status` enum('pending','approved','rejected','expired') DEFAULT 'pending',
   `admin_feedback` text DEFAULT NULL,
-  `fee_paid` decimal(10,2) DEFAULT 0.00,
+  `amount_spent` decimal(10,2) DEFAULT 0.00,
   `payment_status` enum('unpaid','paid','failed','refunded') DEFAULT 'unpaid',
   `payment_method` varchar(50) DEFAULT NULL,
   `paid_at` datetime DEFAULT NULL,
@@ -171,13 +228,15 @@ CREATE TABLE `campaign_requests` (
 -- Dumping data for table `campaign_requests`
 --
 
-INSERT INTO `campaign_requests` (`campaign_id`, `user_type`, `user_id`, `title`, `description`, `banner_image`, `start_date`, `end_date`, `status`, `admin_feedback`, `fee_paid`, `payment_status`, `payment_method`, `paid_at`, `created_at`) VALUES
-(4, 'seller', 3, 'Visit Miki\'s Kakanin', '', 'uploads/campaigns/banner_685ac48fe59586.46336310.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:30:23'),
-(5, 'seller', 1, 'Delicious kakanin', '', 'uploads/campaigns/banner_685ac73a45eb29.67489880.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:41:46'),
-(6, 'seller', 4, 'Doll\'s Favorite Kakanin', 'visit!!!', 'uploads/campaigns/banner_685ac80ab5d034.32190593.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:45:14'),
-(7, 'seller', 1, 'Attack in titan', 'aot', 'uploads/campaigns/banner_685e5a273f0f64.39894868.jpg', '2025-06-27', '2025-06-28', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-27 08:45:27'),
-(8, 'seller', 1, 'sad', '', 'uploads/campaigns/banner_6864f2aebad063.53296292.jpg', '2025-07-02', '2025-07-09', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-07-02 08:49:50'),
-(9, 'seller', 1, 'sad', '', 'uploads/campaigns/banner_6864f2c40010c5.55184344.jpg', '2025-07-02', '2025-07-09', 'pending', NULL, 0.00, 'unpaid', NULL, NULL, '2025-07-02 08:50:12');
+INSERT INTO `campaign_requests` (`campaign_id`, `user_type`, `user_id`, `pricing_id`, `duration_days`, `title`, `description`, `banner_image`, `start_date`, `end_date`, `status`, `admin_feedback`, `amount_spent`, `payment_status`, `payment_method`, `paid_at`, `created_at`) VALUES
+(4, 'seller', 3, NULL, NULL, 'Visit Miki\'s Kakanin', '', 'uploads/campaigns/banner_685ac48fe59586.46336310.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:30:23'),
+(5, 'seller', 1, NULL, NULL, 'Delicious kakanin', '', 'uploads/campaigns/banner_685ac73a45eb29.67489880.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:41:46'),
+(6, 'seller', 4, NULL, NULL, 'Doll\'s Favorite Kakanin', 'visit!!!', 'uploads/campaigns/banner_685ac80ab5d034.32190593.png', '2025-06-24', '2025-07-01', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-24 15:45:14'),
+(7, 'seller', 1, NULL, NULL, 'Attack in titan', 'aot', 'uploads/campaigns/banner_685e5a273f0f64.39894868.jpg', '2025-06-27', '2025-06-28', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-06-27 08:45:27'),
+(8, 'seller', 1, NULL, NULL, 'sad', '', 'uploads/campaigns/banner_6864f2aebad063.53296292.jpg', '2025-07-02', '2025-07-09', 'approved', NULL, 0.00, 'unpaid', NULL, NULL, '2025-07-02 08:49:50'),
+(9, 'seller', 1, NULL, NULL, 'sad', '', 'uploads/campaigns/banner_6864f2c40010c5.55184344.jpg', '2025-07-02', '2025-07-09', 'rejected', NULL, 0.00, 'unpaid', NULL, NULL, '2025-07-02 08:50:12'),
+(12, 'seller', 1, NULL, NULL, 'asd', 'lami na sya', 'uploads/campaigns/banner_686b064f178ea4.22185005.jpg', '2025-07-06', '2025-07-13', 'approved', NULL, 100.00, 'paid', 'cash', '2025-07-07 07:27:11', '2025-07-06 23:27:11'),
+(13, 'seller', 1, 2, 7, 'asdsad', 'asdasdasd', 'uploads/campaigns/banner_686b087e2523c7.95374124.jpg', '2025-07-10', '2025-07-16', 'approved', NULL, 100.00, 'paid', 'cash', '2025-07-07 07:36:30', '2025-07-06 23:36:30');
 
 -- --------------------------------------------------------
 
@@ -204,10 +263,10 @@ CREATE TABLE `cart` (
 
 INSERT INTO `cart` (`cart_id`, `user_id`, `product_id`, `ingredient_id`, `variant_id`, `unit_price`, `quantity`, `total_price`, `added_at`, `status`) VALUES
 (121, 1, NULL, 9, NULL, 44.00, 6, 264.00, '2025-07-03 22:15:45', 'active'),
-(122, 1, NULL, 10, NULL, 480.00, 3, 1440.00, '2025-07-03 22:16:01', 'active'),
-(123, 1, NULL, 12, NULL, 116.00, 3, 348.00, '2025-07-03 22:16:13', 'active'),
-(124, 1, NULL, 13, NULL, 150.00, 3, 450.00, '2025-07-03 22:16:22', 'active'),
-(125, 1, NULL, 11, NULL, 52.00, 3, 156.00, '2025-07-03 22:16:33', 'active');
+(123, 1, NULL, 12, NULL, 116.00, 1, 116.00, '2025-07-03 22:16:13', 'active'),
+(126, 19, NULL, 1, NULL, 50.00, 1, 50.00, '2025-07-04 12:38:52', 'active'),
+(127, 19, 5, NULL, NULL, 6.00, 1, 6.00, '2025-07-04 12:38:56', 'active'),
+(129, 1, 42, NULL, NULL, 10.00, 1, 10.00, '2025-07-06 03:33:32', 'active');
 
 -- --------------------------------------------------------
 
@@ -589,7 +648,22 @@ INSERT INTO `messages` (`message_id`, `sender_id`, `receiver_id`, `message_text`
 (180, 3, 1, 'YEAH', NULL, NULL, 0, 1, '2025-06-23 23:26:26', NULL),
 (181, 4, 1, 'hi', NULL, NULL, 0, 1, '2025-06-25 01:44:15', NULL),
 (182, 2, 1, 'asdsa', NULL, NULL, 0, 1, '2025-06-25 16:22:57', NULL),
-(183, 1, 2, 'hi', NULL, NULL, 0, 1, '2025-06-25 16:23:05', NULL);
+(183, 1, 2, 'hi', NULL, NULL, 0, 1, '2025-06-25 16:23:05', NULL),
+(184, 20, 1, 'hi', NULL, NULL, 0, 1, '2025-07-06 11:34:36', NULL),
+(185, 20, 1, 'hu', NULL, NULL, 0, 1, '2025-07-06 11:40:39', NULL),
+(186, 20, 3, 'hi', NULL, NULL, 0, 0, '2025-07-06 11:41:12', NULL),
+(187, 20, 3, 'asd', NULL, NULL, 0, 0, '2025-07-06 11:41:16', NULL),
+(188, 20, 3, 'asdsad', NULL, NULL, 0, 0, '2025-07-06 11:41:18', NULL),
+(189, 20, 3, 'asdasdsad', NULL, NULL, 0, 0, '2025-07-06 11:41:19', NULL),
+(190, 20, 3, 'sad', NULL, NULL, 0, 0, '2025-07-06 11:41:20', NULL),
+(191, 20, 3, 'asd', NULL, NULL, 0, 0, '2025-07-06 11:41:20', NULL),
+(192, 20, 3, 'asd', NULL, NULL, 0, 0, '2025-07-06 11:41:20', NULL),
+(193, 20, 3, 'asd', NULL, NULL, 0, 0, '2025-07-06 11:41:20', NULL),
+(194, 20, 3, 'asd', NULL, NULL, 0, 0, '2025-07-06 11:41:21', NULL),
+(195, 20, 3, 'sd', NULL, NULL, 0, 0, '2025-07-06 11:41:21', NULL),
+(196, 20, 3, 'asd', NULL, NULL, 0, 0, '2025-07-06 11:41:56', NULL),
+(197, 20, 3, 'sad', NULL, NULL, 0, 0, '2025-07-06 11:41:57', NULL),
+(198, 20, 4, 'sd', NULL, NULL, 0, 0, '2025-07-06 11:47:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -682,7 +756,11 @@ INSERT INTO `orders` (`order_id`, `user_id`, `supplier_id`, `seller_id`, `paymen
 (39, 1, 1, NULL, 'cash', NULL, 50.00, '2025-07-04 03:06:40', 'pending', 0),
 (40, 1, NULL, 4, 'cash', NULL, 26.00, '2025-07-04 03:09:13', 'delivered', 0),
 (41, 1, 1, NULL, 'cash', NULL, 250.00, '2025-07-04 03:09:13', 'pending', 0),
-(42, 1, 2, NULL, 'cash', NULL, 150.00, '2025-07-04 03:09:13', 'pending', 0);
+(42, 1, 2, NULL, 'cash', NULL, 150.00, '2025-07-04 03:09:13', 'pending', 0),
+(43, 1, 2, NULL, 'cash', NULL, 52.00, '2025-07-06 11:24:13', 'pending', 0),
+(44, 1, 2, NULL, 'cash', NULL, 150.00, '2025-07-06 11:25:08', 'pending', 0),
+(45, 1, 2, NULL, 'cash', NULL, 480.00, '2025-07-06 11:25:34', 'pending', 0),
+(46, 1, NULL, 4, 'cash', NULL, 6.00, '2025-07-06 11:33:16', 'pending', 0);
 
 -- --------------------------------------------------------
 
@@ -803,7 +881,11 @@ INSERT INTO `order_items` (`order_item_id`, `order_id`, `product_id`, `ingredien
 (93, 40, 42, NULL, NULL, 1, 10.00, NULL, 4),
 (94, 41, NULL, 6, NULL, 1, 200.00, 1, NULL),
 (95, 41, NULL, 1, NULL, 1, 50.00, 1, NULL),
-(96, 42, NULL, 13, NULL, 1, 150.00, 2, NULL);
+(96, 42, NULL, 13, NULL, 1, 150.00, 2, NULL),
+(97, 43, NULL, 11, NULL, 1, 52.00, 2, NULL),
+(98, 44, NULL, 13, NULL, 1, 150.00, 2, NULL),
+(99, 45, NULL, 10, NULL, 1, 480.00, 2, NULL),
+(100, 46, 5, NULL, NULL, 1, 6.00, NULL, 4);
 
 -- --------------------------------------------------------
 
@@ -1492,7 +1574,25 @@ INSERT INTO `store_visits` (`visit_id`, `store_type`, `store_id`, `user_id`, `ip
 (108, 'supplier', 2, 1, '::1', '2025-07-04 05:49:58'),
 (109, 'supplier', 2, 1, '::1', '2025-07-04 05:50:06'),
 (110, 'supplier', 2, 1, '::1', '2025-07-04 05:50:12'),
-(111, 'supplier', 2, 1, '::1', '2025-07-04 05:50:16');
+(111, 'supplier', 2, 1, '::1', '2025-07-04 05:50:16'),
+(112, 'seller', 4, 1, '::1', '2025-07-04 18:18:06'),
+(113, 'supplier', 2, 1, '::1', '2025-07-04 18:18:40'),
+(114, 'seller', 4, 1, '::1', '2025-07-04 18:27:23'),
+(115, 'supplier', 1, 1, '::1', '2025-07-04 18:27:27'),
+(116, 'seller', 4, 1, '::1', '2025-07-04 19:10:50'),
+(117, 'seller', 5, 19, '::1', '2025-07-04 20:44:07'),
+(118, 'seller', 6, 19, '::1', '2025-07-04 20:44:20'),
+(119, 'seller', 4, 19, '::1', '2025-07-04 20:51:31'),
+(120, 'seller', 4, 1, '::1', '2025-07-05 17:09:04'),
+(121, 'seller', 4, 1, '::1', '2025-07-06 11:22:41'),
+(122, 'seller', 4, 20, '::1', '2025-07-06 11:34:31'),
+(123, 'seller', 5, 20, '::1', '2025-07-06 11:41:02'),
+(124, 'seller', 6, 20, '::1', '2025-07-06 11:46:57'),
+(125, 'seller', 6, 20, '::1', '2025-07-06 11:47:05'),
+(126, 'seller', 6, 20, '::1', '2025-07-06 11:47:32'),
+(127, 'seller', 6, 20, '::1', '2025-07-06 11:48:41'),
+(128, 'seller', 4, 1, '::1', '2025-07-07 08:16:52'),
+(129, 'seller', 4, 1, '::1', '2025-07-07 08:16:54');
 
 -- --------------------------------------------------------
 
@@ -1566,7 +1666,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_birth`, `contact_number`, `country_id`, `postal_code`, `streetname`, `email`, `password`, `usertype`, `profile_pics`, `cover_photo`, `latitude`, `longitude`, `gender`, `status`, `is_public`, `created_at`, `updated_at`, `full_address`) VALUES
-(1, 'aaronyaaa', '', 'jhon', '2025-05-06', '09294999087', NULL, '8000', 'Bayabas-Eden Road, Purok 9', 'aaron@gmail.com', '$2y$10$WwPlm2wTHoSR5xHKV0DVU.80lg9f.ghvuQ2O3tdpbDBGERf8/xVsC', 'seller', 'uploads/profile_pics/profile_1_1748532349.jpg', 'uploads/users/cover/cover_1_1749454267.jpg', 7.0272297, 125.4845438, 'male', 'online', 1, '2025-05-23 06:04:51', '2025-06-25 08:15:00', 'Bayabas-Eden Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines'),
+(1, 'aaronyaaa', '', 'jhon', '2025-05-06', '09294999087', NULL, '8000', 'Bayabas-Eden Road, Purok 9', 'aaron@gmail.com', '$2y$10$WwPlm2wTHoSR5xHKV0DVU.80lg9f.ghvuQ2O3tdpbDBGERf8/xVsC', 'seller', 'uploads/profile_pics/profile_1_1748532349.jpg', 'uploads/users/cover/cover_1_1749454267.jpg', 7.0272297, 125.4845438, 'male', 'online', 1, '2025-05-23 06:04:51', '2025-07-06 03:33:04', 'Bayabas-Eden Road, Purok 9, Bato, Toril District, Davao City, Davao Region, 8000, Philippines'),
 (2, 'Kurumi', 'L', 'Tokisaki', '2025-05-02', '09294999233', NULL, '8025', 'MacArthur Highway, Salsa Village', 'aa@gmail.com', '$2y$10$yeg8BacZduR3o14Q90B67er68kPftTlZjIGaCtskjW1aO1cz461NC', 'supplier', 'uploads/users/profile/profile_2_1749111714.jpg', 'uploads/users/cover/cover_2_1749111686.jpg', 7.0142131, 125.4900896, 'female', 'online', 1, '2025-05-23 07:19:14', '2025-06-09 07:27:02', 'MacArthur Highway, Salsa Village, Lizada, Toril District, Davao City, Davao Region, 8025, Philippines'),
 (3, 'Miki', '', 'Frenchfriieess', '2025-01-16', '09294999087', NULL, '8022', 'Adelfa Street', 'miki@gmail.com', '$2y$10$8X0tfv7wMTSD6bNqFhSOBuEZLF/V6VLvy5HQIX7wfnxqEy67srdFe', 'seller', 'uploads/profile_pics/profile_3_1748790899.jpg', NULL, 7.0946580, 125.4973172, 'female', 'online', 0, '2025-06-01 15:10:13', '2025-06-24 20:29:52', 'Adelfa Street, Purok 1, Santo Niño, Tugbok District, Davao City, Davao Region, 8022, Philippines'),
 (4, 'Darlyn', '', 'Dollrain', '0000-00-00', '', NULL, '8000', 'Purok 15', 'doll@gmail.com', '$2y$10$MhKI5eRxo9R2Xq3xs8gGiOWJB/MgV0996O3YyJWB3Jwx5HgyCqxQ.', 'seller', 'uploads/users/profile/profile_4_1749739508.jpg', 'uploads/users/cover/cover_4_1749739515.jpg', 7.0284256, 125.4853401, '', 'online', 0, '2025-06-02 18:54:48', '2025-06-24 18:31:18', 'Purok 15, Bato, Toril District, Davao City, Davao Region, 8000, Philippines'),
@@ -1576,7 +1676,8 @@ INSERT INTO `users` (`id`, `first_name`, `middle_name`, `last_name`, `date_of_bi
 (15, 'kurumi', NULL, 'L', NULL, '', NULL, NULL, NULL, '2@gmail.com', '$2y$10$odjdWXENZ6m8qh0nFMN18.ZDNJQ0/iNlMjxO/LOib7o8pmJCH4we6', 'user', 'path/to/default/profile/pic.jpg', NULL, NULL, NULL, NULL, 'offline', 0, '2025-06-16 11:56:23', '2025-06-16 11:56:23', NULL),
 (17, 'asd', NULL, 'asd', NULL, '', NULL, NULL, NULL, 'ads@gmail.com', '$2y$10$2iV.MMUW5VXZDRelmbh4DeWloLqm6ygatY034joTMz7TJeqgCjFeK', 'user', 'path/to/default/profile/pic.jpg', NULL, NULL, NULL, NULL, 'offline', 0, '2025-06-16 11:59:58', '2025-06-16 11:59:58', NULL),
 (18, 's', '', 's', '0000-00-00', '', NULL, '8025', 'De Guzman Street, Purok 20', 's@gmail.com', '$2y$10$gKwXboyGQEHeDA.03FjfY.jlES6l9c./g1rYRnL2dfFRECttQcD/.', 'user', 'uploads/users/profile/profile_18_1750075405.jpg', 'uploads/users/cover/cover_18_1750075497.jpg', 7.0171606, 125.4995138, '', 'offline', 0, '2025-06-16 12:01:30', '2025-06-16 12:04:57', 'De Guzman Street, Purok 20, Crossing Bayabas, Toril District, Davao City, Davao Region, 8025, Philippines'),
-(19, 'Alliyah', NULL, 'Raen', NULL, '', NULL, NULL, NULL, 'all@gmail.com', '$2y$10$gOLoz8bAIoxu0N.BrBvI3OgYFN5MAFlizaBXMmBARotw.b50eahE2', 'user', 'uploads/users/profile/profile_19_1750387862.jpg', 'uploads/users/cover/cover_19_1750387871.jpg', NULL, NULL, NULL, 'offline', 0, '2025-06-20 02:50:15', '2025-06-20 02:51:11', NULL);
+(19, 'Alliyah', '', 'Raen', '0000-00-00', '', NULL, '8025', 'Juan Dela Cruz Street, Dona Manuela Housing', 'all@gmail.com', '$2y$10$gOLoz8bAIoxu0N.BrBvI3OgYFN5MAFlizaBXMmBARotw.b50eahE2', 'user', 'uploads/users/profile/profile_19_1750387862.jpg', 'uploads/users/cover/cover_19_1750387871.jpg', 7.0125988, 125.5001071, '', 'online', 0, '2025-06-20 02:50:15', '2025-07-04 12:46:00', 'Don Juan dela Cruz Central Elementary School, Juan Dela Cruz Street, Dona Manuela Housing, Daliao, Toril District, Davao City, Davao Region, 8025, Philippines'),
+(20, 'xian', NULL, 'carina', NULL, '', NULL, NULL, NULL, 'xian@gmail.com', '$2y$10$pvkdJ8rYpgNTZifO1dWeN.1JijeIzLmeaJf/zhaNNWrtlszn42Qga', 'user', 'uploads/users/profile/profile_20_1751773093.jpg', NULL, NULL, NULL, NULL, 'online', 0, '2025-07-06 03:34:15', '2025-07-06 03:38:32', NULL);
 
 --
 -- Indexes for dumped tables
@@ -1590,12 +1691,27 @@ ALTER TABLE `admins`
   ADD UNIQUE KEY `username` (`username`);
 
 --
+-- Indexes for table `admin_logs`
+--
+ALTER TABLE `admin_logs`
+  ADD PRIMARY KEY (`log_id`),
+  ADD KEY `admin_id` (`admin_id`),
+  ADD KEY `action` (`action`),
+  ADD KEY `created_at` (`created_at`);
+
+--
 -- Indexes for table `campaign_clicks`
 --
 ALTER TABLE `campaign_clicks`
   ADD PRIMARY KEY (`click_id`),
   ADD KEY `campaign_id` (`campaign_id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `campaign_pricing`
+--
+ALTER TABLE `campaign_pricing`
+  ADD PRIMARY KEY (`pricing_id`);
 
 --
 -- Indexes for table `campaign_reach`
@@ -1610,7 +1726,8 @@ ALTER TABLE `campaign_reach`
 --
 ALTER TABLE `campaign_requests`
   ADD PRIMARY KEY (`campaign_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `pricing_id` (`pricing_id`);
 
 --
 -- Indexes for table `cart`
@@ -1878,28 +1995,40 @@ ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `admin_logs`
+--
+ALTER TABLE `admin_logs`
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `campaign_clicks`
 --
 ALTER TABLE `campaign_clicks`
   MODIFY `click_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
+-- AUTO_INCREMENT for table `campaign_pricing`
+--
+ALTER TABLE `campaign_pricing`
+  MODIFY `pricing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `campaign_reach`
 --
 ALTER TABLE `campaign_reach`
-  MODIFY `reach_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1101;
+  MODIFY `reach_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1250;
 
 --
 -- AUTO_INCREMENT for table `campaign_requests`
 --
 ALTER TABLE `campaign_requests`
-  MODIFY `campaign_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `campaign_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -1959,7 +2088,7 @@ ALTER TABLE `kitchen_inventory`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -1971,13 +2100,13 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -2073,7 +2202,7 @@ ALTER TABLE `seller_applications`
 -- AUTO_INCREMENT for table `store_visits`
 --
 ALTER TABLE `store_visits`
-  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `visit_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `supplier_applications`
@@ -2085,7 +2214,7 @@ ALTER TABLE `supplier_applications`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables
@@ -2109,7 +2238,8 @@ ALTER TABLE `campaign_reach`
 -- Constraints for table `campaign_requests`
 --
 ALTER TABLE `campaign_requests`
-  ADD CONSTRAINT `campaign_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `campaign_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `campaign_requests_ibfk_2` FOREIGN KEY (`pricing_id`) REFERENCES `campaign_pricing` (`pricing_id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `cart`
